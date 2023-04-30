@@ -17,31 +17,30 @@ Map::Map() {
     std::string line;
     std::getline(input, line);
     char *number = strtok((char*)line.c_str(), " ");
-    int width = atoi(number);
+    this->width = atoi(number);
     number = strtok(NULL, " ");
-    int height = atoi(number);
+    this->height = atoi(number);
     // TODO: skraslit 
     std::cout << "width: " << width << std::endl;
     std::cout << "height: " << height << std::endl;
-    std::vector<std::vector<MapObject>> map;
     while (std::getline(input, line)) {
         std::cout << line << std::endl;
         std::vector<MapObject> row;
         for (int i = 0; i < line.length(); i++) {
-            MapObject object(line[i], i, map.size());
+            MapObject object(line[i], i, this->map.size());
             row.push_back(object);
         }
-        map.push_back(row);
+        this->map.push_back(row);
 
     }
     // debug print
-    for (int i = 0; i < map.size(); i++) {
+    for (int i = 0; i < this->map.size(); i++) {
         for (int j = 0; j < map[0].size(); j++) {
-            if (map[i][j].is_static()) {
-                std::cout << map[i][j].static_object << " ";
+            if (this->map[i][j].is_static()) {
+                std::cout << this->map[i][j].static_object << " ";
             } 
             else {
-                std::cout << map[i][j].dynamic_object[0] << " ";
+                std::cout << this->map[i][j].dynamic_object[0] << " ";
             }
         }
         std::cout << std::endl;
