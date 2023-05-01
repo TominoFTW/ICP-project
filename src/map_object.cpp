@@ -1,28 +1,27 @@
 
 #include "map_object.h"
-#include <vector>
+#include <QVector>
 #include <iostream>
+#include <QColor>
+#include <QGraphicsRectItem>
+#include <QBrush>
+#include <QPen>
 MapObject:: MapObject(char symbol, int x, int y){
     switch(symbol){
         case 'T':
         case 'X':
             this->static_object = symbol;
-            this->x = x;
-            this->y = y;
-            this->mColor = Qt::black;
+            this->color = Qt::black;
             break;
         case 'K':
         case '.':
             this->static_object = symbol;
-            this->x = x;
-            this->y = y;
-            this->mColor = Qt::white;
+            this->color = Qt::white;
             break;
         case 'S':
         case 'G':
             this->dynamic_object.push_back(symbol);
-            this->x = x;
-            this->y = y;
+            this->color = Qt::green;
             break;
         default:
             std::cout << "unknown" << std::endl;
@@ -34,8 +33,4 @@ bool MapObject::is_static(){
 }
 bool MapObject::is_free(){
     return this->dynamic_object.empty() && this->static_object == '.';
-}
-
-QColor MapObject::getColor(){
-    return this->mColor;
 }

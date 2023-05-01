@@ -1,26 +1,27 @@
 #include "map_grid.h"
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsRectItem>
+#include <QVBoxLayout>
+#include <QGraphicsItem>
+#include <iostream>
 
 SquareGrid::SquareGrid(const std::vector<std::vector<MapObject>>& data, QWidget *parent)
     : QWidget(parent)
     , mData(data)
 {
-    setFixedSize(800, 600);
-}
+    QGraphicsScene* scene = new QGraphicsScene(this);
+    QGraphicsView* view = new QGraphicsView(scene, this);
+    view->setFixedSize(800, 600);
 
-void SquareGrid::paintEvent(QPaintEvent *event)
-{
-    QPainter painter(this);
-
-    int size = qMin(width(), height()) / mData.size();
-
-    for (size_t row = 0; row < mData.size(); ++row) {
-        for (size_t col = 0; col < mData[row].size(); ++col) {
-            if (!mData[row][col].is_static()) {
-                continue;
-            }
-            QRect rect(col * size, row * size, size, size);
-            painter.fillRect(rect, mData[row][col].getColor());
-            painter.drawRect(rect);
+    // Generate square items and add them to the scene
+    for (int row = 0; row < mData.size(); row++) {
+        for (int col = 0; col < mData[row].size(); col++) {
+            mData[row][col].setRect(col*50, row*50, 50, 50);
+            mData[row][col].setBrush(mData[row][col].color);
+            scene->addItem(&mData[row][col]);
         }
     }
 }
+
+

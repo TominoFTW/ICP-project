@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     Map map;
-    SquareGrid *grid = new SquareGrid(map.map,this);
+    SquareGrid *grid = new SquareGrid(map.map, this);
     this->setCentralWidget(grid);
     // funguje aj show grid TODO: pozriet layout co robi
 }

@@ -26,13 +26,19 @@ Map::Map() {
     while (std::getline(input, line)) {
         std::cout << line << std::endl;
         std::vector<MapObject> row;
+        row.push_back(MapObject('X', 0, this->map.size()));
         for (int i = 0; i < line.length(); i++) {
             MapObject object(line[i], i, this->map.size());
             row.push_back(object);
         }
+        row.push_back(MapObject('X', 0, this->map.size()));
         this->map.push_back(row);
 
     }
+    std::vector<MapObject> top_row(map[0].size(), MapObject('X', 0, 0));
+    this->map.insert(this->map.begin(), top_row);
+    std::vector<MapObject> bottom_row(map[0].size(), MapObject('X', 0, 0));
+    this->map.push_back(bottom_row);
     // debug print
     for (int i = 0; i < this->map.size(); i++) {
         for (int j = 0; j < map[0].size(); j++) {
