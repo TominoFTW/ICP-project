@@ -6,11 +6,17 @@ MapObject:: MapObject(char symbol, int x, int y){
     switch(symbol){
         case 'T':
         case 'X':
+            this->static_object = symbol;
+            this->x = x;
+            this->y = y;
+            this->mColor = Qt::black;
+            break;
         case 'K':
         case '.':
             this->static_object = symbol;
             this->x = x;
             this->y = y;
+            this->mColor = Qt::white;
             break;
         case 'S':
         case 'G':
@@ -28,4 +34,8 @@ bool MapObject::is_static(){
 }
 bool MapObject::is_free(){
     return this->dynamic_object.empty() && this->static_object == '.';
+}
+
+QColor MapObject::getColor(){
+    return this->mColor;
 }

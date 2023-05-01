@@ -12,7 +12,7 @@ Map::Map() {
     input.open("examples/map-01.txt");
     if (!input) {
         std::cout << "Unable to open file";
-        exit(1); // debug TODO: vyriesit bez exitu
+        return;
     }
     std::string line;
     std::getline(input, line);

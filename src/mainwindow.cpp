@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 
+
 // registering users input with w-s-a-d and arrow keys
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
