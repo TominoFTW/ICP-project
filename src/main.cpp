@@ -12,9 +12,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    Map map;
     w.show();
-    SquareGrid grid(map.map);
-    grid.show();
     return a.exec();
 }
