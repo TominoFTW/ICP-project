@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>textures/ghosts/ghost1.png</file>
+        <file>textures/pacman/pacman1.png</file>
+        <file>textures/misc/wall.png</file>
+        <file>textures/misc/dot.png</file>
+        <file>textures/misc/target.png</file>
+        <file>textures/misc/key.png</file>
+    </qresource>
+</RCC>
