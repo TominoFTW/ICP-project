@@ -10,6 +10,7 @@
 #include <iostream>
 #include "map.h"
 #include <vector>
+#include "pacman.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,6 +27,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    // todo runtime class with global variables
+    Pacman *pacman;
+    QGraphicsScene* scene;
+    Map map;
 
 };
 #endif // MAINWINDOW_H

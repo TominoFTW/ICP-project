@@ -5,12 +5,14 @@
 #include <QPainter>
 #include <vector>
 #include "map_object.h"
+#include <QGraphicsScene>
+#include <QGraphicsView>
 
 class SquareGrid : public QWidget
 {
 
 public:
-    SquareGrid(const std::vector<std::vector<MapObject>>& data, QWidget *parent = nullptr);
+    SquareGrid(const std::vector<std::vector<MapObject>>& data, QGraphicsScene *scene, QWidget *parent = nullptr);
 
 
 private:

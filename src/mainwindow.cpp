@@ -4,16 +4,24 @@
 #include "map_object.h"
 #include "map_grid.h"
 #include <QLayout>
+#include "pacman.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    Map map;
-    SquareGrid *grid = new SquareGrid(map.map, this);
+    this->map = Map();
+    //todo wrong free memory here
+    this->scene = new QGraphicsScene(this);
+    QGraphicsView* view = new QGraphicsView(this->scene, this);
+    view->setFixedSize(800, 600);
+    SquareGrid *grid = new SquareGrid(map.map,this->scene, this);
     this->setCentralWidget(grid);
-    // funguje aj show grid TODO: pozriet layout co robi
+    // TODO:find object in map
+    this->pacman = new Pacman(1,9, map);
+    scene->addItem(this->pacman);
+
 }
 
 
@@ -22,22 +30,22 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
         case Qt::Key_W:
         case Qt::Key_Up:
-            //direction up
+            this->pacman->move(3, *this->scene, this->map);
             std::cout << "up" << std::endl;
             break;
         case Qt::Key_S:
         case Qt::Key_Down:
-            //direction down
+            this->pacman->move(1, *this->scene, this->map);
             std::cout << "down" << std::endl;
             break;
         case Qt::Key_A:
         case Qt::Key_Left:
-            //direction left
+            this->pacman->move(2, *this->scene, this->map);
             std::cout << "left" << std::endl;
             break;
         case Qt::Key_D:
         case Qt::Key_Right:
-            //direction right
+            this->pacman->move(0, *this->scene, this->map);
             std::cout << "right" << std::endl;
             break;
     }
