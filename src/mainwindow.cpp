@@ -15,9 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
     //todo wrong free memory here
     this->scene = new QGraphicsScene(this);
     QGraphicsView* view = new QGraphicsView(this->scene, this);
-    view->setFixedSize(800, 600);
+    view->setFixedSize((int)map.map.size()*50+10, (int)map.map[0].size()*50+10);
+    this->setFixedSize((map.width+2)*50+10, (map.height+2)*50+35);
     SquareGrid *grid = new SquareGrid(map.map,this->scene, this);
     this->setCentralWidget(grid);
+    grid->setFocusPolicy(Qt::StrongFocus);
     // TODO:find object in map
     this->pacman = new Pacman(1,9, map);
     scene->addItem(this->pacman);

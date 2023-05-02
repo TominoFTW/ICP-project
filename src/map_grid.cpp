@@ -19,5 +19,3 @@ SquareGrid::SquareGrid(const std::vector<std::vector<MapObject>>& data,QGraphics
         }
     }
 }
-
-
