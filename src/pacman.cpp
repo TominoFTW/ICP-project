@@ -15,7 +15,7 @@
 Pacman::Pacman(int x, int y, Map &map){
     this->direction = 0;
     this->position = std::make_tuple(x*50, y*50);
-    this->setBrush(Qt::yellow);
+    this->setBrush(QBrush(QImage("./textures/pacman/pacman1.png").scaled(50,50)));
     this->setRect(0,0,50,50);
     this->setPos(std::get<0>(this->position), std::get<1>(this->position));
 

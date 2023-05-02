@@ -9,16 +9,25 @@
 MapObject:: MapObject(char symbol, int x, int y){
     switch(symbol){
         case 'T':
+            this->static_object = symbol;
+            this->color = Qt::blue;
+            break;
         case 'X':
             this->static_object = symbol;
             this->color = Qt::black;
             break;
         case 'K':
+            this->static_object = symbol;
+            this->color = Qt::yellow;
+            break;
         case '.':
             this->static_object = symbol;
             this->color = Qt::white;
             break;
         case 'S':
+            this->dynamic_object.push_back(symbol);
+            this->color = Qt::darkYellow;
+            break;
         case 'G':
             this->dynamic_object.push_back(symbol);
             this->color = Qt::green;

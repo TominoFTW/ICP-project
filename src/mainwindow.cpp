@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFixedSize((map.width+2)*50+10, (map.height+2)*50+35);
     SquareGrid *grid = new SquareGrid(map.map,this->scene, this);
     this->setCentralWidget(grid);
+    this->setFocusPolicy(Qt::StrongFocus);
     grid->setFocusPolicy(Qt::StrongFocus);
     // TODO:find object in map
     this->pacman = new Pacman(1,9, map);
