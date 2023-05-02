@@ -12,7 +12,7 @@ SquareGrid::SquareGrid(const std::vector<std::vector<MapObject>>& data, QWidget 
 {
     QGraphicsScene* scene = new QGraphicsScene(this);
     QGraphicsView* view = new QGraphicsView(scene, this);
-    view->setFixedSize(800, 600);
+    view->setFixedSize((int)mData.size()*50+10, (int)mData[0].size()*50+10);
 
     // Generate square items and add them to the scene
     for (int row = 0; row < mData.size(); row++) {
@@ -23,5 +23,3 @@ SquareGrid::SquareGrid(const std::vector<std::vector<MapObject>>& data, QWidget 
         }
     }
 }
-
-

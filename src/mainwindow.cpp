@@ -12,7 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     Map map;
     SquareGrid *grid = new SquareGrid(map.map, this);
+    // this->setGeometry(0, 0, (map.height+3)*50, (map.width+2)*50);
+    this->setFixedSize((map.width+2)*50+10, (map.height+2)*50+35);
     this->setCentralWidget(grid);
+    grid->setFocusPolicy(Qt::StrongFocus);
     // funguje aj show grid TODO: pozriet layout co robi
 }
 
