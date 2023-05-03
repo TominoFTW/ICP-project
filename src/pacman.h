@@ -3,14 +3,20 @@
 #include "map_grid.h"
 #include "map.h"
 #include <utility>
+#include <QTimer>
+#include <QObject>
 class Pacman: public QGraphicsRectItem {
     public:
-        Pacman(int x, int y, Map &map);
+        Pacman(int x, int y, Map &map,QGraphicsView *view);
         void move(int direction, QGraphicsScene &scene, Map &map);
-    private:
-        int direction;
         std::pair<int, int> position;
+        void pacman_end();
+        void set_direction(int direction);
+    private:
+        QGraphicsView *view;
+        int direction;
         std::vector<std::pair<int, int>> movement;
+        QTimer *timer;
 
 };
 

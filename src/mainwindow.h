@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 #include <QGraphicsScene>
-#include <QTimer>
 #include <QGraphicsView>
 #include <QLabel>
 #include <iostream>
@@ -12,6 +11,7 @@
 #include <vector>
 #include "pacman.h"
 #include "ghost.h"
+#include "gamestate.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,7 +33,7 @@ private:
     std::vector<Ghost *> ghosts;
     QGraphicsScene* scene;
     Map map;
-    QTimer *timer;
+    GameState *gamestate;
 
 };
 #endif // MAINWINDOW_H

@@ -12,7 +12,11 @@
 #include "pacman.h"
 #include "map.h"
 #include <iostream>
-Pacman::Pacman(int x, int y, Map &map){
+#include <utility>
+#include <QTimer>
+#include <QObject>
+
+Pacman::Pacman(int x, int y, Map &map, QGraphicsView *view) : view(view){
     this->direction = 0;
     this->position = std::make_pair(x*50, y*50);
     this->setBrush(QBrush(QImage("./textures/pacman/pacman1.png").scaled(50,50)));
@@ -22,7 +26,7 @@ Pacman::Pacman(int x, int y, Map &map){
 }
 
 void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
-    switch(direction){
+    switch(this->direction){
         case 0:
             //     // todo potom, co ghost odejde tak to dalsi pole dat jako dynamic a to predtim jako static?
             //     // nebo to cele predelat na static a jenom kontrolovat souradnice nekde, respektive se je naucit predavat pres map grid???
@@ -60,4 +64,16 @@ void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
 
             break;
     }
+}
+void Pacman::set_direction(int direction){
+    this->direction = direction;
+}
+void Pacman::pacman_end(){
+    auto text = new QGraphicsTextItem("Game Over");
+    this->scene()->addItem(text);
+    text->hide();
+    auto text2 = new QGraphicsTextItem("Press R to restart");
+    this->scene()->addItem(text2);
+    text->show();
+    text->setPos(this->scene()->width()/2,this->scene()->height()/2);
 }
