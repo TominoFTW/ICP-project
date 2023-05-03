@@ -10,7 +10,7 @@
 GameState::GameState(Pacman *pacman, QGraphicsScene *scene, Map &map) : scene(scene),pacman(pacman), map(map){
     timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, this, &GameState::update);
-    timer->start(1000);
+    timer->start(300);
 }
 void GameState::add_ghost(Ghost &ghost){
     this->ghosts.push_back(&ghost);
