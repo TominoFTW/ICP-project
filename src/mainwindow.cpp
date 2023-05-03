@@ -63,10 +63,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         default:
             return;
     }
-    for (int i = 0; i < (int)this->ghosts.size(); i++) {
-        std::cout << "ghost " << i << std::endl;
-        this->ghosts[i]->move(i, *this->scene, this->map, *this->pacman);
-    }
 }
 
 MainWindow::~MainWindow()
