@@ -5,6 +5,7 @@
 #include <utility>
 #include <QTimer>
 #include <QObject>
+//hello
 class Pacman: public QGraphicsRectItem {
     public:
         Pacman(int x, int y, Map &map,QGraphicsView *view);
