@@ -10,7 +10,7 @@
 #include "map.h"
 
 //hello
-GameState::GameState(Pacman *pacman, QGraphicsScene *scene, Map &map) : scene(scene),pacman(pacman), map(map){
+GameState::GameState(Pacman *pacman, QGraphicsScene *scene, Map &map) : pacman(pacman), scene(scene), map(map){
     timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, this, &GameState::update);
     timer->start(300);

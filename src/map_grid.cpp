@@ -33,6 +33,7 @@ SquareGrid::SquareGrid(Map *map,QGraphicsScene* scene, QWidget *parent)
             }
             else if (map->map[row][col]->color == Qt::yellow) {
                 map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/key.png").scaled(50,50)));
+                std::cout<< "key" << std::endl;
                 this->keys.push_back(std::make_pair(col, row));
             }
             else if (map->map[row][col]->color == Qt::blue) {
@@ -64,14 +65,12 @@ std::pair<int, int> SquareGrid::get_pacman(){
 std::vector<std::pair<int, int>> SquareGrid::get_ghosts(){
     for (int i = 0; i < ghosts.size(); i++) {
         std::cout << "ghost" << std::endl;
-        std::cout << ghosts[i].first << ' ' << ghosts[i].second << std::endl;
     }
     return this->ghosts;
 }
 std::vector<std::pair<int, int>> SquareGrid::get_keys(){
-    for (int i = 0; i < ghosts.size(); i++) {
+    for (int i = 0; i < keys.size(); i++) {
         std::cout << "key" << std::endl;
-        std::cout << keys[i].first << ' ' << keys[i].second << std::endl;
     }
     return this->keys;
 }
