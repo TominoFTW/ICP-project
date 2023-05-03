@@ -11,6 +11,7 @@
 #include "map.h"
 #include <vector>
 #include "pacman.h"
+#include "ghost.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,8 +30,10 @@ private:
     Ui::MainWindow *ui;
     // todo runtime class with global variables
     Pacman *pacman;
+    std::vector<Ghost *> ghosts;
     QGraphicsScene* scene;
     Map map;
+    QTimer *timer;
 
 };
 #endif // MAINWINDOW_H

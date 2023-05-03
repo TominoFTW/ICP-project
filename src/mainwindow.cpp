@@ -5,6 +5,8 @@
 #include "map_grid.h"
 #include <QLayout>
 #include "pacman.h"
+#include "ghost.h"
+#include <utility>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,39 +20,51 @@ MainWindow::MainWindow(QWidget *parent)
     view->setFixedSize((int)map.map.size()*50+10, (int)map.map[0].size()*50+10);
     this->setFixedSize((map.width+2)*50+10, (map.height+2)*50+35);
     SquareGrid *grid = new SquareGrid(map.map,this->scene, this);
+    grid->setFocusPolicy(Qt::StrongFocus);
     this->setCentralWidget(grid);
     this->setFocusPolicy(Qt::StrongFocus);
-    grid->setFocusPolicy(Qt::StrongFocus);
-    // TODO:find object in map
-    this->pacman = new Pacman(1,9, map);
+
+    auto pacman_cords = grid->get_pacman();
+    this->pacman = new Pacman(pacman_cords.first, pacman_cords.second, map);
     scene->addItem(this->pacman);
+
+    auto ghosts_cords = grid->get_ghosts();
+    for (int i = 0; i < (int)ghosts_cords.size(); i++) {
+        Ghost *ghost = new Ghost(ghosts_cords[i].first, ghosts_cords[i].second, map);
+        this->ghosts.push_back(ghost);
+        scene->addItem(this->ghosts[i]);
+    }
 
 }
 
 
 // registering users input with w-s-a-d and arrow keys
 void MainWindow::keyPressEvent(QKeyEvent *event) {
+    int direction;
     switch (event->key()) {
         case Qt::Key_W:
         case Qt::Key_Up:
-            this->pacman->move(3, *this->scene, this->map);
-            std::cout << "up" << std::endl;
+            direction = 3;
             break;
         case Qt::Key_S:
         case Qt::Key_Down:
-            this->pacman->move(1, *this->scene, this->map);
-            std::cout << "down" << std::endl;
+            direction = 1;
             break;
         case Qt::Key_A:
         case Qt::Key_Left:
-            this->pacman->move(2, *this->scene, this->map);
-            std::cout << "left" << std::endl;
+            direction = 2;
             break;
         case Qt::Key_D:
         case Qt::Key_Right:
-            this->pacman->move(0, *this->scene, this->map);
-            std::cout << "right" << std::endl;
+            direction = 0;
             break;
+        default:
+            return;
+    }
+    this->pacman->move(direction, *this->scene, this->map);
+    for (int i = 0; i < (int)this->ghosts.size(); i++) {
+        std::cout << "ghost " << i << std::endl;
+        this->ghosts[i]->move(i, *this->scene, this->map);
     }
 }
 
