@@ -18,8 +18,9 @@
 
 Pacman::Pacman(int x, int y, Map &map, QGraphicsView *view) : view(view), direction(10){
     this->position = std::make_pair(x*50, y*50);
-    this->setBrush(QBrush(QImage("./textures/pacman/pacman1.png").scaled(50,50)));
+    this->setBrush(QBrush(QImage("./textures/pacman/pacman0.png")));
     this->setRect(0,0,50,50);
+    this->setPen(Qt::NoPen);
     this->setPos(this->position.first, this->position.second);
     this->movement.push_back(std::make_pair(this->position.first, this->position.second));
 }
@@ -34,6 +35,7 @@ void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
                 this->setPos(this->position.first, this->position.second);
             }
             this->movement.push_back(std::make_pair(this->position.first, this->position.second));
+            this->setBrush(QBrush(QImage("./textures/pacman/pacman0.png")));
 
             break;
         case 1:
@@ -42,6 +44,7 @@ void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
                 this->setPos(this->position.first, this->position.second);
             }
             this->movement.push_back(std::make_pair(this->position.first, this->position.second));
+            this->setBrush(QBrush(QImage("./textures/pacman/pacman1.png")));
 
             break;
         case 2:
@@ -50,6 +53,7 @@ void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
                 this->setPos(this->position.first, this->position.second);
             }
             this->movement.push_back(std::make_pair(this->position.first, this->position.second));
+            this->setBrush(QBrush(QImage("./textures/pacman/pacman2.png")));
 
 
             break;
@@ -59,6 +63,7 @@ void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
                 this->setPos(this->position.first, this->position.second);
             }
             this->movement.push_back(std::make_pair(this->position.first, this->position.second));
+            this->setBrush(QBrush(QImage("./textures/pacman/pacman3.png")));
 
 
             break;

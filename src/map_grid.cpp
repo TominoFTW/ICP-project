@@ -48,6 +48,7 @@ SquareGrid::SquareGrid(Map *map,QGraphicsScene* scene, QWidget *parent)
                     this->pacman = std::make_pair(col, row);
                 }
             }
+            map->map[row][col]->setPen(Qt::NoPen);
             scene->addItem(map->map[row][col]);
 
         }

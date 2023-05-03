@@ -21,6 +21,7 @@ Ghost::Ghost(int x, int y, Map &map){
     this->position = std::make_pair(x*50, y*50);
     this->setBrush(QBrush(QImage("./textures/ghosts/ghost1.png").scaled(50,50)));
     this->setRect(0,0,50,50);
+    this->setPen(Qt::NoPen);
     this->setPos(this->position.first, this->position.second);
     
 }
