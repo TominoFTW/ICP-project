@@ -8,7 +8,7 @@ class Map {
         Map();
         int width;
         int height;
-        std::vector<std::vector<MapObject>> map;
+        std::vector<std::vector<MapObject*>> map;
 
 };
 

@@ -25,24 +25,36 @@ Map::Map() {
     std::cout << "height: " << height << std::endl;
     while (std::getline(input, line)) {
         std::cout << line << std::endl;
-        std::vector<MapObject> row;
-        row.push_back(MapObject('X', 0, this->map.size()));
+        std::vector<MapObject*> row;
+        MapObject *xy = new MapObject('X', 0, this->map.size());
+        row.push_back(xy);
         for (int i = 0; i < line.length(); i++) {
-            MapObject object(line[i], i, this->map.size());
+            
+            MapObject *object = new MapObject(line[i], i, this->map.size());
             row.push_back(object);
         }
-        row.push_back(MapObject('X', 0, this->map.size()));
+        MapObject *x = new MapObject('X', 0, this->map.size());
+        row.push_back(x);
         this->map.push_back(row);
 
     }
-    std::vector<MapObject> top_row(map[0].size(), MapObject('X', 0, 0));
-    this->map.insert(this->map.begin(), top_row);
-    std::vector<MapObject> bottom_row(map[0].size(), MapObject('X', 0, 0));
-    this->map.push_back(bottom_row);
+    std::vector<MapObject*>* top_row = new std::vector<MapObject*>();
+    for (int i = 0; i < map[0].size(); i++) {
+        MapObject* obj = new MapObject('X', 0, 0);
+        top_row->push_back(obj);
+    }
+    this->map.insert(this->map.begin(), *top_row);
+
+    std::vector<MapObject*>* bottom_row = new std::vector<MapObject*>();
+    for (int i = 0; i < map[0].size(); i++) {
+        MapObject* obj = new MapObject('X', 0, 0);
+        bottom_row->push_back(obj);
+    }
+    this->map.push_back(*bottom_row);
     // debug print
     for (int i = 0; i < this->map.size(); i++) {
         for (int j = 0; j < map[0].size(); j++) {
-            std::cout << this->map[i][j].type << " ";
+            std::cout << this->map[i][j]->type << " ";
         }
         std::cout << std::endl;
     }

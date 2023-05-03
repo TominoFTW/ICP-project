@@ -13,25 +13,30 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->map = Map();
+    this->map = new Map();
     //todo wrong free memory here
     this->scene = new QGraphicsScene(this);
     QGraphicsView* view = new QGraphicsView(this->scene, this);
-    view->setFixedSize((int)map.map.size()*50+10, (int)map.map[0].size()*50+10);
-    this->setFixedSize((map.width+2)*50+10, (map.height+2)*50+35);
-    SquareGrid *grid = new SquareGrid(map.map,this->scene, this);
+    view->setFixedSize((int)map->map.size()*50+10, (int)map->map[0].size()*50+10);
+    this->setFixedSize((map->width+2)*50+10, (map->height+2)*50+35);
+    SquareGrid *grid = new SquareGrid(this->map,this->scene, this);
     grid->setFocusPolicy(Qt::StrongFocus);
     this->setCentralWidget(grid);
     this->setFocusPolicy(Qt::StrongFocus);
     auto pacman_cords = grid->get_pacman();
-    this->pacman = new Pacman(pacman_cords.first, pacman_cords.second, map, view);
+    this->pacman = new Pacman(pacman_cords.first, pacman_cords.second, *map, view);
     scene->addItem(this->pacman);
     auto ghosts_cords = grid->get_ghosts();
-    this->gamestate = new GameState(this->pacman, this->scene, this->map);
+    auto key_cords = grid->get_keys();
+    this->gamestate = new GameState(this->pacman, this->scene, *this->map);
     for (int i = 0; i < (int)ghosts_cords.size(); i++) {
-        Ghost *ghost = new Ghost(ghosts_cords[i].first, ghosts_cords[i].second, map);
+        Ghost *ghost = new Ghost(ghosts_cords[i].first, ghosts_cords[i].second, *map);
         this->gamestate->add_ghost(*ghost);
         scene->addItem(ghost);
+    }
+    for (int i = 0; i < (int)key_cords.size(); i++) {
+        Key *key = new Key(key_cords[i].first, key_cords[i].second, this->map);
+        this->gamestate->add_key(*key);
     }
 
 

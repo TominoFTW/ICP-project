@@ -31,7 +31,7 @@ private:
     // todo runtime class with global variables
     Pacman *pacman;
     QGraphicsScene* scene;
-    Map map;
+    Map *map;
     GameState *gamestate;
 
 };

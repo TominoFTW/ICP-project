@@ -7,10 +7,11 @@
 #include <iostream>
 #include <tuple>
 #include <utility>
+#include "map.h"
 
-SquareGrid::SquareGrid(const std::vector<std::vector<MapObject>>& data,QGraphicsScene* scene, QWidget *parent)
+SquareGrid::SquareGrid(Map *map,QGraphicsScene* scene, QWidget *parent)
     : QWidget(parent)
-    , mData(data)
+    , map(map)
 {
     // QPixmap wall(":/textures/misc/wall.png");
     // QPixmap dot(":/textures/misc/dot.png");
@@ -19,37 +20,37 @@ SquareGrid::SquareGrid(const std::vector<std::vector<MapObject>>& data,QGraphics
     // QPixmap pacman(":/textures/pacman/pacman1.png");
     // QPixmap ghost(":/textures/ghost/ghost1.png");
 
-    std::pair <int, int> pacman;
-    std::vector<std::pair<int, int>> ghosts;
 
-    for (int row = 0; row < mData.size(); row++) {
-        for (int col = 0; col < mData[row].size(); col++) {
-            mData[row][col].setRect(col*50, row*50, 50, 50);
-            if (mData[row][col].color == Qt::black) {
+    for (int row = 0; row < map->map.size(); row++) {
+        for (int col = 0; col < map->map[row].size(); col++) {
+            map->map[row][col]->setRect(col*50, row*50, 50, 50);
+            if (map->map[row][col]->color == Qt::black) {
                 // wall, so set texture of wall from ../textures/misc/wall.png
-                mData[row][col].setBrush(QBrush(QImage("./textures/misc/wall.png").scaled(50,50)));
+                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/wall.png").scaled(50,50)));
             }
-            else if(mData[row][col].color == Qt::blue) {
-                mData[row][col].setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
+            else if(map->map[row][col]->color == Qt::blue) {
+                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
             }
-            else if (mData[row][col].color == Qt::yellow) {
-                mData[row][col].setBrush(QBrush(QImage("./textures/misc/key.png").scaled(50,50)));
+            else if (map->map[row][col]->color == Qt::yellow) {
+                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/key.png").scaled(50,50)));
+                this->keys.push_back(std::make_pair(col, row));
             }
-            else if (mData[row][col].color == Qt::blue) {
-                mData[row][col].setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
+            else if (map->map[row][col]->color == Qt::blue) {
+                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
             }
-            else if (mData[row][col].color == Qt::green) {
-                mData[row][col].setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
+            else if (map->map[row][col]->color == Qt::green) {
+                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
                 this->ghosts.push_back(std::make_pair(col, row));
             }
             else{
-                mData[row][col].setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
-                if (mData[row][col].color == Qt::darkYellow) {
+                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
+                if (map->map[row][col]->color == Qt::darkYellow) {
                     this->pacman = std::make_pair(col, row);
                 }
             }
-            mData[row][col].setPen(Qt::NoPen);
-            scene->addItem(&mData[row][col]);
+            map->map[row][col]->setPen(Qt::NoPen);
+            scene->addItem(map->map[row][col]);
+
         }
     }
 }
@@ -66,4 +67,11 @@ std::vector<std::pair<int, int>> SquareGrid::get_ghosts(){
         std::cout << ghosts[i].first << ' ' << ghosts[i].second << std::endl;
     }
     return this->ghosts;
+}
+std::vector<std::pair<int, int>> SquareGrid::get_keys(){
+    for (int i = 0; i < ghosts.size(); i++) {
+        std::cout << "key" << std::endl;
+        std::cout << keys[i].first << ' ' << keys[i].second << std::endl;
+    }
+    return this->keys;
 }
