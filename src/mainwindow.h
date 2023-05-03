@@ -30,7 +30,6 @@ private:
     Ui::MainWindow *ui;
     // todo runtime class with global variables
     Pacman *pacman;
-    std::vector<Ghost *> ghosts;
     QGraphicsScene* scene;
     Map map;
     GameState *gamestate;

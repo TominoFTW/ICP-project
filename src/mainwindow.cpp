@@ -27,14 +27,11 @@ MainWindow::MainWindow(QWidget *parent)
     this->pacman = new Pacman(pacman_cords.first, pacman_cords.second, map, view);
     scene->addItem(this->pacman);
     auto ghosts_cords = grid->get_ghosts();
+    this->gamestate = new GameState(this->pacman, this->scene, this->map);
     for (int i = 0; i < (int)ghosts_cords.size(); i++) {
         Ghost *ghost = new Ghost(ghosts_cords[i].first, ghosts_cords[i].second, map);
-        this->ghosts.push_back(ghost);
-        scene->addItem(this->ghosts[i]);
-    }
-    this->gamestate = new GameState(this->pacman, this->scene, this->map);
-    for (int i = 0; i < (int)this->ghosts.size(); i++) {
-        gamestate->add_ghost(*this->ghosts[i]);
+        this->gamestate->add_ghost(*ghost);
+        scene->addItem(ghost);
     }
 
 

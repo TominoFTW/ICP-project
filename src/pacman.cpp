@@ -16,8 +16,7 @@
 #include <QTimer>
 #include <QObject>
 
-Pacman::Pacman(int x, int y, Map &map, QGraphicsView *view) : view(view){
-    this->direction = 0;
+Pacman::Pacman(int x, int y, Map &map, QGraphicsView *view) : view(view), direction(10){
     this->position = std::make_pair(x*50, y*50);
     this->setBrush(QBrush(QImage("./textures/pacman/pacman1.png").scaled(50,50)));
     this->setRect(0,0,50,50);
@@ -62,6 +61,8 @@ void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
             this->movement.push_back(std::make_pair(this->position.first, this->position.second));
 
 
+            break;
+        default:
             break;
     }
 }
