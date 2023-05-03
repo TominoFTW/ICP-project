@@ -14,7 +14,7 @@
 #include <iostream>
 #include <random>
 #include <utility>
-
+#include "pacman.h"
 
 Ghost::Ghost(int x, int y, Map &map){
     this->direction = 0;
@@ -25,13 +25,14 @@ Ghost::Ghost(int x, int y, Map &map){
     
 }
 
-void Ghost::move(int id, QGraphicsScene &scene, Map &map){
+void Ghost::move(int id, QGraphicsScene &scene, Map &map, Pacman &pacman){
     // std::cout << std::get<0>(this->position)<< " " << std::get<1>(this->position) << std::endl;
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, 3);
     int direction = dis(gen);
     printf("%d\n", direction);
+    check_collision(scene, map, pacman);
     switch(direction){
         case 0:
                 // todo potom, co ghost odejde tak to dalsi pole dat jako dynamic a to predtim jako static?
@@ -60,6 +61,14 @@ void Ghost::move(int id, QGraphicsScene &scene, Map &map){
             }
             break;
     }
+    check_collision(scene, map, pacman);
     std::cout << "Update" << std::endl;
     std::cout << std::get<0>(this->position)<< " " << std::get<1>(this->position) << std::endl;
+}
+
+void Ghost::check_collision(QGraphicsScene &scene, Map &map, Pacman &pacman){
+    if (pacman.position == this->position){
+        pacman.pacman_end();
+    // todo
+    }
 }
