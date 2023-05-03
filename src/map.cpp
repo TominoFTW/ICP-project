@@ -42,12 +42,7 @@ Map::Map() {
     // debug print
     for (int i = 0; i < this->map.size(); i++) {
         for (int j = 0; j < map[0].size(); j++) {
-            if (this->map[i][j].is_static()) {
-                std::cout << this->map[i][j].static_object << " ";
-            } 
-            else {
-                std::cout << this->map[i][j].dynamic_object[0] << " ";
-            }
+            std::cout << this->map[i][j].type << " ";
         }
         std::cout << std::endl;
     }
