@@ -33,7 +33,6 @@ Ghost::Ghost(int x, int y, Map &map) : QObject(){
 }
 
 void Ghost::move(int id, QGraphicsScene &scene, Map &map, Pacman &pacman){
-    // std::cout << std::get<0>(this->position)<< " " << std::get<1>(this->position) << std::endl;
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, 3);
