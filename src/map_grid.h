@@ -18,12 +18,15 @@ public:
     std::pair<int, int> get_pacman();
     std::vector<std::pair<int, int>> get_ghosts();
     std::vector<std::pair<int, int>> get_keys();
+    std::pair<int, int> get_end();
+
 
 private:
     Map *map;
     std::pair<int, int> pacman;
     std::vector<std::pair<int, int>> ghosts;
     std::vector<std::pair<int, int>> keys;
+    std::pair<int, int> end;
 };
 
 #endif // SQUAREGRID_H

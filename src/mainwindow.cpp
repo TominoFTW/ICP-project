@@ -26,9 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
     auto pacman_cords = grid->get_pacman();
     this->pacman = new Pacman(pacman_cords.first, pacman_cords.second, *map, view);
     scene->addItem(this->pacman);
+    // todo toto musi ist preco
     auto ghosts_cords = grid->get_ghosts();
     auto key_cords = grid->get_keys();
-    this->gamestate = new GameState(this->pacman, this->scene, *this->map);
+    this->gamestate = new GameState(this->pacman, this->scene, this->map);
+    this->gamestate->end.first = grid->get_end().first*50;
+    this->gamestate->end.second = grid->get_end().second*50;
     for (int i = 0; i < (int)ghosts_cords.size(); i++) {
         Ghost *ghost = new Ghost(ghosts_cords[i].first, ghosts_cords[i].second, *map);
         this->gamestate->add_ghost(*ghost);

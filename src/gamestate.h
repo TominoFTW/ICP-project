@@ -10,16 +10,17 @@
 
 class GameState: public QObject{
 public:
-    GameState(Pacman* pacman, QGraphicsScene *scene, Map &map);
+    GameState(Pacman* pacman, QGraphicsScene *scene, Map *map);
     void add_ghost(Ghost &ghost);
     void add_key(Key &key);
     void set_pacman_dir(int direction);
+    std::pair<int, int> end;
 private slots:
     void update();
 private:
     Pacman *pacman;
     QGraphicsScene *scene;
-    Map map;
+    Map *map;
     QTimer *timer;
     std::vector<Ghost*> ghosts;
     std::vector<Key*> keys;
