@@ -12,7 +12,6 @@
 
 MainScene::MainScene(QWidget *parent)
     : QGraphicsScene(parent)
-    , map(map)
 {
     // QPixmap wall(":/textures/misc/wall.png");
     // QPixmap dot(":/textures/misc/dot.png");

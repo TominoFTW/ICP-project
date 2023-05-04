@@ -18,9 +18,10 @@ MainWindow::MainWindow(QWidget *parent)
     QGraphicsView* view = new QGraphicsView(this->scene, this);
     view->setFixedSize((int)this->scene->map->map.size()*50+10, (int)this->scene->map->map[0].size()*50+10);
     this->setFixedSize((this->scene->map->width+2)*50+10, (this->scene->map->height+2)*50+35);
-    view->setFocusPolicy(Qt::StrongFocus);
     this->setCentralWidget(view);
+    view->setFocusPolicy(Qt::StrongFocus);
     this->setFocusPolicy(Qt::StrongFocus);
+    view->setFocusPolicy(Qt::NoFocus);
     auto pacman_cords = this->scene->get_pacman();
     this->pacman = new Pacman(pacman_cords.first, pacman_cords.second, this->scene->map, view);
     scene->addItem(this->pacman);
@@ -39,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
         Key *key = new Key(key_cords[i].first, key_cords[i].second, this->scene->map);
         this->gamestate->add_key(*key);
     }
+    
 
 
 }
@@ -46,9 +48,11 @@ MainWindow::MainWindow(QWidget *parent)
 
 // registering users input with w-s-a-d and arrow keys
 void MainWindow::keyPressEvent(QKeyEvent *event) {
+    std::cout << "key pressed" << std::endl;
     switch (event->key()) {
         case Qt::Key_W:
         case Qt::Key_Up:
+            std::cout << "up" << std::endl;
             this->gamestate->set_pacman_dir(3);
             break;
         case Qt::Key_S:

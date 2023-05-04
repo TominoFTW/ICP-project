@@ -11,9 +11,12 @@ Map *Backend::load_map(std::string filename){
 }
 
 std::pair<int,int> Backend::pacman_move(Pacman &pacman){
-    /*switch(pacman.direction){
-        /*case 0:
+    std::cout << pacman.direction << std::endl;
+    std::cout << this->map->map[pacman.position.second/50][(pacman.position.first+50)/50]->is_free() << std::endl;
+    switch(pacman.direction){
+        case 0:
             if (this->map->map[pacman.position.second/50][(pacman.position.first+50)/50]->is_free()){
+                std::cout << "moving" << std::endl;
                 pacman.position.first += 50;
             }
             pacman.movement.push_back(std::make_pair(pacman.position.first, pacman.position.second));
@@ -21,24 +24,28 @@ std::pair<int,int> Backend::pacman_move(Pacman &pacman){
         case 1:
             if (this->map->map[(pacman.position.second+50)/50][pacman.position.first/50]->is_free()){
                 pacman.position.second += 50;
+                std::cout << "moving" << std::endl;
             }
             pacman.movement.push_back(std::make_pair(pacman.position.first, pacman.position.second));
             break;
         case 2:
-            /*if (this->map->map[pacman.position.second/50][(pacman.position.first-50)/50]->is_free()){
+            if (this->map->map[pacman.position.second/50][(pacman.position.first-50)/50]->is_free()){
                 pacman.position.first -= 50;
+                std::cout << "moving" << std::endl;
             }
             pacman.movement.push_back(std::make_pair(pacman.position.first, pacman.position.second));
             break;
         case 3:
             if (this->map->map[(pacman.position.second-50)/50][pacman.position.first/50]->is_free()){
                 pacman.position.second -= 50;
+                std::cout << "moving" << std::endl;
             }
             pacman.movement.push_back(std::make_pair(pacman.position.first, pacman.position.second));
             break;
         default:
             break;
-    }*/
+    }
+    return pacman.position;
 }
 
 /*
@@ -89,4 +96,3 @@ void Backend::check_collision(Pacman &pacman, Ghost &ghost){
         throw 1;
     }
 }*/
-
