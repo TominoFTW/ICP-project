@@ -7,7 +7,7 @@
 #include "map.h"
 #include "ghost.h"
 #include "key.h"
-
+#include "backend.h"
 class GameState: public QObject{
 public:
     GameState(Pacman* pacman, QGraphicsScene *scene, Map *map);
@@ -25,6 +25,7 @@ private:
     std::vector<Ghost*> ghosts;
     std::vector<Key*> keys;
     bool stop;
+    Backend backend;
 };
 
 

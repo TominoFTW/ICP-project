@@ -11,9 +11,11 @@ class Pacman: public QObject, public QGraphicsRectItem {
     Q_OBJECT
     public:
         Pacman(int x, int y, Map *map,QGraphicsView *view);
-        void move(int direction, QGraphicsScene &scene, Map &map);
+        void move(std::pair<int, int> old_position);
         std::pair<int, int> position;
         void pacman_end();
+        int direction;
+        std::vector<std::pair<int, int>> movement;
         void set_direction(int direction);
 
     private slots:
@@ -22,9 +24,6 @@ class Pacman: public QObject, public QGraphicsRectItem {
     private:
         Map *map;
         QGraphicsView *view;
-        int direction;
-        std::vector<std::pair<int, int>> movement;
-        QTimer *timer;
         QVariantAnimation *mAnimation;
 
 };

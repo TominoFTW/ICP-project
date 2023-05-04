@@ -11,6 +11,8 @@
 
 //hello
 GameState::GameState(Pacman *pacman, QGraphicsScene *scene, Map *map) : pacman(pacman), scene(scene), map(map), stop(false){
+    this->backend = Backend();
+    backend.load_map("./examples/map-01.txt");
     timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, this, &GameState::update);
     timer->start(300);
@@ -26,7 +28,9 @@ void GameState::set_pacman_dir(int direction){
 }
 void GameState::update(){
     if (stop) return;
-    this->pacman->move(0, *this->scene, *this->map);
+    auto old_position = this->pacman->position;
+    backend.pacman_move(*this->pacman);
+    /*this->pacman->move(old_position);
     for (Ghost *ghost : this->ghosts){
         std::cout << "update ghost" << std::endl;
         try{
@@ -62,5 +66,5 @@ void GameState::update(){
     // update score
     // update lives
     // update gamestate
-
+*/
 }
