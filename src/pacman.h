@@ -10,7 +10,7 @@
 class Pacman: public QObject, public QGraphicsRectItem {
     Q_OBJECT
     public:
-        Pacman(int x, int y, Map &map,QGraphicsView *view);
+        Pacman(int x, int y, Map *map,QGraphicsView *view);
         void move(int direction, QGraphicsScene &scene, Map &map);
         std::pair<int, int> position;
         void pacman_end();
@@ -20,6 +20,7 @@ class Pacman: public QObject, public QGraphicsRectItem {
         void onAnimationChanged(const QVariant &value);
 
     private:
+        Map *map;
         QGraphicsView *view;
         int direction;
         std::vector<std::pair<int, int>> movement;
