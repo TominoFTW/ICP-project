@@ -15,14 +15,20 @@
 #include <random>
 #include <utility>
 #include "pacman.h"
+#include <QObject>
 
-Ghost::Ghost(int x, int y, Map &map){
+Ghost::Ghost(int x, int y, Map &map) : QObject(){
     this->direction = 0;
     this->position = std::make_pair(x*50, y*50);
     this->setBrush(QBrush(QImage("./textures/ghosts/ghost1.png").scaled(50,50)));
     this->setRect(0,0,50,50);
     this->setPen(Qt::NoPen);
     this->setPos(this->position.first, this->position.second);
+
+    mAnimation = new QVariantAnimation(this);
+    mAnimation->setDuration(200);
+
+    connect(mAnimation, &QVariantAnimation::valueChanged, this, &Ghost::onAnimationChanged);
     
 }
 
@@ -35,10 +41,9 @@ void Ghost::move(int id, QGraphicsScene &scene, Map &map, Pacman &pacman){
     bool moved = false;
     while (!moved){
         int direction = dis(gen);
+        mAnimation->setStartValue(QRectF(this->position.first, this->position.second, 50, 50));
         switch(direction){
             case 0:
-                    // todo potom, co ghost odejde tak to dalsi pole dat jako dynamic a to predtim jako static?
-                    // nebo to cele predelat na static a jenom kontrolovat souradnice nekde, respektive se je naucit predavat pres map grid???
                 if (map.map[this->position.second/50][(this->position.first+50)/50]->is_free()){
                     this->position.first += 50;
                     moved = true;
@@ -63,12 +68,19 @@ void Ghost::move(int id, QGraphicsScene &scene, Map &map, Pacman &pacman){
                 }
                 break;
         }
-        this->setPos(this->position.first, this->position.second);
+        mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
+        mAnimation->start();
+        // this->setPos(this->position.first, this->position.second);
     }
     check_collision(scene, map, pacman);
     std::cout << "Update" << std::endl;
     std::cout << std::get<0>(this->position)<< " " << std::get<1>(this->position) << std::endl;
 }
+void Ghost::onAnimationChanged(const QVariant &value){
+    this->setPos(value.toRectF().topLeft());
+    update();
+}
+
 
 void Ghost::check_collision(QGraphicsScene &scene, Map &map, Pacman &pacman){
     if (pacman.position == this->position){
