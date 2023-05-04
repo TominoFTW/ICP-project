@@ -30,7 +30,7 @@ void GameState::update(){
     if (stop) return;
     auto old_position = this->pacman->position;
     auto pos = backend.pacman_move(*this->pacman);
-    // this->pacman->move(old_position);
+    this->pacman->move(old_position);
     for (Ghost *ghost : this->ghosts){
         std::cout << "update ghost" << std::endl;
         try{
@@ -66,5 +66,5 @@ void GameState::update(){
     // update score
     // update lives
     // update gamestate
-    
+
 }

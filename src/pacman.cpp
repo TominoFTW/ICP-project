@@ -18,13 +18,13 @@
 #include <QVariantAnimation>
 #include <QGraphicsView>
 
-Pacman::Pacman(int x, int y, Map *map, QGraphicsView *view) : QObject(), map(map),view(view), direction(10){
+Pacman::Pacman(int x, int y, Map *map, QGraphicsView *view) : QObject(), map(map),view(view), direction(9){
     this->position = std::make_pair(x*50, y*50);
     this->setBrush(QBrush(QImage("./textures/pacman/pacman0.png")));
     this->setRect(0,0,50,50);
     this->setPen(Qt::NoPen);
     this->setPos(this->position.first, this->position.second);
-    this->movement.push_back(std::make_pair(this->position.first, this->position.second));
+    this->movement.push_back(this->direction);
 
     mAnimation = new QVariantAnimation(this);
     mAnimation->setDuration(200);
@@ -36,6 +36,7 @@ void Pacman::move(std::pair<int, int>old_position){
         mAnimation->setStartValue(QRectF(old_position.first, old_position.second, 50, 50));
         mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
         mAnimation->start();
+        this->setBrush(QBrush(QImage("./textures/pacman/pacman"+QString::number(this->direction)+".png")));
 }
 void Pacman::set_direction(int direction){
     this->direction = direction;
