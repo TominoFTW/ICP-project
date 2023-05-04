@@ -7,9 +7,9 @@
 #include <cstring>
 
 
-Map::Map() {
+Map::Map(std::string filename) {
     std::ifstream input;
-    input.open("examples/map-01.txt");
+    input.open(filename);
     if (!input) {
         std::cout << "Unable to open file";
         return;
@@ -62,4 +62,7 @@ Map::Map() {
 
 }
 
+Map* Map::load_map(std::string filename) {
+    return new Map(filename);
+}
 

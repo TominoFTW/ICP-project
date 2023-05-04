@@ -1,11 +1,11 @@
 #ifndef PACMAN_H
 #define PACMAN_H
-#include "map_grid.h"
 #include "map.h"
 #include <utility>
 #include <QTimer>
 #include <QObject>
 #include <QVariantAnimation>
+#include <QGraphicsView>
 //hello
 class Pacman: public QObject, public QGraphicsRectItem {
     Q_OBJECT

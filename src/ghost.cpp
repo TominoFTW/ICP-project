@@ -8,7 +8,6 @@
 #include <QColor>
 #include <QPen>
 #include <QGraphicsItem>
-#include "map_grid.h"
 #include "ghost.h"
 #include "map.h"
 #include <iostream>
@@ -16,6 +15,7 @@
 #include <utility>
 #include "pacman.h"
 #include <QObject>
+#include <QGraphicsView>
 
 Ghost::Ghost(int x, int y, Map &map) : QObject(){
     this->direction = 0;

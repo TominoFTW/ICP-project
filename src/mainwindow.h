@@ -12,6 +12,7 @@
 #include "pacman.h"
 #include "ghost.h"
 #include "gamestate.h"
+#include "main_scene.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,8 +31,7 @@ private:
     Ui::MainWindow *ui;
     // todo runtime class with global variables
     Pacman *pacman;
-    QGraphicsScene* scene;
-    Map *map;
+    MainScene* scene;
     GameState *gamestate;
 
 };

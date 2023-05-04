@@ -3,7 +3,6 @@
 #include <QApplication>
 #include "map.h"
 #include "map_object.h"
-#include "map_grid.h"
 
 
 

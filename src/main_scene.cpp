@@ -1,4 +1,4 @@
-#include "map_grid.h"
+#include "main_scene.h"
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsRectItem>
@@ -9,8 +9,9 @@
 #include <utility>
 #include "map.h"
 
-SquareGrid::SquareGrid(Map *map,QGraphicsScene* scene, QWidget *parent)
-    : QWidget(parent)
+
+MainScene::MainScene(QWidget *parent)
+    : QGraphicsScene(parent)
     , map(map)
 {
     // QPixmap wall(":/textures/misc/wall.png");
@@ -19,7 +20,7 @@ SquareGrid::SquareGrid(Map *map,QGraphicsScene* scene, QWidget *parent)
     // QPixmap key(":/textures/misc/key.png");
     // QPixmap pacman(":/textures/pacman/pacman1.png");
     // QPixmap ghost(":/textures/ghost/ghost1.png");
-
+    this->map= new Map("./examples/map-01.txt");
 
     for (int row = 0; row < map->map.size(); row++) {
         for (int col = 0; col < map->map[row].size(); col++) {
@@ -50,25 +51,25 @@ SquareGrid::SquareGrid(Map *map,QGraphicsScene* scene, QWidget *parent)
                 }
             }
             map->map[row][col]->setPen(Qt::NoPen);
-            scene->addItem(map->map[row][col]);
+            this->addItem(map->map[row][col]);
 
         }
     }
 }
 
-std::pair<int, int> SquareGrid::get_pacman(){
+std::pair<int, int> MainScene::get_pacman(){
     std::cout << "pacman" << std::endl;
     std::cout << std::get<0>(pacman) << ' ' << std::get<1>(pacman) << std::endl;
     return this->pacman;
 }
 
-std::pair<int, int> SquareGrid::get_end(){
+std::pair<int, int> MainScene::get_end(){
     return this->end;
 }
 
-std::vector<std::pair<int, int>> SquareGrid::get_ghosts(){
+std::vector<std::pair<int, int>> MainScene::get_ghosts(){
     return this->ghosts;
 }
-std::vector<std::pair<int, int>> SquareGrid::get_keys(){
+std::vector<std::pair<int, int>> MainScene::get_keys(){
     return this->keys;
 }

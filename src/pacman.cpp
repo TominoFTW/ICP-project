@@ -8,7 +8,6 @@
 #include <QColor>
 #include <QPen>
 #include <QGraphicsItem>
-#include "map_grid.h"
 #include "pacman.h"
 #include "map.h"
 #include <iostream>

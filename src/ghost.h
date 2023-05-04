@@ -1,10 +1,10 @@
 #ifndef GHOST_H
 #define GHOST_H
-#include "map_grid.h"
 #include "map.h"
 #include <utility>
 #include "pacman.h"
 #include <QObject>
+#include <QGraphicsView>
 class Ghost: public QObject, public QGraphicsRectItem {
     Q_OBJECT
     public:
