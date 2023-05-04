@@ -10,7 +10,7 @@
 #include "map.h"
 
 //hello
-GameState::GameState(Pacman *pacman, QGraphicsScene *scene, Map *map) : pacman(pacman), scene(scene), map(map){
+GameState::GameState(Pacman *pacman, QGraphicsScene *scene, Map *map) : pacman(pacman), scene(scene), map(map), stop(false){
     timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, this, &GameState::update);
     timer->start(300);
@@ -25,10 +25,16 @@ void GameState::set_pacman_dir(int direction){
     this->pacman->set_direction(direction);
 }
 void GameState::update(){
+    if (stop) return;
     this->pacman->move(0, *this->scene, *this->map);
     for (Ghost *ghost : this->ghosts){
         std::cout << "update ghost" << std::endl;
-        ghost->move(0, *this->scene, *this->map, *this->pacman);
+        try{
+            ghost->move(0, *this->scene, *this->map, *this->pacman);
+        }
+        catch (...){
+            this->stop = true;
+        }
     }
     // todo check collision moze byt aj tu ak to bude bugnute :D
     for (Key *key : this->keys){
@@ -43,7 +49,12 @@ void GameState::update(){
     }
     if (this->pacman->position == this->end and this->keys.size() == 0){
         std::cout << "pacman end" << std::endl;
-        this->pacman->pacman_end();
+        try{
+            this->pacman->pacman_end();
+        }
+        catch (...){
+            this->stop = true;
+        }
     }
     // update pacman
     // update ghosts

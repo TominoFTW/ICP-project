@@ -15,6 +15,7 @@
 #include <utility>
 #include <QTimer>
 #include <QObject>
+#include "gameover_scene.h"
 
 Pacman::Pacman(int x, int y, Map &map, QGraphicsView *view) : view(view), direction(10){
     this->position = std::make_pair(x*50, y*50);
@@ -75,11 +76,8 @@ void Pacman::set_direction(int direction){
     this->direction = direction;
 }
 void Pacman::pacman_end(){
-    auto text = new QGraphicsTextItem("Game Over");
-    this->scene()->addItem(text);
-    text->hide();
-    auto text2 = new QGraphicsTextItem("Press R to restart");
-    this->scene()->addItem(text2);
-    text->show();
-    text->setPos(this->scene()->width()/2,this->scene()->height()/2);
+    GameOverRect *gameover = new GameOverRect(200,200,100,100);
+    this->view->scene()->addItem(gameover);
+
+    throw std::runtime_error("Game Over");
 }

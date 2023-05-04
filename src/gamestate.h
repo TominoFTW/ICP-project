@@ -24,6 +24,7 @@ private:
     QTimer *timer;
     std::vector<Ghost*> ghosts;
     std::vector<Key*> keys;
+    bool stop;
 };
 
 
