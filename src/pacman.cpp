@@ -16,24 +16,31 @@
 #include <QTimer>
 #include <QObject>
 #include "gameover_scene.h"
+#include <QVariantAnimation>
 
-Pacman::Pacman(int x, int y, Map &map, QGraphicsView *view) : view(view), direction(10){
+Pacman::Pacman(int x, int y, Map &map, QGraphicsView *view) : QObject(), view(view), direction(10){
     this->position = std::make_pair(x*50, y*50);
     this->setBrush(QBrush(QImage("./textures/pacman/pacman0.png")));
     this->setRect(0,0,50,50);
     this->setPen(Qt::NoPen);
     this->setPos(this->position.first, this->position.second);
     this->movement.push_back(std::make_pair(this->position.first, this->position.second));
+
+    mAnimation = new QVariantAnimation(this);
+    mAnimation->setDuration(200);
+
+    connect(mAnimation, &QVariantAnimation::valueChanged, this, &Pacman::onAnimationChanged);
 }
 
 void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
     switch(this->direction){
         case 0:
-            //     // todo potom, co ghost odejde tak to dalsi pole dat jako dynamic a to predtim jako static?
-            //     // nebo to cele predelat na static a jenom kontrolovat souradnice nekde, respektive se je naucit predavat pres map grid???
             if (map.map[this->position.second/50][(this->position.first+50)/50]->is_free()){
+                mAnimation->setStartValue(QRectF(this->position.first, this->position.second, 50, 50));
                 this->position.first += 50;
-                this->setPos(this->position.first, this->position.second);
+                // this->setPos(this->position.first, this->position.second);
+                mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
+                mAnimation->start();
             }
             this->movement.push_back(std::make_pair(this->position.first, this->position.second));
             this->setBrush(QBrush(QImage("./textures/pacman/pacman0.png")));
@@ -41,8 +48,11 @@ void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
             break;
         case 1:
             if (map.map[(this->position.second+50)/50][this->position.first/50]->is_free()){
+                mAnimation->setStartValue(QRectF(this->position.first, this->position.second, 50, 50));
                 this->position.second += 50;
-                this->setPos(this->position.first, this->position.second);
+                // this->setPos(this->position.first, this->position.second);
+                mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
+                mAnimation->start();
             }
             this->movement.push_back(std::make_pair(this->position.first, this->position.second));
             this->setBrush(QBrush(QImage("./textures/pacman/pacman1.png")));
@@ -50,18 +60,25 @@ void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
             break;
         case 2:
             if (map.map[this->position.second/50][(this->position.first-50)/50]->is_free()){
+                mAnimation->setStartValue(QRectF(this->position.first, this->position.second, 50, 50));
                 this->position.first -= 50;
-                this->setPos(this->position.first, this->position.second);
+                // this->setPos(this->position.first, this->position.second);
+                mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
+                mAnimation->start();
             }
             this->movement.push_back(std::make_pair(this->position.first, this->position.second));
             this->setBrush(QBrush(QImage("./textures/pacman/pacman2.png")));
 
 
+
             break;
         case 3:
             if (map.map[(this->position.second-50)/50][this->position.first/50]->is_free()){
+                mAnimation->setStartValue(QRectF(this->position.first, this->position.second, 50, 50));
                 this->position.second -= 50;
-                this->setPos(this->position.first, this->position.second);
+                // this->setPos(this->position.first, this->position.second);
+                mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
+                mAnimation->start();
             }
             this->movement.push_back(std::make_pair(this->position.first, this->position.second));
             this->setBrush(QBrush(QImage("./textures/pacman/pacman3.png")));
@@ -75,6 +92,11 @@ void Pacman::move(int direction, QGraphicsScene &scene, Map &map){
 void Pacman::set_direction(int direction){
     this->direction = direction;
 }
+void Pacman::onAnimationChanged(const QVariant &value){
+    this->setPos(value.toRectF().topLeft());
+    update();
+}
+
 void Pacman::pacman_end(){
     GameOverRect *gameover = new GameOverRect(200,200,100,100);
     this->view->scene()->addItem(gameover);
