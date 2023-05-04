@@ -18,7 +18,7 @@
 #include "gameover_scene.h"
 #include <QVariantAnimation>
 
-Pacman::Pacman(int x, int y, Map &map, QGraphicsView *view) : QObject(), view(view), direction(10){
+Pacman::Pacman(int x, int y, Map *map, QGraphicsView *view) : QObject(), map(map),view(view), direction(10){
     this->position = std::make_pair(x*50, y*50);
     this->setBrush(QBrush(QImage("./textures/pacman/pacman0.png")));
     this->setRect(0,0,50,50);
@@ -98,8 +98,8 @@ void Pacman::onAnimationChanged(const QVariant &value){
 }
 
 void Pacman::pacman_end(){
-    GameOverRect *gameover = new GameOverRect(200,200,100,100);
-    this->view->scene()->addItem(gameover);
 
+    // Calculate the position of the rectangle
+    GameOverRect *game_over = new GameOverRect(map->map.size(),map->map[0].size(),200,100, this->view);
     throw std::runtime_error("Game Over");
 }

@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setCentralWidget(grid);
     this->setFocusPolicy(Qt::StrongFocus);
     auto pacman_cords = grid->get_pacman();
-    this->pacman = new Pacman(pacman_cords.first, pacman_cords.second, *map, view);
+    this->pacman = new Pacman(pacman_cords.first, pacman_cords.second, map, view);
     scene->addItem(this->pacman);
     // todo toto musi ist preco
     auto ghosts_cords = grid->get_ghosts();
