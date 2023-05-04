@@ -10,7 +10,7 @@ Map *Backend::load_map(std::string filename){
     return this->map;
 }
 
-std::pair<int,int> Backend::pacman_move(Pacman &pacman){
+void Backend::pacman_move(Pacman &pacman){
     switch(pacman.direction){
         case 0:
             if (this->map->map[pacman.position.second/50][(pacman.position.first+50)/50]->is_free()){
@@ -36,15 +36,13 @@ std::pair<int,int> Backend::pacman_move(Pacman &pacman){
             break;
     }
     pacman.movement.push_back(pacman.direction);
-    return pacman.position;
 }
 
-/*
-std::pair<int,int> Backend::ghost_move(Ghost &ghost, Pacman &pacman){
+
+void Backend::ghost_move(Ghost &ghost, Pacman &pacman){
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, 3);
-    // TODO: porozmyslat a presunut do gamestate nemusel by sa volat aj s ghost
     check_collision(pacman, ghost);
     bool moved = false;
     while (!moved){
@@ -86,4 +84,4 @@ void Backend::check_collision(Pacman &pacman, Ghost &ghost){
         std::cout << "Collision" << std::endl;
         throw 1;
     }
-}*/
+}

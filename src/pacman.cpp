@@ -50,5 +50,4 @@ void Pacman::pacman_end(){
 
     // Calculate the position of the rectangle
     GameOverRect *game_over = new GameOverRect(map->map.size(),map->map[0].size(),200,100, this->view);
-    throw std::runtime_error("Game Over");
 }

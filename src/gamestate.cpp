@@ -29,18 +29,23 @@ void GameState::set_pacman_dir(int direction){
 void GameState::update(){
     if (stop) return;
     auto old_position = this->pacman->position;
-    auto pos = backend.pacman_move(*this->pacman);
+    backend.pacman_move(*this->pacman);
     this->pacman->move(old_position);
     for (Ghost *ghost : this->ghosts){
         std::cout << "update ghost" << std::endl;
+        old_position = ghost->position;
         try{
-            ghost->move(0, *this->scene, *this->map, *this->pacman);
+            backend.ghost_move(*ghost, *this->pacman);
         }
-        catch (...){
+        catch (int e){
+            std::cout << "ghost caught pacman" << std::endl;
+            ghost->move(old_position);
+            pacman->pacman_end();
             this->stop = true;
+            return;
         }
+        ghost->move(old_position);
     }
-    // todo check collision moze byt aj tu ak to bude bugnute :D
     for (Key *key : this->keys){
         if (key->position == this->pacman->position){
             key->pick();   

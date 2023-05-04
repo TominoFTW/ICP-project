@@ -32,48 +32,10 @@ Ghost::Ghost(int x, int y, Map &map) : QObject(){
     
 }
 
-void Ghost::move(int id, QGraphicsScene &scene, Map &map, Pacman &pacman){
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 3);
-    check_collision(scene, map, pacman);
-    bool moved = false;
-    while (!moved){
-        int direction = dis(gen);
-        mAnimation->setStartValue(QRectF(this->position.first, this->position.second, 50, 50));
-        switch(direction){
-            case 0:
-                if (map.map[this->position.second/50][(this->position.first+50)/50]->is_free()){
-                    this->position.first += 50;
-                    moved = true;
-                }
-                break;
-            case 1:
-                if (map.map[(this->position.second+50)/50][this->position.first/50]->is_free()){
-                    this->position.second += 50;
-                    moved = true;
-                }
-                break;
-            case 2:
-                if (map.map[this->position.second/50][(this->position.first-50)/50]->is_free()){
-                    this->position.first -= 50;
-                    moved = true;
-                }
-                break;
-            case 3:
-                if (map.map[(this->position.second-50)/50][this->position.first/50]->is_free()){
-                    this->position.second -= 50;
-                    moved = true;
-                }
-                break;
-        }
-        mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
-        mAnimation->start();
-        // this->setPos(this->position.first, this->position.second);
-    }
-    check_collision(scene, map, pacman);
-    std::cout << "Update" << std::endl;
-    std::cout << std::get<0>(this->position)<< " " << std::get<1>(this->position) << std::endl;
+void Ghost::move(std::pair<int, int>old_position){
+    mAnimation->setStartValue(QRectF(old_position.first, old_position.second, 50, 50));
+    mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
+    mAnimation->start();
 }
 void Ghost::onAnimationChanged(const QVariant &value){
     this->setPos(value.toRectF().topLeft());

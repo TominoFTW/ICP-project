@@ -9,7 +9,7 @@ class Ghost: public QObject, public QGraphicsRectItem {
     Q_OBJECT
     public:
         Ghost(int x, int y, Map &map);
-        void move(int id, QGraphicsScene &scene, Map &map, Pacman &pacman);
+        void move(std::pair<int, int> old_position);
         void check_collision(QGraphicsScene &scene, Map &map, Pacman &pacman);
         int direction;
         std::pair<int, int> position;

@@ -11,8 +11,8 @@ class Backend
 public:
     Backend();
     Map *load_map(std::string filename);
-    std::pair<int,int> pacman_move(Pacman &pacman);
-    std::pair<int,int> ghost_move(Ghost &ghost, Pacman &pacman);
+    void pacman_move(Pacman &pacman);
+    void ghost_move(Ghost &ghost, Pacman &pacman);
     void check_collision(Pacman &pacman, Ghost &ghost);
     void check_win(Map *map);
     void pick_key(Map *map);
