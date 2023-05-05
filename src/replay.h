@@ -15,9 +15,9 @@
 #include <utility>
 #include "backend.h"
 
-class Replay: public QObject{
+class Replay: public QGraphicsScene{
 public:
-    Replay(QGraphicsScene *MainScene);
+    Replay(QWidget *parent, QGraphicsScene *MainScene);
     void update_forward();
     void update_backward();
 private:

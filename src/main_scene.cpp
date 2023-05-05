@@ -19,6 +19,14 @@ MainScene::MainScene(QWidget *parent)
     // QPixmap key(":/textures/misc/key.png");
     // QPixmap pacman(":/textures/pacman/pacman1.png");
     // QPixmap ghost(":/textures/ghost/ghost1.png");
+
+    // if (true){
+    //     this->map= new Map("./examples/tmp.txt");
+    // }
+    // else{
+    //     this->map= new Map("./examples/map-01.txt");
+    // }
+    
     this->map= new Map("./examples/map-01.txt");
 
     for (int row = 0; row < map->map.size(); row++) {
