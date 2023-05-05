@@ -85,3 +85,18 @@ void Backend::check_collision(Pacman &pacman, Ghost &ghost){
         throw 1;
     }
 }
+
+void Backend::check_win(std::pair<int, int> end, std::pair<int, int> pacman, int size){
+    if (end == pacman && size == 0){
+        std::cout << "Win" << std::endl;
+        throw 1;
+    }
+}
+
+void Backend::pick_key(Key &key, Pacman &pacman,std::vector<Key*> &keys){
+    if (key.position == pacman.position){
+        std::cout << "Key picked" << std::endl;
+        key.picked = true;
+        keys.erase(std::remove(keys.begin(), keys.end(), &key), keys.end());
+    }
+}

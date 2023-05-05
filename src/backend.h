@@ -6,6 +6,7 @@
 #include <utility>
 #include "pacman.h"
 #include "ghost.h"
+#include "key.h"
 class Backend
 {
 public:
@@ -14,8 +15,8 @@ public:
     void pacman_move(Pacman &pacman);
     void ghost_move(Ghost &ghost, Pacman &pacman);
     void check_collision(Pacman &pacman, Ghost &ghost);
-    void check_win(Map *map);
-    void pick_key(Map *map);
+    void check_win(std::pair<int, int> end, std::pair<int, int> pacman, int size);
+    void pick_key(Key &key, Pacman &pacman, std::vector<Key*> &keys);
 private:
     Map *map;
 };
