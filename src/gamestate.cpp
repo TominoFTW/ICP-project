@@ -32,7 +32,6 @@ void GameState::update(){
     backend.pacman_move(*this->pacman);
     this->pacman->move(old_position);
     for (Ghost *ghost : this->ghosts){
-        std::cout << "update ghost" << std::endl;
         old_position = ghost->position;
         try{
             backend.ghost_move(*ghost, *this->pacman);
@@ -42,6 +41,21 @@ void GameState::update(){
             ghost->move(old_position);
             pacman->pacman_end();
             this->stop = true;
+            int i = 0;
+            std::cout << "pacman" << std::endl;
+            for (auto v : this->pacman->movement){
+                std::cout << v.first << "," << v.second << " ";
+            }
+            this->pacman->movement.clear();
+            std::cout << std::endl;
+            for (Ghost *ghost : this->ghosts){
+                std::cout << "ghost" << i++ << std::endl;
+                for( auto v : ghost->movement){
+                    std::cout << v.first << "," << v.second << " ";
+                }
+                std::cout << std::endl;
+                ghost->movement.clear();
+            }
             return;
         }
         ghost->move(old_position);
@@ -59,6 +73,20 @@ void GameState::update(){
     catch (int e){
         pacman->pacman_win();
         this->stop = true;
+        int i = 0;
+        for (auto v : this->pacman->movement){
+            std::cout << v.first << "," << v.second << " ";
+        }
+        this->pacman->movement.clear();
+        std::cout << std::endl;
+        for (Ghost *ghost : this->ghosts){
+            std::cout << "ghost" << i++ << std::endl;
+            for( auto v : ghost->movement){
+                std::cout << v.first << "," << v.second << " ";
+            }
+            std::cout << std::endl;
+            ghost->movement.clear();
+        }
         return;
     }
 

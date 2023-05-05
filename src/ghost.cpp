@@ -24,6 +24,7 @@ Ghost::Ghost(int x, int y, Map &map) : QObject(){
     this->setRect(0,0,50,50);
     this->setPen(Qt::NoPen);
     this->setPos(this->position.first, this->position.second);
+    this->movement.push_back(this->position);
 
     mAnimation = new QVariantAnimation(this);
     mAnimation->setDuration(200);

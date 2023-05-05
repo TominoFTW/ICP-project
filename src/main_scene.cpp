@@ -57,8 +57,6 @@ MainScene::MainScene(QWidget *parent)
 }
 
 std::pair<int, int> MainScene::get_pacman(){
-    std::cout << "pacman" << std::endl;
-    std::cout << std::get<0>(pacman) << ' ' << std::get<1>(pacman) << std::endl;
     return this->pacman;
 }
 

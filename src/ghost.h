@@ -13,6 +13,7 @@ class Ghost: public QObject, public QGraphicsRectItem {
         void check_collision(QGraphicsScene &scene, Map &map, Pacman &pacman);
         int direction;
         std::pair<int, int> position;
+        std::vector<std::pair<int, int>> movement;
     private slots:
         void onAnimationChanged(const QVariant &value);
     private:

@@ -16,7 +16,7 @@ class Pacman: public QObject, public QGraphicsRectItem {
         void pacman_end();
         void pacman_win();
         int direction;
-        std::vector<int> movement;
+        std::vector<std::pair<int,int>> movement;
         void set_direction(int direction);
 
     private slots:

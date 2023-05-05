@@ -21,8 +21,7 @@ Map::Map(std::string filename) {
     number = strtok(NULL, " ");
     this->height = atoi(number);
     // TODO: skraslit 
-    std::cout << "width: " << width << std::endl;
-    std::cout << "height: " << height << std::endl;
+    std::cout << width << ' ' << height << std::endl;
     while (std::getline(input, line)) {
         std::cout << line << std::endl;
         std::vector<MapObject*> row;
@@ -51,13 +50,6 @@ Map::Map(std::string filename) {
         bottom_row->push_back(obj);
     }
     this->map.push_back(*bottom_row);
-    // debug print
-    for (int i = 0; i < this->map.size(); i++) {
-        for (int j = 0; j < map[0].size(); j++) {
-            std::cout << this->map[i][j]->type << " ";
-        }
-        std::cout << std::endl;
-    }
     input.close();
 
 }
@@ -65,4 +57,3 @@ Map::Map(std::string filename) {
 Map* Map::load_map(std::string filename) {
     return new Map(filename);
 }
-

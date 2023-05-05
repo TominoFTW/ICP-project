@@ -35,7 +35,7 @@ void Backend::pacman_move(Pacman &pacman){
         default:
             break;
     }
-    pacman.movement.push_back(pacman.direction);
+    pacman.movement.push_back(pacman.position);
 }
 
 
@@ -74,9 +74,8 @@ void Backend::ghost_move(Ghost &ghost, Pacman &pacman){
                 break;
         }
     }
+    ghost.movement.push_back(ghost.position);
     check_collision(pacman, ghost);
-    std::cout << "Update" << std::endl;
-    std::cout << std::get<0>(ghost.position)<< " " << std::get<1>(ghost.position) << std::endl;
 }
 // todo skusit nahradit exception
 void Backend::check_collision(Pacman &pacman, Ghost &ghost){
