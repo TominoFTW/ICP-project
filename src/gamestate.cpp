@@ -47,29 +47,19 @@ void GameState::update(){
         ghost->move(old_position);
     }
     for (Key *key : this->keys){
-        if (key->position == this->pacman->position){
-            key->pick();   
-            this->keys.erase(std::remove(this->keys.begin(), this->keys.end(), key), this->keys.end()); 
-        }
+        backend.pick_key(*key, *this->pacman, this->keys);
+        key->update();
     }
-    // dirty todo refactor
     if (this->keys.size() == 0){
-        map->map[this->end.second/50][this->end.first/50]->setBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50));
+        this->map->map[this->end.second/50][this->end.first/50]->setBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50));
     }
-    if (this->pacman->position == this->end and this->keys.size() == 0){
-        std::cout << "pacman end" << std::endl;
-        try{
-            this->pacman->pacman_end();
-        }
-        catch (...){
-            this->stop = true;
-        }
+    try{
+        backend.check_win(this->end, this->pacman->position, this->keys.size());
     }
-    // update pacman
-    // update ghosts
-    // update map
-    // update score
-    // update lives
-    // update gamestate
+    catch (int e){
+        pacman->pacman_win();
+        this->stop = true;
+        return;
+    }
 
 }

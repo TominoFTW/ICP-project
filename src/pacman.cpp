@@ -47,7 +47,22 @@ void Pacman::onAnimationChanged(const QVariant &value){
 }
 
 void Pacman::pacman_end(){
-
-    // Calculate the position of the rectangle
     GameOverRect *game_over = new GameOverRect(map->map.size(),map->map[0].size(),200,100, this->view);
+}
+
+void Pacman::pacman_win(){
+    QGraphicsScene *scene = new QGraphicsScene();
+    QGraphicsTextItem *text = new QGraphicsTextItem("Congratulations!");
+    QGraphicsTextItem *text2 = new QGraphicsTextItem("You have won!");
+    text->setFont(QFont("Arial", 45));
+    text2->setFont(QFont("Arial", 25));
+    QRectF textRect = text->boundingRect();
+    QPointF center(this->view->width() / 2.0 - textRect.width() / 2.0, this->view->height() / 2.0 - textRect.height() / 2.0);
+    text->setPos(center);
+    textRect = text2->boundingRect();
+    QPointF center2(this->view->width() / 2.0 - textRect.width() / 2.0, this->view->height() / 2.0 - textRect.height() / 2.0);
+    text2->setPos(center2 + QPointF(0, 50));
+    scene->addItem(text);
+    scene->addItem(text2);
+    this->view->setScene(scene);
 }
