@@ -8,6 +8,7 @@
 class MainScene : public QGraphicsScene{
 public:
     MainScene(QWidget *parent = nullptr);
+    ~MainScene();
     Map *map;
 
 

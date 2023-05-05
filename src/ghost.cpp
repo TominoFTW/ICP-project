@@ -34,6 +34,9 @@ Ghost::Ghost(std::pair<int,int> map_index, QGraphicsView *view) : QObject(), vie
     connect(mAnimation, &QVariantAnimation::valueChanged, this, &Ghost::onAnimationChanged);
     
 }
+Ghost::~Ghost(){
+    delete mAnimation;
+}
 
 void Ghost::move(std::pair<int, int>old_position){
     mAnimation->setStartValue(QRectF(old_position.first, old_position.second, 50, 50));

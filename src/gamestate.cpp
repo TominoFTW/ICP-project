@@ -31,6 +31,18 @@ GameState::GameState(Pacman *pacman, QGraphicsView *view, Map *map) : pacman(pac
     QObject::connect(timer, &QTimer::timeout, this, &GameState::update);
     timer->start(300);
 }
+GameState::~GameState(){
+    /*
+    delete this->pacman;
+    for (Ghost *ghost : this->ghosts){
+        delete ghost;
+    }
+    for (Key *key : this->keys){
+        delete key;
+    }*/
+    delete this->timer;
+}
+
 void GameState::add_ghost(Ghost &ghost){
     this->ghosts.push_back(&ghost);
 }

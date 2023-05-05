@@ -62,4 +62,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete this->scene;
+    delete this->gamestate;
 }

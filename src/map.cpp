@@ -54,7 +54,13 @@ Map::Map(std::string filename) {
     input.close();
 
 }
-
+Map::~Map() {
+    for (int i = 0; i < this->map.size(); i++) {
+        for (int j = 0; j < this->map[i].size(); j++) {
+            delete this->map[i][j];
+        }
+    }
+}
 Map* Map::load_map(std::string filename) {
     return new Map(filename);
 }

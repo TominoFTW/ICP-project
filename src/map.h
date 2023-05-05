@@ -7,6 +7,7 @@
 class Map {
     public:
         Map(std::string filename);
+        ~Map();
         Map *load_map(std::string filename);
         int width;
         int height;

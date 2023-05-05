@@ -57,4 +57,7 @@ MainScene::MainScene(QWidget *parent)
         }
     }
 }
+MainScene::~MainScene(){
+    delete map;
+}
 

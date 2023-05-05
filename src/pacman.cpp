@@ -33,7 +33,9 @@ Pacman::Pacman(std::pair<int, int> map_index, Map *map, QGraphicsView *view) : Q
 
     connect(mAnimation, &QVariantAnimation::valueChanged, this, &Pacman::onAnimationChanged);
 }
-
+Pacman::~Pacman(){
+    delete mAnimation;
+}
 void Pacman::move(std::pair<int, int>old_position){
         mAnimation->setStartValue(QRectF(old_position.first, old_position.second, 50, 50));
         mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
