@@ -41,18 +41,14 @@ MainWindow::MainWindow(QWidget *parent)
         this->gamestate->add_key(*key);
     }
     
-
-
 }
 
 
 // registering users input with w-s-a-d and arrow keys
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    std::cout << "key pressed" << std::endl;
     switch (event->key()) {
         case Qt::Key_W:
         case Qt::Key_Up:
-            std::cout << "up" << std::endl;
             this->gamestate->set_pacman_dir(3);
             break;
         case Qt::Key_S:
