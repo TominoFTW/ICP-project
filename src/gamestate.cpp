@@ -12,7 +12,7 @@
 //hello
 GameState::GameState(QGraphicsView *view, Map *map) : view(view), map(map), stop(false){
     this->backend = Backend();
-    backend.load_map("./examples/map-01.txt");
+    backend.load_map(map->filename);
     // todo frontend okna vyhodit z pacmana niekam inam ???????
     this->pacman = new Pacman(backend.get_pacman_start(),map, this->view);
     for (int i = 0; i < backend.get_ghosts_start().size(); i++) {

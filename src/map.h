@@ -17,6 +17,7 @@ class Map {
         std::vector<std::pair<int, int>> get_ghosts_indexes();
         std::vector<std::pair<int, int>> get_keys_indexes();
         std::pair<int, int> get_portal_index();
+        std::string filename;
 
     private:
         std::vector<std::pair<int, int>> keys;

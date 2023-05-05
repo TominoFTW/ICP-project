@@ -14,6 +14,7 @@ Map::Map(std::string filename) {
         std::cout << "Unable to open file";
         return;
     }
+    this->filename = filename;
     std::string line;
     std::getline(input, line);
     char *number = strtok((char*)line.c_str(), " ");

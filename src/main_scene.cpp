@@ -8,9 +8,9 @@
 #include <tuple>
 #include <utility>
 #include "map.h"
+#include <string>
 
-
-MainScene::MainScene(QWidget *parent)
+MainScene::MainScene(Map* map,QWidget *parent)
     : QGraphicsScene(parent)
 {
     // QPixmap wall(":/textures/misc/wall.png");
@@ -27,7 +27,7 @@ MainScene::MainScene(QWidget *parent)
     //     this->map= new Map("./examples/map-01.txt");
     // }
     
-    this->map= new Map("./examples/map-01.txt");
+    this->map = map;
 
     for (int row = 0; row < map->map.size(); row++) {
         for (int col = 0; col < map->map[row].size(); col++) {

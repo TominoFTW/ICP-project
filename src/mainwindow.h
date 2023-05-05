@@ -27,6 +27,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void keyPressEvent(QKeyEvent *) override;
+    QStringList relativePaths;
 
 private:
     Ui::MainWindow *ui;
@@ -36,10 +37,13 @@ private:
     QGraphicsView *view;
     GameState *gamestate;
     Replay *replay;
+    void showMapLevelsDialog();
     void restartGame() {
         delete this->gamestate;
+        std::string old = this->scene->map->filename;
         delete this->scene;
-        this->scene = new MainScene(this);
+        Map *map = new Map(old);
+        this->scene = new MainScene(map,this);
         this->view->setScene(this->scene);
         this->gamestate = new GameState(this->view, this->scene->map);
 }
