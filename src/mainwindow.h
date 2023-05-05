@@ -13,6 +13,7 @@
 #include "ghost.h"
 #include "gamestate.h"
 #include "main_scene.h"
+#include "replay.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +34,7 @@ private:
     Pacman *pacman;
     MainScene* scene;
     GameState *gamestate;
+    Replay *replay;
 
 };
 #endif // MAINWINDOW_H

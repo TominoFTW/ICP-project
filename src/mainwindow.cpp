@@ -8,13 +8,16 @@
 #include <utility>
 #include "gamestate.h"
 #include "main_scene.h"
+#include "replay.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Pacmun");
     //todo wrong free memory here
     this->scene = new MainScene(this);
+    // this->replay = new Replay(this->scene);
     QGraphicsView* view = new QGraphicsView(this->scene, this);
     view->setFixedSize((int)this->scene->map->map.size()*50+10, (int)this->scene->map->map[0].size()*50+10);
     this->setFixedSize((this->scene->map->width+2)*50+10, (this->scene->map->height+2)*50+35);

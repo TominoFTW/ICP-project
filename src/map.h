@@ -11,6 +11,9 @@ class Map {
         int width;
         int height;
         std::vector<std::vector<MapObject*>> map;
+        std::vector<std::pair<int, int>> keys;
+        std::vector<std::pair<int, int>> ghosts;
+        std::pair<int, int> pacman;
 
 };
 
