@@ -16,8 +16,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle("Pacmun");
     //todo wrong free memory here
+    bool replay = false;
     this->scene = new MainScene(this);
-    // this->replay = new Replay(this->scene);
+    if (replay) {
+        this->replay = new Replay(this, this->scene);
+        // IDK je to sracka
+    }
     QGraphicsView* view = new QGraphicsView(this->scene, this);
     view->setFixedSize((int)this->scene->map->map.size()*50+10, (int)this->scene->map->map[0].size()*50+10);
     this->setFixedSize((this->scene->map->width+2)*50+10, (this->scene->map->height+2)*50+35);
