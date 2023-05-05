@@ -6,11 +6,12 @@
 #include <QObject>
 #include <QVariantAnimation>
 #include <QGraphicsView>
+#include <utility>
 //hello
 class Pacman: public QObject, public QGraphicsRectItem {
     Q_OBJECT
     public:
-        Pacman(int x, int y, Map *map,QGraphicsView *view);
+        Pacman(std::pair<int,int> map_index, Map *map,QGraphicsView *view);
         void move(std::pair<int, int> old_position);
         std::pair<int, int> position;
         void pacman_end();

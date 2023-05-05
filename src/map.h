@@ -11,9 +11,17 @@ class Map {
         int width;
         int height;
         std::vector<std::vector<MapObject*>> map;
+        void get_objects(int x, int y, char type);
+        std::pair<int, int> get_pacman_index();
+        std::vector<std::pair<int, int>> get_ghosts_indexes();
+        std::vector<std::pair<int, int>> get_keys_indexes();
+        std::pair<int, int> get_portal_index();
+
+    private:
         std::vector<std::pair<int, int>> keys;
         std::vector<std::pair<int, int>> ghosts;
         std::pair<int, int> pacman;
+        std::pair<int, int> end;
 
 };
 

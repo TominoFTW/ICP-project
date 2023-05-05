@@ -10,9 +10,23 @@
 #include "map.h"
 
 //hello
-GameState::GameState(Pacman *pacman, QGraphicsScene *scene, Map *map) : pacman(pacman), scene(scene), map(map), stop(false){
+GameState::GameState(Pacman *pacman, QGraphicsView *view, Map *map) : pacman(pacman), view(view), map(map), stop(false){
     this->backend = Backend();
     backend.load_map("./examples/map-01.txt");
+    // todo frontend okna vyhodit z pacmana niekam inam ???????
+    this->pacman = new Pacman(backend.get_pacman_start(),map, this->view);
+    for (int i = 0; i < backend.get_ghosts_start().size(); i++) {
+        Ghost *ghost = new Ghost(backend.get_ghosts_start()[i], this->view);
+        this->add_ghost(*ghost);
+    }
+    this->end = backend.get_portal_pos();
+    // todo ak bude cas prerobit logiku klucov podobne ako ma pacman a ghost a iba ich schovavat ak su zobrate
+    std::cout << backend.get_keys_pos().size() << std::endl;
+    for (int i = 0; i < backend.get_keys_pos().size(); i++) {
+        std::cout << backend.get_keys_pos()[i].first << " " << backend.get_keys_pos()[i].second << std::endl;
+        Key *key = new Key(backend.get_keys_pos()[i], map);
+        this->add_key(*key);
+    }
     timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, this, &GameState::update);
     timer->start(300);

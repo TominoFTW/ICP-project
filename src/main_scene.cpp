@@ -30,24 +30,18 @@ MainScene::MainScene(QWidget *parent)
             }
             else if(map->map[row][col]->color == Qt::blue) {
                 map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
-                this->end = std::make_pair(col, row);
             }
             else if (map->map[row][col]->color == Qt::yellow) {
                 map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/key.png").scaled(50,50)));
-                this->keys.push_back(std::make_pair(col, row));
             }
             else if (map->map[row][col]->color == Qt::blue) {
                 map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
             }
             else if (map->map[row][col]->color == Qt::green) {
                 map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
-                this->ghosts.push_back(std::make_pair(col, row));
             }
             else{
                 map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
-                if (map->map[row][col]->color == Qt::darkYellow) {
-                    this->pacman = std::make_pair(col, row);
-                }
             }
             map->map[row][col]->setPen(Qt::NoPen);
             this->addItem(map->map[row][col]);
@@ -56,17 +50,3 @@ MainScene::MainScene(QWidget *parent)
     }
 }
 
-std::pair<int, int> MainScene::get_pacman(){
-    return this->pacman;
-}
-
-std::pair<int, int> MainScene::get_end(){
-    return this->end;
-}
-
-std::vector<std::pair<int, int>> MainScene::get_ghosts(){
-    return this->ghosts;
-}
-std::vector<std::pair<int, int>> MainScene::get_keys(){
-    return this->keys;
-}

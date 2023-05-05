@@ -8,7 +8,7 @@
 class Ghost: public QObject, public QGraphicsRectItem {
     Q_OBJECT
     public:
-        Ghost(int x, int y, Map &map);
+        Ghost(std::pair<int,int> map_index, QGraphicsView *view);
         void move(std::pair<int, int> old_position);
         void check_collision(QGraphicsScene &scene, Map &map, Pacman &pacman);
         int direction;
@@ -17,7 +17,7 @@ class Ghost: public QObject, public QGraphicsRectItem {
     private slots:
         void onAnimationChanged(const QVariant &value);
     private:
-
+        QGraphicsView *view;
         QVariantAnimation *mAnimation;
 
 };

@@ -6,7 +6,7 @@
 #include <QGraphicsRectItem>
 #include <QBrush>
 #include <QPen>
-MapObject:: MapObject(char symbol, int x, int y){
+MapObject:: MapObject(char symbol){
     switch(symbol){
         case 'T':
             this->type = symbol;

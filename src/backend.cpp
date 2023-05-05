@@ -2,9 +2,15 @@
 #include <utility>
 #include <random>
 #include <iostream>
+#include <utility>
 Backend::Backend(){
+    this->map = nullptr;
 }
-
+Backend::~Backend(){
+    if (this->map != nullptr){
+        delete this->map;
+    }
+}
 Map *Backend::load_map(std::string filename){
     this->map = new Map(filename);
     return this->map;
@@ -98,4 +104,20 @@ void Backend::pick_key(Key &key, Pacman &pacman,std::vector<Key*> &keys){
         key.picked = true;
         keys.erase(std::remove(keys.begin(), keys.end(), &key), keys.end());
     }
+}
+std::pair<int,int> Backend::get_pacman_start(){
+    return this->map->get_pacman_index();
+}
+std::vector<std::pair<int,int>> Backend::get_ghosts_start(){
+    return this->map->get_ghosts_indexes();
+}
+std::pair<int,int> Backend::get_portal_pos(){
+    return std::make_pair(this->map->get_portal_index().first*50, this->map->get_portal_index().second*50);
+}
+std::vector<std::pair<int,int>> Backend::get_keys_pos(){
+    std::vector<std::pair<int,int>> tmp;
+    for (auto v : this->map->get_keys_indexes()){
+        tmp.push_back(std::make_pair(v.first*50, v.second*50));
+    }
+    return tmp;
 }

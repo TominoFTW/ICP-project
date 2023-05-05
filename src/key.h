@@ -9,7 +9,7 @@
 
 class Key: public QGraphicsRectItem{
     public:
-        Key(int x, int y, Map *map);
+        Key(std::pair<int, int> position, Map *map);
         void update();
         std::pair<int, int> position;
         bool picked;

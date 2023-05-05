@@ -4,14 +4,12 @@
 #include <QColor>
 #include <QGraphicsRectItem>
 #include <QBrush>
+#include <utility>
 
 class MapObject:public QGraphicsRectItem{
     public:
-        MapObject(char symbol, int x, int y);
-        MapObject(const MapObject& other) : QGraphicsRectItem(), type(other.type), x(other.x), y(other.y), color(other.color){}
+        MapObject(char symbol);
         char type;
-        int x;
-        int y;
         QColor color;
         bool is_free();
 };

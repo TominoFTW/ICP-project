@@ -25,25 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->setFocusPolicy(Qt::StrongFocus);
     this->setFocusPolicy(Qt::StrongFocus);
     view->setFocusPolicy(Qt::NoFocus);
-    auto pacman_cords = this->scene->get_pacman();
-    this->pacman = new Pacman(pacman_cords.first, pacman_cords.second, this->scene->map, view);
-    scene->addItem(this->pacman);
-    // todo toto musi ist preco
-    auto ghosts_cords = this->scene->get_ghosts();
-    auto key_cords = this->scene->get_keys();
-    this->gamestate = new GameState(this->pacman, this->scene, this->scene->map);
-    this->gamestate->end.first = this->scene->get_end().first*50;
-    this->gamestate->end.second = this->scene->get_end().second*50;
-    for (int i = 0; i < (int)ghosts_cords.size(); i++) {
-        Ghost *ghost = new Ghost(ghosts_cords[i].first, ghosts_cords[i].second, *this->scene->map);
-        this->gamestate->add_ghost(*ghost);
-        scene->addItem(ghost);
-    }
-    for (int i = 0; i < (int)key_cords.size(); i++) {
-        Key *key = new Key(key_cords[i].first, key_cords[i].second, this->scene->map);
-        this->gamestate->add_key(*key);
-    }
-    
+    this->gamestate = new GameState(this->pacman, view, this->scene->map);
 }
 
 

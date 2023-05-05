@@ -1,8 +1,8 @@
 #include "key.h"
 #include <iostream>
 
-Key::Key(int x, int y, Map *map): map(map){
-    this->position = std::make_pair(x*50, y*50);
+Key::Key(std::pair<int,int> map_position, Map *map) : map(map){
+    this->position = map_position;
     this->picked = false;
 }
 void Key::update(){
