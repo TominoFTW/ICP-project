@@ -33,8 +33,17 @@ private:
     // todo runtime class with global variables
     Pacman *pacman;
     MainScene* scene;
+    QGraphicsView *view;
     GameState *gamestate;
     Replay *replay;
+    void restartGame() {
+        delete this->gamestate;
+        delete this->scene;
+        this->scene = new MainScene(this);
+        this->view->setScene(this->scene);
+        this->gamestate = new GameState(this->view, this->scene->map);
+}
+
 
 };
 #endif // MAINWINDOW_H

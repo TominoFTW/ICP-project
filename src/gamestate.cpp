@@ -10,7 +10,7 @@
 #include "map.h"
 
 //hello
-GameState::GameState(Pacman *pacman, QGraphicsView *view, Map *map) : pacman(pacman), view(view), map(map), stop(false){
+GameState::GameState(QGraphicsView *view, Map *map) : view(view), map(map), stop(false){
     this->backend = Backend();
     backend.load_map("./examples/map-01.txt");
     // todo frontend okna vyhodit z pacmana niekam inam ???????
@@ -21,9 +21,7 @@ GameState::GameState(Pacman *pacman, QGraphicsView *view, Map *map) : pacman(pac
     }
     this->end = backend.get_portal_pos();
     // todo ak bude cas prerobit logiku klucov podobne ako ma pacman a ghost a iba ich schovavat ak su zobrate
-    std::cout << backend.get_keys_pos().size() << std::endl;
     for (int i = 0; i < backend.get_keys_pos().size(); i++) {
-        std::cout << backend.get_keys_pos()[i].first << " " << backend.get_keys_pos()[i].second << std::endl;
         Key *key = new Key(backend.get_keys_pos()[i], map);
         this->add_key(*key);
     }
@@ -32,14 +30,13 @@ GameState::GameState(Pacman *pacman, QGraphicsView *view, Map *map) : pacman(pac
     timer->start(300);
 }
 GameState::~GameState(){
-    /*
     delete this->pacman;
     for (Ghost *ghost : this->ghosts){
         delete ghost;
     }
     for (Key *key : this->keys){
         delete key;
-    }*/
+    }
     delete this->timer;
 }
 

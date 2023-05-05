@@ -22,14 +22,14 @@ MainWindow::MainWindow(QWidget *parent)
         this->replay = new Replay(this, this->scene);
         // IDK je to sracka
     }
-    QGraphicsView* view = new QGraphicsView(this->scene, this);
+    this->view = new QGraphicsView(this->scene, this);
     view->setFixedSize((int)this->scene->map->map.size()*50+10, (int)this->scene->map->map[0].size()*50+10);
     this->setFixedSize((this->scene->map->width+2)*50+10, (this->scene->map->height+2)*50+35);
     this->setCentralWidget(view);
     view->setFocusPolicy(Qt::StrongFocus);
     this->setFocusPolicy(Qt::StrongFocus);
     view->setFocusPolicy(Qt::NoFocus);
-    this->gamestate = new GameState(this->pacman, view, this->scene->map);
+    this->gamestate = new GameState(view, this->scene->map);
 }
 
 
@@ -53,15 +53,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             this->gamestate->set_pacman_dir(0);
             break;
         case Qt::Key_R:
+            this->restartGame();
             break;
         default:
             return;
     }
 }
-
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete this->scene;
     delete this->gamestate;
+    delete this->scene;
 }

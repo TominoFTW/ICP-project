@@ -10,7 +10,7 @@
 #include "backend.h"
 class GameState: public QObject{
 public:
-    GameState(Pacman* pacman, QGraphicsView *view, Map *map);
+    GameState(QGraphicsView *view, Map *map);
     ~GameState();
     void add_ghost(Ghost &ghost);
     void add_key(Key &key);
