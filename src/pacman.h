@@ -14,6 +14,7 @@ class Pacman: public QObject, public QGraphicsRectItem {
         Pacman(std::pair<int,int> map_index, Map *map,QGraphicsView *view);
         ~Pacman();
         std::pair<int, int> position;
+        int moves;
         void pacman_end();
         void pacman_win();
         int direction;

@@ -25,28 +25,36 @@ void Backend::pacman_move(Pacman &pacman){
             if (this->map->map[pacman.position.second/50][(pacman.position.first+50)/50]->is_free()){
                 std::pair<int,int> old_position = pacman.position;
                 pacman.position.first += 50;
+                pacman.moves++;
                 emit p_move(old_position);
+                emit moves_increment(pacman.moves);
             }
             break;
         case 1:
             if (this->map->map[(pacman.position.second+50)/50][pacman.position.first/50]->is_free()){
                 std::pair<int,int> old_position = pacman.position;
                 pacman.position.second += 50;
+                pacman.moves++;
                 emit p_move(old_position);
+                emit moves_increment(pacman.moves);
             }
             break;
         case 2:
             if (this->map->map[pacman.position.second/50][(pacman.position.first-50)/50]->is_free()){
                 std::pair<int,int> old_position = pacman.position;
                 pacman.position.first -= 50;
+                pacman.moves++;
                 emit p_move(old_position);
+                emit moves_increment(pacman.moves);
             }
             break;
         case 3:
             if (this->map->map[(pacman.position.second-50)/50][pacman.position.first/50]->is_free()){
                 std::pair<int,int> old_position = pacman.position;
                 pacman.position.second -= 50;
+                pacman.moves++;
                 emit p_move(old_position);
+                emit moves_increment(pacman.moves);
             }
             break;
         default:

@@ -14,7 +14,7 @@ public:
     QGraphicsRectItem *movesRect;
     Backend *backend;
     public slots:
-        void updateMovesText();
+        void updateMovesText(int moves);
 };
 
 #endif // MAINSCENE_H

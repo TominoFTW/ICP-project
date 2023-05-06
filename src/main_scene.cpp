@@ -72,12 +72,10 @@ MainScene::MainScene(Backend *backend,QWidget *parent)
     this->addItem(movesRect);
     this->addItem(movesText);
     // connect 
-    connect(this->backend, &Backend::p_move, this, &MainScene::updateMovesText);
+    connect(this->backend, &Backend::moves_increment, this, &MainScene::updateMovesText);
 }
-void MainScene::updateMovesText()
+void MainScene::updateMovesText(int moves)
 {
-    static int moves = 0;
-    moves++;
     movesText->setPlainText("Moves: " + QString::number(moves));
 }
 MainScene::~MainScene(){
