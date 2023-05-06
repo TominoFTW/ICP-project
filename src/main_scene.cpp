@@ -56,8 +56,20 @@ MainScene::MainScene(Map* map,QWidget *parent)
 
         }
     }
+    this->movesText = new QGraphicsTextItem();
+    this->movesText->setPlainText("Moves: 0");
+    this->movesText->setPos(this->map->width*50+10,0);
+    this->addItem(movesText);
+    // connect 
+}
+void MainScene::updateMovesText()
+{
+    static int moves = 0;
+    moves++;
+    this->movesText->setPlainText("Moves: " + QString::number(moves));
 }
 MainScene::~MainScene(){
     delete map;
+    delete movesText;
 }
 

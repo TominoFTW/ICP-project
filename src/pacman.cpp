@@ -37,10 +37,10 @@ Pacman::~Pacman(){
     delete mAnimation;
 }
 void Pacman::move(std::pair<int, int>old_position){
-        mAnimation->setStartValue(QRectF(old_position.first, old_position.second, 50, 50));
-        mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
-        mAnimation->start();
-        this->setBrush(QBrush(QImage("./textures/pacman/pacman"+QString::number(this->direction)+".png")));
+    mAnimation->setStartValue(QRectF(old_position.first, old_position.second, 50, 50));
+    mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
+    mAnimation->start();
+    this->setBrush(QBrush(QImage("./textures/pacman/pacman"+QString::number(this->direction)+".png")));
 }
 void Pacman::set_direction(int direction){
     this->direction = direction;

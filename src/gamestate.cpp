@@ -11,22 +11,24 @@
 
 //hello
 GameState::GameState(QGraphicsView *view, Map *map) : view(view), map(map), stop(false){
-    this->backend = Backend();
-    backend.load_map(map->filename);
+    this->backend = new Backend();
+    backend->load_map(map->filename);
     // todo frontend okna vyhodit z pacmana niekam inam ???????
-    this->pacman = new Pacman(backend.get_pacman_start(),map, this->view);
-    for (int i = 0; i < backend.get_ghosts_start().size(); i++) {
-        Ghost *ghost = new Ghost(backend.get_ghosts_start()[i], this->view);
+    this->pacman = new Pacman(backend->get_pacman_start(),map, this->view);
+    for (int i = 0; i < backend->get_ghosts_start().size(); i++) {
+        Ghost *ghost = new Ghost(backend->get_ghosts_start()[i], this->view);
         this->add_ghost(*ghost);
     }
-    this->end = backend.get_portal_pos();
+    this->end = backend->get_portal_pos();
     // todo ak bude cas prerobit logiku klucov podobne ako ma pacman a ghost a iba ich schovavat ak su zobrate
-    for (int i = 0; i < backend.get_keys_pos().size(); i++) {
-        Key *key = new Key(backend.get_keys_pos()[i], map);
+    for (int i = 0; i < backend->get_keys_pos().size(); i++) {
+        Key *key = new Key(backend->get_keys_pos()[i], map);
         this->add_key(*key);
     }
     timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, this, &GameState::update);
+    // ???????????????????????????????????????????????????????????????
+    connect(this->backend, &Backend::p_move, this->pacman, &Pacman::move);
     timer->start(300);
 }
 GameState::~GameState(){
@@ -38,6 +40,7 @@ GameState::~GameState(){
         delete key;
     }
     delete this->timer;
+    delete this->backend;
 }
 
 void GameState::add_ghost(Ghost &ghost){
@@ -52,12 +55,12 @@ void GameState::set_pacman_dir(int direction){
 void GameState::update(){
     if (stop) return;
     auto old_position = this->pacman->position;
-    backend.pacman_move(*this->pacman);
-    this->pacman->move(old_position);
+    backend->pacman_move(*this->pacman);
+    //this->pacman->move(old_position);
     for (Ghost *ghost : this->ghosts){
         old_position = ghost->position;
         try{
-            backend.ghost_move(*ghost, *this->pacman);
+            backend->ghost_move(*ghost, *this->pacman);
         }
         catch (int e){
             std::cout << "ghost caught pacman" << std::endl;
@@ -84,14 +87,14 @@ void GameState::update(){
         ghost->move(old_position);
     }
     for (Key *key : this->keys){
-        backend.pick_key(*key, *this->pacman, this->keys);
+        backend->pick_key(*key, *this->pacman, this->keys);
         key->update();
     }
     if (this->keys.size() == 0){
         this->map->map[this->end.second/50][this->end.first/50]->setBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50));
     }
     try{
-        backend.check_win(this->end, this->pacman->position, this->keys.size());
+        backend->check_win(this->end, this->pacman->position, this->keys.size());
     }
     catch (int e){
         pacman->pacman_win();

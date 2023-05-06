@@ -13,7 +13,6 @@ class Pacman: public QObject, public QGraphicsRectItem {
     public:
         Pacman(std::pair<int,int> map_index, Map *map,QGraphicsView *view);
         ~Pacman();
-        void move(std::pair<int, int> old_position);
         std::pair<int, int> position;
         void pacman_end();
         void pacman_win();
@@ -28,6 +27,9 @@ class Pacman: public QObject, public QGraphicsRectItem {
         Map *map;
         QGraphicsView *view;
         QVariantAnimation *mAnimation;
+
+    public slots:
+        void move(std::pair<int, int> old_position);
 
 };
 

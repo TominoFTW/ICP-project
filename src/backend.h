@@ -7,8 +7,9 @@
 #include "pacman.h"
 #include "ghost.h"
 #include "key.h"
-class Backend
+class Backend : public QObject
 {
+    Q_OBJECT
 public:
     Backend();
     ~Backend();
@@ -22,6 +23,8 @@ public:
     std::vector<std::pair<int,int>> get_ghosts_start();
     std::pair<int,int> get_portal_pos();
     std::vector<std::pair<int,int>> get_keys_pos();
+    signals:
+        void p_move(std::pair<int, int> old_position);
 
 private:
     Map *map;

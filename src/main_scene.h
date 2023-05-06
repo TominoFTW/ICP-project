@@ -10,8 +10,9 @@ public:
     MainScene(Map *map, QWidget *parent = nullptr);
     ~MainScene();
     Map *map;
-
-
+    QGraphicsTextItem *movesText;
+    public slots:
+        void updateMovesText();
 };
 
 #endif // MAINSCENE_H

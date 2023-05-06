@@ -64,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent)
     setMenuBar(menuBar);
     //####################################################################################################
     this->view = new QGraphicsView(this->scene, this);
+    // toto nezvacsuje sa okno :)
     view->setFixedSize((int)this->scene->map->map.size()*50+10, (int)this->scene->map->map[0].size()*50+10);
     this->setFixedSize((this->scene->map->width+2)*50+10, (this->scene->map->height+2)*50+35);
     this->setCentralWidget(view);
