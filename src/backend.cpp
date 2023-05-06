@@ -12,6 +12,9 @@ Backend::~Backend(){
     }
 }
 Map *Backend::load_map(std::string filename){
+    if (this->map != nullptr){
+        delete this->map;
+    }
     this->map = new Map(filename);
     return this->map;
 }

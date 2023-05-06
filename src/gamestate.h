@@ -10,7 +10,7 @@
 #include "backend.h"
 class GameState: public QObject{
 public:
-    GameState(QGraphicsView *view, Map *map);
+    GameState(QGraphicsView *view, Backend *backend);
     ~GameState();
     void add_ghost(Ghost &ghost);
     void add_key(Key &key);
@@ -22,7 +22,6 @@ private slots:
 private:
     Pacman *pacman;
     QGraphicsView *view;
-    Map *map;
     QTimer *timer;
     std::vector<Ghost*> ghosts;
     std::vector<Key*> keys;

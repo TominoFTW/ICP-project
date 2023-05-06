@@ -10,11 +10,10 @@
 #include "map.h"
 
 //hello
-GameState::GameState(QGraphicsView *view, Map *map) : view(view), map(map), stop(false){
-    this->backend = new Backend();
-    backend->load_map(map->filename);
+GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), stop(false){
     // todo frontend okna vyhodit z pacmana niekam inam ???????
-    this->pacman = new Pacman(backend->get_pacman_start(),map, this->view);
+    this->backend = backend;
+    this->pacman = new Pacman(backend->get_pacman_start(),backend->map, this->view);
     for (int i = 0; i < backend->get_ghosts_start().size(); i++) {
         Ghost *ghost = new Ghost(backend->get_ghosts_start()[i], this->view);
         this->add_ghost(*ghost);
@@ -22,7 +21,7 @@ GameState::GameState(QGraphicsView *view, Map *map) : view(view), map(map), stop
     this->end = backend->get_portal_pos();
     // todo ak bude cas prerobit logiku klucov podobne ako ma pacman a ghost a iba ich schovavat ak su zobrate
     for (int i = 0; i < backend->get_keys_pos().size(); i++) {
-        Key *key = new Key(backend->get_keys_pos()[i], map);
+        Key *key = new Key(backend->get_keys_pos()[i], backend->map);
         this->add_key(*key);
     }
     timer = new QTimer();
@@ -40,7 +39,6 @@ GameState::~GameState(){
         delete key;
     }
     delete this->timer;
-    delete this->backend;
 }
 
 void GameState::add_ghost(Ghost &ghost){
@@ -91,7 +89,7 @@ void GameState::update(){
         key->update();
     }
     if (this->keys.size() == 0){
-        this->map->map[this->end.second/50][this->end.first/50]->setBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50));
+        this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50));
     }
     try{
         backend->check_win(this->end, this->pacman->position, this->keys.size());

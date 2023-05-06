@@ -4,13 +4,15 @@
 #include <QPainter>
 #include <QGraphicsScene>
 #include "map.h"
+#include "backend.h"
 
 class MainScene : public QGraphicsScene{
 public:
-    MainScene(Map *map, QWidget *parent = nullptr);
+    MainScene(Backend *backend, QWidget *parent = nullptr);
     ~MainScene();
-    Map *map;
     QGraphicsTextItem *movesText;
+    QGraphicsRectItem *movesRect;
+    Backend *backend;
     public slots:
         void updateMovesText();
 };

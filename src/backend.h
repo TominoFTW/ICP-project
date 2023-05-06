@@ -23,11 +23,10 @@ public:
     std::vector<std::pair<int,int>> get_ghosts_start();
     std::pair<int,int> get_portal_pos();
     std::vector<std::pair<int,int>> get_keys_pos();
+    Map *map;
     signals:
         void p_move(std::pair<int, int> old_position);
 
-private:
-    Map *map;
 };
 
 

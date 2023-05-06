@@ -10,7 +10,7 @@
 #include "map.h"
 #include <string>
 
-MainScene::MainScene(Map* map,QWidget *parent)
+MainScene::MainScene(Backend *backend,QWidget *parent)
     : QGraphicsScene(parent)
 {
     // QPixmap wall(":/textures/misc/wall.png");
@@ -26,50 +26,67 @@ MainScene::MainScene(Map* map,QWidget *parent)
     // else{
     //     this->map= new Map("./examples/map-01.txt");
     // }
-    
-    this->map = map;
+    this->backend = backend;
 
-    for (int row = 0; row < map->map.size(); row++) {
-        for (int col = 0; col < map->map[row].size(); col++) {
-            map->map[row][col]->setRect(col*50, row*50, 50, 50);
-            if (map->map[row][col]->color == Qt::black) {
+    for (int row = 0; row < backend->map->map.size(); row++) {
+        for (int col = 0; col < backend->map->map[row].size(); col++) {
+            backend->map->map[row][col]->setRect(col*50, row*50, 50, 50);
+            if (backend->map->map[row][col]->color == Qt::black) {
                 // wall, so set texture of wall from ../textures/misc/wall.png
-                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/wall.png").scaled(50,50)));
+                backend->map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/wall.png").scaled(50,50)));
             }
-            else if(map->map[row][col]->color == Qt::blue) {
-                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
+            else if(backend->map->map[row][col]->color == Qt::blue) {
+                backend->map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
             }
-            else if (map->map[row][col]->color == Qt::yellow) {
-                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/key.png").scaled(50,50)));
+            else if (backend->map->map[row][col]->color == Qt::yellow) {
+                backend->map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/key.png").scaled(50,50)));
             }
-            else if (map->map[row][col]->color == Qt::blue) {
-                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
+            else if (backend->map->map[row][col]->color == Qt::blue) {
+                backend->map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
             }
-            else if (map->map[row][col]->color == Qt::green) {
-                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
+            else if (backend->map->map[row][col]->color == Qt::green) {
+                backend->map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
             }
             else{
-                map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
+                backend->map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
             }
-            map->map[row][col]->setPen(Qt::NoPen);
-            this->addItem(map->map[row][col]);
+            backend->map->map[row][col]->setPen(Qt::NoPen);
+            this->addItem(backend->map->map[row][col]);
 
         }
     }
+    this->movesRect = new QGraphicsRectItem();
+    this->movesRect->setRect(this->backend->map->width*50-15,0,100,30);
+    this->movesRect->setBrush(Qt::gray);
+    this->movesRect->setPen(Qt::NoPen);
+    this->movesRect->setOpacity(0.90);
+
     this->movesText = new QGraphicsTextItem();
     this->movesText->setPlainText("Moves: 0");
-    this->movesText->setPos(this->map->width*50+10,0);
+    this->movesText->setDefaultTextColor(Qt::black);
+    this->movesText->setFont(QFont("Arial", 14));
+    QRectF rect = this->movesRect->rect();
+    QPointF center = rect.center();
+    QPointF text_pos = center - QPointF(movesText->boundingRect().width() / 2, movesText->boundingRect().height() / 2);
+    movesText->setPos(text_pos);
+    this->addItem(movesRect);
     this->addItem(movesText);
     // connect 
+    connect(this->backend, &Backend::p_move, this, &MainScene::updateMovesText);
 }
 void MainScene::updateMovesText()
 {
     static int moves = 0;
     moves++;
-    this->movesText->setPlainText("Moves: " + QString::number(moves));
+    movesText->setPlainText("Moves: " + QString::number(moves));
 }
 MainScene::~MainScene(){
-    delete map;
+    for (int row = 0; row < backend->map->map.size(); row++) {
+        for (int col = 0; col < backend->map->map[row].size(); col++) {
+            removeItem(backend->map->map[row][col]);
+        }
+    }
     delete movesText;
+    delete movesRect;
 }
 

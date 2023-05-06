@@ -31,21 +31,20 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    // todo runtime class with global variables
-    Pacman *pacman;
     MainScene* scene;
     QGraphicsView *view;
     GameState *gamestate;
     Replay *replay;
+    Backend *backend;
     void showMapLevelsDialog();
     void restartGame() {
         delete this->gamestate;
-        std::string old = this->scene->map->filename;
         delete this->scene;
-        Map *map = new Map(old);
-        this->scene = new MainScene(map,this);
+
+        this->scene = new MainScene(this->backend,this);
+
         this->view->setScene(this->scene);
-        this->gamestate = new GameState(this->view, this->scene->map);
+        this->gamestate = new GameState(this->view, backend);
 }
 
 

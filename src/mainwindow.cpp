@@ -24,8 +24,10 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("Pacmun");
     bool replay = false;
     // todo skusit toto upravit
-    Map *map = new Map("./examples/map-01.txt");
-    this->scene = new MainScene(map,this);
+    this->backend = new Backend();
+    this->backend->load_map("./examples/map-01.txt");
+    //Map *map = new Map("./examples/map-01.txt");
+    this->scene = new MainScene(backend);
     if (replay) {
         this->replay = new Replay(this, this->scene);
         // IDK je to sracka
@@ -65,13 +67,13 @@ MainWindow::MainWindow(QWidget *parent)
     //####################################################################################################
     this->view = new QGraphicsView(this->scene, this);
     // toto nezvacsuje sa okno :)
-    view->setFixedSize((int)this->scene->map->map.size()*50+10, (int)this->scene->map->map[0].size()*50+10);
-    this->setFixedSize((this->scene->map->width+2)*50+10, (this->scene->map->height+2)*50+35);
+    view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
+    this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
     this->setCentralWidget(view);
     view->setFocusPolicy(Qt::StrongFocus);
     this->setFocusPolicy(Qt::StrongFocus);
     view->setFocusPolicy(Qt::NoFocus);
-    this->gamestate = new GameState(view, this->scene->map);
+    this->gamestate = new GameState(view, backend);
 }
 
 void MainWindow::showMapLevelsDialog()
@@ -88,10 +90,10 @@ void MainWindow::showMapLevelsDialog()
             // Handle the button click by loading the selected map level
             delete this->gamestate;
             delete this->scene;
-            Map *map = new Map("./examples/" + this->relativePaths[i].toStdString());
-            this->scene = new MainScene(map,this);
+            backend->load_map("./examples/" + this->relativePaths[i].toStdString());
+            this->scene = new MainScene(backend,this);
             this->view->setScene(this->scene);
-            this->gamestate = new GameState(this->view, this->scene->map);
+            this->gamestate = new GameState(this->view, backend);
         });
         layout->addWidget(levelButton);
     }
@@ -131,4 +133,6 @@ MainWindow::~MainWindow()
     delete ui;
     delete this->gamestate;
     delete this->scene;
+    delete this->view;
+    delete this->backend;
 }
