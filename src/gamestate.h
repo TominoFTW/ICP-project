@@ -16,6 +16,7 @@ public:
     void add_key(Key &key);
     void set_pacman_dir(int direction);
     std::pair<int, int> end;
+    void replay_print();
 private slots:
     void update();
 private:

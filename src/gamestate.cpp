@@ -8,6 +8,10 @@
 #include "pacman.h"
 #include "key.h"
 #include "map.h"
+#include "backend.h"
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 
 //hello
 GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), backend(backend), stop(false){
@@ -53,35 +57,17 @@ void GameState::update(){
     if (stop) return;
     auto old_position = this->pacman->position;
     backend->pacman_move(*this->pacman);
-    //this->pacman->move(old_position);
     for (Ghost *ghost : this->ghosts){
         old_position = ghost->position;
         try{
             backend->ghost_move(*ghost, *this->pacman);
         }
         catch (int e){
-            std::cout << "ghost caught pacman" << std::endl;
-            //ghost->move(old_position);
             pacman->pacman_end();
             this->stop = true;
-            int i = 0;
-            std::cout << "pacman" << std::endl;
-            for (auto v : this->pacman->movement){
-                std::cout << v.first << "," << v.second << " ";
-            }
-            this->pacman->movement.clear();
-            std::cout << std::endl;
-            for (Ghost *ghost : this->ghosts){
-                std::cout << "ghost" << i++ << std::endl;
-                for( auto v : ghost->movement){
-                    std::cout << v.first << "," << v.second << " ";
-                }
-                std::cout << std::endl;
-                ghost->movement.clear();
-            }
+            replay_print();
             return;
         }
-        //ghost->move(old_position);
     }
     for (Key *key : this->keys){
         backend->pick_key(*key, *this->pacman, this->keys);
@@ -95,21 +81,48 @@ void GameState::update(){
     }
     catch (int e){
         this->stop = true;
-        int i = 0;
-        for (auto v : this->pacman->movement){
-            std::cout << v.first << "," << v.second << " ";
-        }
-        this->pacman->movement.clear();
-        std::cout << std::endl;
-        for (Ghost *ghost : this->ghosts){
-            std::cout << "ghost" << i++ << std::endl;
-            for( auto v : ghost->movement){
-                std::cout << v.first << "," << v.second << " ";
-            }
-            std::cout << std::endl;
-            ghost->movement.clear();
-        }
+        replay_print();
         return;
     }
 
+}
+
+void GameState::replay_print() {
+    std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+    std::chrono::hours two_hours(2);
+    now += two_hours;
+    // Gets current time for replay
+    std::time_t t = std::chrono::system_clock::to_time_t(now);
+    std::tm tm = *std::localtime(&t);
+    std::ostringstream oss;
+    oss << std::put_time(&tm, "%Y-%m-%d_%H:%M:%S");
+    auto file_name = "./replays/replay-" + oss.str() + ".txt";
+    std::ofstream replayfile(file_name);
+
+    // Map print
+    replayfile << this->backend->map->map.size()-2 << " " << this->backend->map->map[0].size()-2 << std::endl;
+    for (int i = 1; i < this->backend->map->map.size()-1; i++){
+        for (int j = 1; j < this->backend->map->map[i].size()-1; j++){
+            replayfile << this->backend->map->map[i][j]->type;
+        }
+        replayfile << std::endl;
+    }
+    // Pacman print
+    replayfile << "pacman" << std::endl;
+    for (auto v : this->pacman->movement){
+        replayfile << v.first << "," << v.second << " ";
+    }
+    this->pacman->movement.clear();
+    replayfile << std::endl;
+    // Ghosts print
+    int i = 0;
+    for (Ghost *ghost : this->ghosts){
+        replayfile << "ghost" << i++ << std::endl;
+        for( auto v : ghost->movement){
+            replayfile << v.first << "," << v.second << " ";
+        }
+        replayfile << std::endl;
+        ghost->movement.clear();
+    }
+    replayfile.close();
 }
