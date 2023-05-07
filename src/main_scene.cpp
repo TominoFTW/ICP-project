@@ -56,7 +56,7 @@ MainScene::MainScene(Backend *backend,QWidget *parent)
         }
     }
     this->movesRect = new QGraphicsRectItem();
-    this->movesRect->setRect(this->backend->map->width*50-15,0,100,30);
+    this->movesRect->setRect(this->backend->map->width*50-30,0,120,30);
     this->movesRect->setBrush(Qt::gray);
     this->movesRect->setPen(Qt::NoPen);
     this->movesRect->setOpacity(0.90);
@@ -67,7 +67,7 @@ MainScene::MainScene(Backend *backend,QWidget *parent)
     this->movesText->setFont(QFont("Arial", 14));
     QRectF rect = this->movesRect->rect();
     QPointF center = rect.center();
-    QPointF text_pos = center - QPointF(movesText->boundingRect().width() / 2, movesText->boundingRect().height() / 2);
+    QPointF text_pos = center - QPointF(movesText->boundingRect().width() / 2+5, movesText->boundingRect().height() / 2);
     movesText->setPos(text_pos);
     this->addItem(movesRect);
     this->addItem(movesText);
