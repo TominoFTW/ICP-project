@@ -22,9 +22,9 @@ Map::Map(std::string filename) {
     number = strtok(NULL, " ");
     this->height = atoi(number);
     // TODO: skraslit 
-    std::cout << width << ' ' << height << std::endl;
+    // std::cout << width << ' ' << height << std::endl;
     while (std::getline(input, line)) {
-        std::cout << line << std::endl;
+        // std::cout << line << std::endl;
         std::vector<MapObject*> row;
         MapObject *xy = new MapObject('X');
         row.push_back(xy);

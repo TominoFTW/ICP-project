@@ -20,6 +20,8 @@ public:
     Replay(QWidget *parent, QGraphicsScene *MainScene, std::string input_file, Backend *backend, QGraphicsView *view);
     void update_forward();
     void update_backward();
+    void update_end();
+    void update_start();
     std::string input_map; 
 private:
     Pacman* pacman;

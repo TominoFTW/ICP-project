@@ -89,8 +89,8 @@ void GameState::update(){
 
 void GameState::replay_print() {
     std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
-    std::chrono::hours two_hours(2);
-    now += two_hours;
+    // std::chrono::hours two_hours(2);
+    // now += two_hours; // IDK sometimes it is 2 hours behind
     // Gets current time for replay
     std::time_t t = std::chrono::system_clock::to_time_t(now);
     std::tm tm = *std::localtime(&t);

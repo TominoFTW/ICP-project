@@ -20,28 +20,27 @@
 // Replay::Replay(QGraphicsScene *scene){
 Replay::Replay(QWidget *parent, QGraphicsScene *scene, std::string input_file, Backend *backend, QGraphicsView *view)
     : QGraphicsScene(parent) {
-    std::ifstream input(input_file); // TODO load of file
+    (void) scene;
+    std::ifstream input(input_file);
     parseInput(input);
+
     this->backend = backend;
-    this->index = 0;
+    this->end = backend->get_portal_pos();
+    this->index = 1;
+
     this->pacman = new Pacman(backend->get_pacman_start(),backend->map, view);
-    std::cout << backend->get_pacman_start().first << ' ' << backend->get_pacman_start().second << "sddddddddddddddddddddddddd" << std::endl;
-    for (int i = 0; i < backend->get_ghosts_start().size(); i++) {
+
+    for (size_t i = 0; i < backend->get_ghosts_start().size(); i++) {
         Ghost *ghost = new Ghost(backend->get_ghosts_start()[i], view);
         this->add_ghost(*ghost);
     }
-    this->end = backend->get_portal_pos();
-    for (int i = 0; i < backend->get_keys_pos().size(); i++) {
+
+    for (size_t i = 0; i < backend->get_keys_pos().size(); i++) {
         Key *key = new Key(backend->get_keys_pos()[i], backend->map);
         this->add_key(*key);
     }
     connect(backend, &Backend::p_move, this->pacman, &Pacman::move);
 
-
-
-    // this->timer = new QTimer();
-    // QObject::connect(timer, &QTimer::timeout, this, &Replay::update);
-    // timer->start(300);
     input.close();
 }
 
@@ -81,43 +80,23 @@ void Replay::parseInput(std::ifstream &input){
         }
         this->ghost_positions.push_back(pos);
     }
-    for (auto i: this->pacman_positions){
-        std::cout << "(" << i.first << "," << i.second << "), ";
-    }
-    std::cout << std::endl;
-    for (auto i: this->ghost_positions){
-        for (auto j: i){
-            std::cout << "(" <<j.first << "," << j.second << "), ";
-        }
-        std::cout << std::endl;
-    }
 }
 
-// TODO do map.cpp a .h pridat neco na udrzovani stavu klicu -> potom vykresleni targetu ve spravnej moment
-// kdyz prejdu klic, popnu ho z pole klicu a kdyz je pole klicu prazdny, tak vykreslim target
-// TODO, kontrola kterej ghost ma nejvice zaznamu -> musi se pohnout jako posledni
-
 void Replay::update_forward(){
-    std::cout << "update forward" << std::endl;
-    if (this->index == this->pacman_positions.size()){
-        // timer->stop();
+    if ((size_t)this->index == this->pacman_positions.size()){
         return;
     }
-    std::cout << this->index << std::endl;
-    std::cout << this->pacman->position.first << " " << this->pacman->position.second << std::endl;
-    std::cout << this->pacman_positions[this->index].first << " " << this->pacman_positions[this->index].second << std::endl;
 
     this->pacman->position = this->pacman_positions[this->index];
-    if (this->index == 0)
-        emit backend->p_move(std::make_pair(backend->get_pacman_start().first*50,backend->get_pacman_start().second*50));
-    else
-        emit backend->p_move(this->pacman_positions[this->index-1]);
+    emit backend->p_move(this->pacman_positions[this->index-1]);
 
     if (this->ghosts.size() > 0){
-        for (auto i = 0; i < this->ghosts.size(); i++){
-            this->ghosts[i]->old_position = this->ghosts[i]->position;
-            this->ghosts[i]->position = this->ghost_positions[i][this->index];
-            this->ghosts[i]->move();
+        for (size_t i = 0; i < this->ghosts.size(); i++){
+            if ((size_t)this->index < this->ghost_positions[i].size()){
+                this->ghosts[i]->old_position = this->ghosts[i]->position;
+                this->ghosts[i]->position = this->ghost_positions[i][this->index];
+                this->ghosts[i]->move();
+            }
         }
     }
 
@@ -139,23 +118,23 @@ void Replay::update_forward(){
 }
 
 void Replay::update_backward(){
-    std::cout << "update backward" << std::endl;
-    if (this->index == 0){
-        // timer->stop();
+    if (this->index == 1){
+        update_start();
         return;
     }
+
     this->index--;
-    // std::cout << this->index << std::endl;
-    // std::cout << this->pacman->position.second << std::endl;
-    // std::cout << this->pacman_positions[this->index].first << " " << this->pacman_positions[this->index].second << std::endl;
 
     this->pacman->position = this->pacman_positions[this->index-1];
     this->pacman->move(pacman_positions[index]);
 
     if (this->ghosts.size() > 0){
-        for (auto i = 0; i < this->ghosts.size(); i++){
-            this->ghosts[i]->position = this->ghost_positions[i][this->index];
-            this->ghosts[i]->move();
+        for (size_t i = 0; i < this->ghosts.size(); i++){
+            if ((size_t)this->index < this->ghost_positions[i].size()) {
+                this->ghosts[i]->old_position = this->ghosts[i]->position;
+                this->ghosts[i]->position = this->ghost_positions[i][this->index-1];
+                this->ghosts[i]->move();
+            }
         }
     }
 
@@ -172,6 +151,62 @@ void Replay::update_backward(){
             this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
         }
     }
+}
+
+void Replay::update_start() {
+    auto tmp = this->pacman->position;
+    this->pacman->position = this->pacman_positions[0];
+    emit backend->p_move(tmp);
+
+    if (this->ghosts.size() > 0){
+        for (size_t i = 0; i < this->ghosts.size(); i++){
+            this->ghosts[i]->old_position = this->ghosts[i]->position;
+            this->ghosts[i]->position = this->ghost_positions[i][0];
+            this->ghosts[i]->move();
+        }
+    }
+
+    if (this->picked_keys.size() != 0){
+        for (auto key: this->picked_keys){
+            key->picked = false;
+            key->update();
+            this->keys.push_back(key);
+            picked_keys.erase(std::remove(picked_keys.begin(), picked_keys.end(), key), picked_keys.end());
+        }
+        this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
+    }
+    this->index = 1;
+}
+
+void Replay::update_end() {
+    auto last = this->pacman_positions.size()-1;
+
+    auto tmp = this->pacman->position;
+    this->pacman->position = this->pacman_positions[pacman_positions.size()-1];
+    emit backend->p_move(tmp);
+
+    if (this->ghosts.size() > 0){
+        for (size_t i = 0; i < this->ghosts.size(); i++){
+            this->ghosts[i]->old_position = this->ghosts[i]->position;
+            this->ghosts[i]->position = this->ghost_positions[i][this->ghost_positions[i].size()-1];
+            this->ghosts[i]->move();
+            if (last < this->ghost_positions[i].size()-1) {
+                last = this->ghost_positions[i].size()-1;
+            }
+        }
+    }
+    
+    if (this->keys.size() != 0){
+        for (auto key: this->keys){
+            key->picked = true;
+            key->update();
+            this->picked_keys.push_back(key);
+            keys.erase(std::remove(keys.begin(), keys.end(), key), keys.end());
+            }
+        this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50)));
+        }
+
+    this->index = last+1;
 }
 
 

@@ -50,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent)
     foreach(QString file, files) {
         QString relativePath = directory.relativeFilePath(file);
         relativePaths << relativePath;
-        qDebug() << relativePath;
     }
     this->relativePaths = relativePaths;
     // Add a separator and an exit action to the menu
@@ -72,7 +71,6 @@ MainWindow::MainWindow(QWidget *parent)
     foreach(QString file, files2) {
         QString relativePath = directory2.relativeFilePath(file);
         relativePaths2 << relativePath;
-        qDebug() << relativePath;
     }
     this->relativePaths2 = relativePaths2;
     fileMenu->addSeparator();
@@ -184,6 +182,14 @@ void MainWindow::showReplayDialog()
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     if (replay_flag) {
         switch (event->key()) {
+            case Qt::Key_W:
+            case Qt::Key_Up:
+                this->replay->update_start();
+                break;
+            case Qt::Key_S:
+            case Qt::Key_Down:
+                this->replay->update_end();
+                break;
             case Qt::Key_A:
             case Qt::Key_Left:
                 this->replay->update_backward();
