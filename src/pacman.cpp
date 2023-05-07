@@ -54,29 +54,7 @@ void Pacman::pacman_end(){
     GameOverRect *game_over = new GameOverRect(map->map.size(),map->map[0].size(),200,100, this->view);
 }
 
-void Pacman::pacman_win(){
-    QGraphicsScene *scene = new QGraphicsScene();
-    QGraphicsTextItem *text = new QGraphicsTextItem("Congratulations!");
-    QGraphicsTextItem *text2 = new QGraphicsTextItem("You have won!");
-    text->setFont(QFont("Arial", 45));
-    text2->setFont(QFont("Arial", 25));
-    QRectF textRect = text->boundingRect();
-    QPointF center(this->view->width() / 2.0 - textRect.width() / 2.0, this->view->height() / 2.0 - textRect.height() / 2.0);
-    text->setPos(center + QPointF(5, 0));
-    textRect = text2->boundingRect();
-    QPointF center2(this->view->width() / 2.0 - textRect.width() / 2.0, this->view->height() / 2.0 - textRect.height() / 2.0);
-    text2->setPos(center2 + QPointF(5, 55));
 
-    // Add the image
-    QPixmap image("./textures/misc/winner.png");
-    QGraphicsPixmapItem *pixmapItem = new QGraphicsPixmapItem(image);
-    pixmapItem->setPos(this->view->width() / 2.0 - image.width() / 2.0 + 5, this->view->height() / 2.0 - image.height() / 2.0 + 165);
-
-    scene->addItem(text);
-    scene->addItem(text2);
-    scene->addItem(pixmapItem);
-    this->view->setScene(scene);
-}
 int Pacman::get_direction(){
     return this->direction;
 }

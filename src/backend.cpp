@@ -9,11 +9,13 @@ Backend::Backend(){
 Backend::~Backend(){
     if (this->map != nullptr){
         delete this->map;
+        this->map = nullptr;
     }
 }
 Map *Backend::load_map(std::string filename){
     if (this->map != nullptr){
         delete this->map;
+        this->map = nullptr;
     }
     this->map = new Map(filename);
     return this->map;
@@ -113,6 +115,7 @@ void Backend::check_collision(Pacman &pacman, Ghost &ghost){
 void Backend::check_win(std::pair<int, int> end, std::pair<int, int> pacman, int size){
     if (end == pacman && size == 0){
         std::cout << "Win" << std::endl;
+        emit win();
         throw 1;
     }
 }

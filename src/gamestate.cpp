@@ -93,7 +93,6 @@ void GameState::update(){
         backend->check_win(this->end, this->pacman->position, this->keys.size());
     }
     catch (int e){
-        pacman->pacman_win();
         this->stop = true;
         int i = 0;
         for (auto v : this->pacman->movement){

@@ -33,16 +33,27 @@ public:
 private:
     Ui::MainWindow *ui;
     MainScene* scene;
+    QGraphicsScene* win_scene = nullptr;
     QGraphicsView *view;
     GameState *gamestate;
     Replay *replay;
     Backend *backend;
+    void win();
     void showMapLevelsDialog();
     void showReplayDialog();
     void restartGame() {
-        delete this->gamestate;
-        delete this->scene;
-
+        if (this->gamestate != nullptr){
+            delete this->gamestate;
+            this->gamestate = nullptr;
+        }
+        if (this->scene != nullptr){
+            delete this->scene;
+            this->scene = nullptr;
+        }
+        if (this->win_scene != nullptr){
+            delete this->win_scene;
+            this->win_scene = nullptr;
+        }
         this->scene = new MainScene(this->backend,this);
 
         this->view->setScene(this->scene);

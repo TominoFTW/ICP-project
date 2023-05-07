@@ -96,6 +96,7 @@ MainWindow::MainWindow(QWidget *parent)
     view->setFocusPolicy(Qt::NoFocus);
 
     this->gamestate = new GameState(view, backend);
+    connect(this->backend, &Backend::win, this, &MainWindow::win);
 }
 
 void MainWindow::showMapLevelsDialog()
@@ -110,8 +111,18 @@ void MainWindow::showMapLevelsDialog()
         QPushButton *levelButton = new QPushButton(tr("Map Level %1").arg(i+1), mapLevelsDialog);
         connect(levelButton, &QPushButton::clicked, this, [this, i]() {
             // Handle the button click by loading the selected map level
-            delete this->gamestate;
-            delete this->scene;
+            if (this->gamestate != nullptr){
+                delete this->gamestate;
+                this->gamestate = nullptr;
+            }
+            if (this->scene != nullptr){
+                delete this->scene;
+                this->scene = nullptr;
+            }
+            if (this->win_scene != nullptr){
+                delete this->win_scene;
+                this->win_scene = nullptr;
+            }
             backend->load_map("./examples/" + this->relativePaths[i].toStdString());
             this->scene = new MainScene(backend,this);
             this->view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
@@ -174,11 +185,38 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             return;
     }
 }
+void MainWindow::win(){
+    win_scene = new QGraphicsScene();
+    QGraphicsTextItem *win_text = new QGraphicsTextItem("Congratulations!");
+    QGraphicsTextItem *win_text2 = new QGraphicsTextItem("You have won!");
+    win_text->setFont(QFont("Arial", 45));
+    win_text2->setFont(QFont("Arial", 25));
+    QRectF textRect = win_text->boundingRect();
+    QPointF center(this->view->width() / 2.0 - textRect.width() / 2.0, this->view->height() / 2.0 - textRect.height() / 2.0);
+    win_text->setPos(center + QPointF(5, 0));
+    textRect = win_text2->boundingRect();
+    QPointF center2(this->view->width() / 2.0 - textRect.width() / 2.0, this->view->height() / 2.0 - textRect.height() / 2.0);
+    win_text2->setPos(center2 + QPointF(5, 55));
+
+    // Add the image
+    QPixmap image("./textures/misc/winner.png");
+    QGraphicsPixmapItem *win_image = new QGraphicsPixmapItem(image);
+    win_image->setPos(this->view->width() / 2.0 - image.width() / 2.0 + 5, this->view->height() / 2.0 - image.height() / 2.0 + 165);
+
+    win_scene->addItem(win_text);
+    win_scene->addItem(win_text2);
+    win_scene->addItem(win_image);
+    this->view->setScene(win_scene);
+}
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete this->gamestate;
-    delete this->scene;
+    if (this->gamestate != nullptr)
+        delete this->gamestate;
+    if (this->scene != nullptr)
+        delete this->scene;
+    if (this->win_scene != nullptr)
+        delete this->win_scene;
     delete this->view;
     delete this->backend;
 }
