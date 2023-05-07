@@ -23,43 +23,13 @@ Replay::Replay(QWidget *parent, QGraphicsScene *scene)
     parseInput(input);
     //backend load map
     //gamestate pacman, keys, ghosts
+    Backend *backend = new Backend();
+    this->map = backend->load_map("./replays/tmp.txt");
     
     // this->timer = new QTimer();
     // QObject::connect(timer, &QTimer::timeout, this, &Replay::update);
     // timer->start(300);
-    // for (int row = 0; row < map->map.size(); row++) {
-    //     for (int col = 0; col < map->map[row].size(); col++) {
-    //         map->map[row][col]->setRect(col*50, row*50, 50, 50);
-    //         if (map->map[row][col]->color == Qt::black) {
-    //             std::cout << "huhu" << std::endl;
-    //             map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/wall.png").scaled(50,50)));
-    //         }
-    //         else if(map->map[row][col]->color == Qt::blue) {
-    //             map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
-    //             // this->end = std::make_pair(col, row);
-    //         }
-    //         else if (map->map[row][col]->color == Qt::yellow) {
-    //             map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/key.png").scaled(50,50)));
-    //             // this->keys.push_back(std::make_pair(col, row));
-    //         }
-    //         else if (map->map[row][col]->color == Qt::blue) {
-    //             map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
-    //         }
-    //         else if (map->map[row][col]->color == Qt::green) {
-    //             map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
-    //             // this->ghosts.push_back(std::make_pair(col, row));
-    //         }
-    //         else{
-    //             map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/dot.png").scaled(50,50)));
-    //             if (map->map[row][col]->color == Qt::darkYellow) {
-    //                 // this->pacman = std::make_pair(col, row);
-    //             }
-    //         }
-    //         map->map[row][col]->setPen(Qt::NoPen);
-    //         this->addItem(map->map[row][col]);
-
-    //     }
-    // }
+    remove("./replays/tmp.txt");
     input.close();
 }
 
@@ -69,7 +39,7 @@ void Replay::parseInput(std::ifstream &input){
         return;
     }
     std::string line;
-    std::ofstream tmp("./examples/tmp.txt");
+    std::ofstream tmp("./replays/tmp.txt");
     while (std::getline(input, line)) {
         if (line == "pacman"){
             tmp.close();
@@ -79,8 +49,9 @@ void Replay::parseInput(std::ifstream &input){
         std::cout << "happy" << std::endl;
         
     }
-    this->map = new Map("./examples/tmp.txt");
-    std::remove("./examples/tmp.txt");
+    this->ghost_positions = std::vector<std::pair<int, int>>();
+    this->pacman_positions = std::vector<std::pair<int, int>>();
+    // this->keys = std::vector<std::pair<int, int>>();
 }
 
 // TODO do map.cpp a .h pridat neco na udrzovani stavu klicu -> potom vykresleni targetu ve spravnej moment

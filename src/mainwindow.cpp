@@ -60,19 +60,41 @@ MainWindow::MainWindow(QWidget *parent)
     this->relativePaths = relativePaths;
     // Add a separator and an exit action to the menu
     fileMenu->addSeparator();
+
+
+    // Add an action to show the replay dialog
+    QAction *replayAction = new QAction(tr("Replay"), this);
+    fileMenu->addAction(replayAction);
+    connect(replayAction, &QAction::triggered, this, &MainWindow::showReplayDialog);
+    QDir directory2("./replays");
+
+    QStringList nameFilters2;
+    nameFilters2 << "*.txt";
+
+    QStringList files2 = directory2.entryList(nameFilters2, QDir::Files);
+
+    QStringList relativePaths2;
+    foreach(QString file, files2) {
+        QString relativePath = directory2.relativeFilePath(file);
+        relativePaths2 << relativePath;
+        qDebug() << relativePath;
+    }
+    this->relativePaths2 = relativePaths2;
+    fileMenu->addSeparator();
     
     
     // Set the menu bar as the main window's menu bar
     setMenuBar(menuBar);
     //####################################################################################################
     this->view = new QGraphicsView(this->scene, this);
-    // toto nezvacsuje sa okno :)
     view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
     this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
     this->setCentralWidget(view);
+
     view->setFocusPolicy(Qt::StrongFocus);
     this->setFocusPolicy(Qt::StrongFocus);
     view->setFocusPolicy(Qt::NoFocus);
+
     this->gamestate = new GameState(view, backend);
 }
 
@@ -105,6 +127,27 @@ void MainWindow::showMapLevelsDialog()
     mapLevelsDialog->setFixedSize(200, 50*3);
     mapLevelsDialog->exec();
 }
+void MainWindow::showReplayDialog()
+{
+    // Create a dialog to show the map levels
+    QDialog *replayDialog = new QDialog(this);
+    replayDialog->setWindowTitle(tr("Select Replay"));
+    QVBoxLayout *layout = new QVBoxLayout(replayDialog);
+    
+    // Add a button for each map level
+    for (int i = 0; i < this->relativePaths2.size(); i++) {
+        QPushButton *replayButton = new QPushButton(tr("Replay %1").arg(i+1), replayDialog);
+        connect(replayButton, &QPushButton::clicked, this, [this, i]() {
+            // TODO
+        });
+        layout->addWidget(replayButton);
+    }
+    
+    // Set the dialog size and show it
+    replayDialog->setFixedSize(200, 50*3);
+    replayDialog->exec();
+}
+
 // registering users input with w-s-a-d and arrow keys
 void MainWindow::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
