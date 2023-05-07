@@ -28,6 +28,7 @@ public:
     ~MainWindow();
     void keyPressEvent(QKeyEvent *) override;
     QStringList relativePaths;
+    QStringList relativePaths2;
 
 private:
     Ui::MainWindow *ui;
@@ -37,6 +38,7 @@ private:
     Replay *replay;
     Backend *backend;
     void showMapLevelsDialog();
+    void showReplayDialog();
     void restartGame() {
         delete this->gamestate;
         delete this->scene;
