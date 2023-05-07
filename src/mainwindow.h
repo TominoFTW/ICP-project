@@ -33,10 +33,11 @@ public:
 private:
     Ui::MainWindow *ui;
     MainScene* scene;
-    QGraphicsView *view;
-    GameState *gamestate;
-    Replay *replay;
-    Backend *backend;
+    QGraphicsView *view = nullptr;
+    GameState *gamestate = nullptr;
+    Replay *replay = nullptr;
+    Backend *backend = nullptr;
+    bool replay_flag = false;
     void showMapLevelsDialog();
     void showReplayDialog();
     void restartGame() {

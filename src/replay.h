@@ -17,18 +17,24 @@
 
 class Replay: public QGraphicsScene{
 public:
-    Replay(QWidget *parent, QGraphicsScene *MainScene);
+    Replay(QWidget *parent, QGraphicsScene *MainScene, std::string input_file, Backend *backend, QGraphicsView *view);
     void update_forward();
     void update_backward();
+    std::string input_map; 
 private:
     Pacman* pacman;
-    Ghost* ghost;
+    std::vector<Ghost*> ghosts;
+    std::vector<Key*> keys;
     QGraphicsScene *scene;
+    QGraphicsView *view;
     Map *map;
     QTimer *timer;
     int index = 0;
     std::vector<std::pair<int, int>> pacman_positions;
-    std::vector<std::pair<int, int>> ghost_positions;
+    std::vector<std::vector<std::pair<int, int>>> ghost_positions;
     void parseInput(std::ifstream &input);
+    void add_ghost(Ghost &ghost);
+    void add_key(Key &key);
+
 };
 #endif // REPLAY_H

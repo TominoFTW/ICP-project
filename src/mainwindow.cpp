@@ -22,16 +22,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->setWindowTitle("Pacmun");
-    bool replay = false;
     // todo skusit toto upravit
     this->backend = new Backend();
     this->backend->load_map("./examples/map-01.txt");
     //Map *map = new Map("./examples/map-01.txt");
     this->scene = new MainScene(backend);
-    if (replay) {
-        this->replay = new Replay(this, this->scene);
-        // IDK je to sracka
-    }
     //####################################################################################################
     QMenuBar *menuBar = new QMenuBar(this);
     
@@ -110,7 +105,16 @@ void MainWindow::showMapLevelsDialog()
         QPushButton *levelButton = new QPushButton(tr("Map Level %1").arg(i+1), mapLevelsDialog);
         connect(levelButton, &QPushButton::clicked, this, [this, i]() {
             // Handle the button click by loading the selected map level
-            delete this->gamestate;
+            this->replay_flag = false;
+            if (this->replay != nullptr) {
+                delete this->replay;
+                this->replay = nullptr;
+            }
+            if (this->gamestate != nullptr){
+                delete this->gamestate;
+                this->gamestate = nullptr;
+            }
+            std::cout << "debug" << std::endl;
             delete this->scene;
             backend->load_map("./examples/" + this->relativePaths[i].toStdString());
             this->scene = new MainScene(backend,this);
@@ -138,7 +142,27 @@ void MainWindow::showReplayDialog()
     for (int i = 0; i < this->relativePaths2.size(); i++) {
         QPushButton *replayButton = new QPushButton(tr("Replay %1").arg(i+1), replayDialog);
         connect(replayButton, &QPushButton::clicked, this, [this, i]() {
-            // TODO
+            // TODO replay flag
+            this->replay_flag = true;
+            if (this->replay != nullptr) {
+                delete this->replay;
+                this->replay = nullptr;
+            }
+            if (this->gamestate != nullptr) {
+                delete this->gamestate;
+                this->gamestate = nullptr;
+            }
+            delete this->scene;
+            backend->get_replay_map("./replays/" + this->relativePaths2[i].toStdString());
+            backend->load_map("./replays/tmp.txt");
+            this->scene = new MainScene(backend,this);
+            this->view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
+            this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
+            this->setCentralWidget(view);
+            this->view->setScene(this->scene);
+
+            this->replay = new Replay(this, this->scene, "./replays/" + this->relativePaths2[i].toStdString(), backend, this->view);
+            remove("./replays/tmp.txt");
         });
         layout->addWidget(replayButton);
     }
@@ -150,28 +174,44 @@ void MainWindow::showReplayDialog()
 
 // registering users input with w-s-a-d and arrow keys
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    switch (event->key()) {
-        case Qt::Key_W:
-        case Qt::Key_Up:
-            this->gamestate->set_pacman_dir(3);
-            break;
-        case Qt::Key_S:
-        case Qt::Key_Down:
-            this->gamestate->set_pacman_dir(1);
-            break;
-        case Qt::Key_A:
-        case Qt::Key_Left:
-            this->gamestate->set_pacman_dir(2);
-            break;
-        case Qt::Key_D:
-        case Qt::Key_Right:
-            this->gamestate->set_pacman_dir(0);
-            break;
-        case Qt::Key_R:
-            this->restartGame();
-            break;
-        default:
-            return;
+    if (replay_flag) {
+        switch (event->key()) {
+            case Qt::Key_A:
+            case Qt::Key_Left:
+                this->replay->update_backward();
+                break;
+            case Qt::Key_D:
+            case Qt::Key_Right:
+                this->replay->update_forward();
+                break;
+            default:
+                return;
+        }
+    }
+    else {
+        switch (event->key()) {
+            case Qt::Key_W:
+            case Qt::Key_Up:
+                this->gamestate->set_pacman_dir(3);
+                break;
+            case Qt::Key_S:
+            case Qt::Key_Down:
+                this->gamestate->set_pacman_dir(1);
+                break;
+            case Qt::Key_A:
+            case Qt::Key_Left:
+                this->gamestate->set_pacman_dir(2);
+                break;
+            case Qt::Key_D:
+            case Qt::Key_Right:
+                this->gamestate->set_pacman_dir(0);
+                break;
+            case Qt::Key_R:
+                this->restartGame();
+                break;
+            default:
+                return;
+        }
     }
 }
 MainWindow::~MainWindow()
