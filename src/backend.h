@@ -27,6 +27,7 @@ public:
     signals:
         void p_move(std::pair<int, int> old_position);
         void moves_increment(int moves);
+        void update_keys(int keys);
 
 };
 

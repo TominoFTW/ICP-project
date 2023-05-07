@@ -123,6 +123,7 @@ void Backend::pick_key(Key &key, Pacman &pacman,std::vector<Key*> &keys){
         key.picked = true;
         keys.erase(std::remove(keys.begin(), keys.end(), &key), keys.end());
     }
+    emit update_keys((int)keys.size());
 }
 std::pair<int,int> Backend::get_pacman_start(){
     return this->map->get_pacman_index();

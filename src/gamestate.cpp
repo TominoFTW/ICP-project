@@ -10,9 +10,7 @@
 #include "map.h"
 
 //hello
-GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), stop(false){
-    // todo frontend okna vyhodit z pacmana niekam inam ???????
-    this->backend = backend;
+GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), backend(backend), stop(false){
     this->pacman = new Pacman(backend->get_pacman_start(),backend->map, this->view);
     for (int i = 0; i < backend->get_ghosts_start().size(); i++) {
         Ghost *ghost = new Ghost(backend->get_ghosts_start()[i], this->view);

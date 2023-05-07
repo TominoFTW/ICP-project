@@ -12,9 +12,12 @@ public:
     ~MainScene();
     QGraphicsTextItem *movesText;
     QGraphicsRectItem *movesRect;
+    QGraphicsTextItem *keysText;
+    QGraphicsRectItem *keysRect;
     Backend *backend;
     public slots:
         void updateMovesText(int moves);
+        void updateKeysText(int keys);
 };
 
 #endif // MAINSCENE_H

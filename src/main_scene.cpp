@@ -71,12 +71,35 @@ MainScene::MainScene(Backend *backend,QWidget *parent)
     movesText->setPos(text_pos);
     this->addItem(movesRect);
     this->addItem(movesText);
+
+    this->keysRect = new QGraphicsRectItem();
+    this->keysRect->setRect(10,0,120,30);
+    this->keysRect->setBrush(Qt::gray);
+    this->keysRect->setPen(Qt::NoPen);
+    this->keysRect->setOpacity(0.90);
+
+    this->keysText = new QGraphicsTextItem();
+    this->keysText->setPlainText("Keys: ");
+    this->keysText->setDefaultTextColor(Qt::black);
+    this->keysText->setFont(QFont("Arial", 14));
+    rect = this->keysRect->rect();
+    center = rect.center();
+    text_pos = center - QPointF(keysText->boundingRect().width() / 2+5, keysText->boundingRect().height() / 2);
+    keysText->setPos(text_pos);
+    this->addItem(keysRect);
+    this->addItem(keysText);
+    
     // connect 
     connect(this->backend, &Backend::moves_increment, this, &MainScene::updateMovesText);
+    connect(this->backend, &Backend::update_keys, this, &MainScene::updateKeysText);
 }
 void MainScene::updateMovesText(int moves)
 {
     movesText->setPlainText("Moves: " + QString::number(moves));
+}
+void MainScene::updateKeysText(int keys)
+{
+    keysText->setPlainText("Keys: " + QString::number(keys));
 }
 MainScene::~MainScene(){
     for (int row = 0; row < backend->map->map.size(); row++) {
