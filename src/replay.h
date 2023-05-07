@@ -25,10 +25,13 @@ private:
     Pacman* pacman;
     std::vector<Ghost*> ghosts;
     std::vector<Key*> keys;
+    std::vector<Key*> picked_keys;
     QGraphicsScene *scene;
     QGraphicsView *view;
+    Backend *backend;
     Map *map;
     QTimer *timer;
+    std::pair<int, int> end;
     int index = 0;
     std::vector<std::pair<int, int>> pacman_positions;
     std::vector<std::vector<std::pair<int, int>>> ghost_positions;
