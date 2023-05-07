@@ -74,8 +74,13 @@ void Backend::ghost_move(Ghost &ghost, Pacman &pacman){
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, 3);
-    check_collision(pacman, ghost);
     bool moved = false;
+    bool collision = false;
+    ghost.old_position = ghost.position;
+    collision = check_collision(pacman, ghost);
+    if (collision){
+        throw 1;
+    }
     while (!moved){
         int direction = dis(gen);
         switch(direction){
@@ -106,14 +111,19 @@ void Backend::ghost_move(Ghost &ghost, Pacman &pacman){
         }
     }
     ghost.movement.push_back(ghost.position);
-    check_collision(pacman, ghost);
-}
-// todo skusit nahradit exception
-void Backend::check_collision(Pacman &pacman, Ghost &ghost){
-    if (ghost.position == pacman.position){
-        std::cout << "Collision" << std::endl;
+    collision = check_collision(pacman, ghost);
+    emit g_move();
+    if (collision){
         throw 1;
     }
+}
+// todo skusit nahradit exception
+bool Backend::check_collision(Pacman &pacman, Ghost &ghost){
+    if (ghost.position == pacman.position or ghost.old_position == pacman.position){
+        std::cout << "Collision" << std::endl;
+        return true;
+    }
+    return false;
 }
 
 void Backend::check_win(std::pair<int, int> end, std::pair<int, int> pacman, int size){

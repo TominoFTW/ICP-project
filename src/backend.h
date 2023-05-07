@@ -18,7 +18,7 @@ public:
     Map *load_map(std::string filename);
     void pacman_move(Pacman &pacman);
     void ghost_move(Ghost &ghost, Pacman &pacman);
-    void check_collision(Pacman &pacman, Ghost &ghost);
+    bool check_collision(Pacman &pacman, Ghost &ghost);
     void check_win(std::pair<int, int> end, std::pair<int, int> pacman, int size);
     void pick_key(Key &key, Pacman &pacman, std::vector<Key*> &keys);
     std::pair<int,int> get_pacman_start();
@@ -29,6 +29,7 @@ public:
     Map *map;
     signals:
         void p_move(std::pair<int, int> old_position);
+        void g_move();
         void moves_increment(int moves);
         void update_keys(int keys);
         void win();

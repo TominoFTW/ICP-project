@@ -10,9 +10,10 @@ class Ghost: public QObject, public QGraphicsRectItem {
     public:
         Ghost(std::pair<int,int> map_index, QGraphicsView *view);
         ~Ghost();
-        void move(std::pair<int, int> old_position);
+        void move();
         int direction;
         std::pair<int, int> position;
+        std::pair<int, int> old_position = position;
         std::vector<std::pair<int, int>> movement;
     private slots:
         void onAnimationChanged(const QVariant &value);

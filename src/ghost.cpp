@@ -38,7 +38,7 @@ Ghost::~Ghost(){
     delete mAnimation;
 }
 
-void Ghost::move(std::pair<int, int>old_position){
+void Ghost::move(){
     mAnimation->setStartValue(QRectF(old_position.first, old_position.second, 50, 50));
     mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
     mAnimation->start();

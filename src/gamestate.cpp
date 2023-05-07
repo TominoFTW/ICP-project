@@ -14,6 +14,7 @@ GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), backen
     this->pacman = new Pacman(backend->get_pacman_start(),backend->map, this->view);
     for (int i = 0; i < (int)backend->get_ghosts_start().size(); i++) {
         Ghost *ghost = new Ghost(backend->get_ghosts_start()[i], this->view);
+        connect(this->backend, &Backend::g_move, ghost, &Ghost::move);
         this->add_ghost(*ghost);
     }
     this->end = backend->get_portal_pos();
@@ -60,7 +61,7 @@ void GameState::update(){
         }
         catch (int e){
             std::cout << "ghost caught pacman" << std::endl;
-            ghost->move(old_position);
+            //ghost->move(old_position);
             pacman->pacman_end();
             this->stop = true;
             int i = 0;
@@ -80,7 +81,7 @@ void GameState::update(){
             }
             return;
         }
-        ghost->move(old_position);
+        //ghost->move(old_position);
     }
     for (Key *key : this->keys){
         backend->pick_key(*key, *this->pacman, this->keys);
