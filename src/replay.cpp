@@ -109,7 +109,7 @@ void Replay::update_forward(){
 
     this->pacman->position = this->pacman_positions[this->index];
     if (this->index == 0)
-        emit backend->p_move(std::make_pair(backend->get_pacman_start().second*50, backend->get_pacman_start().first*50));
+        emit backend->p_move(std::make_pair(backend->get_pacman_start().first*50,backend->get_pacman_start().second*50));
     else
         emit backend->p_move(this->pacman_positions[this->index-1]);
 
