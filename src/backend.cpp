@@ -3,6 +3,10 @@
 #include <random>
 #include <iostream>
 #include <utility>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
 Backend::Backend(){
     this->map = nullptr;
 }
@@ -143,4 +147,20 @@ std::vector<std::pair<int,int>> Backend::get_keys_pos(){
         tmp.push_back(std::make_pair(v.first*50, v.second*50));
     }
     return tmp;
+}
+void Backend::get_replay_map(std::string input_file) {
+    std::ifstream input(input_file);
+    if (!input) {
+        std::cout << "Unable to open file";
+        return;
+    }
+    std::string line;
+    std::ofstream tmp("./replays/tmp.txt");
+    while (std::getline(input, line)) {
+        if (line == "pacman"){
+            tmp.close();
+            break;
+        }
+        tmp << line << std::endl;
+    }
 }

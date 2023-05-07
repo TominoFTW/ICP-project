@@ -7,6 +7,8 @@
 #include "pacman.h"
 #include "ghost.h"
 #include "key.h"
+#include <fstream>
+#include <sstream>
 class Backend : public QObject
 {
     Q_OBJECT
@@ -23,6 +25,7 @@ public:
     std::vector<std::pair<int,int>> get_ghosts_start();
     std::pair<int,int> get_portal_pos();
     std::vector<std::pair<int,int>> get_keys_pos();
+    void get_replay_map(std::string input_file);
     Map *map;
     signals:
         void p_move(std::pair<int, int> old_position);
