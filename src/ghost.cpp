@@ -47,11 +47,3 @@ void Ghost::onAnimationChanged(const QVariant &value){
     this->setPos(value.toRectF().topLeft());
     update();
 }
-
-
-void Ghost::check_collision(QGraphicsScene &scene, Map &map, Pacman &pacman){
-    if (pacman.position == this->position){
-        pacman.pacman_end();
-    // todo
-    }
-}
