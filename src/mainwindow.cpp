@@ -92,6 +92,9 @@ void MainWindow::showMapLevelsDialog()
             delete this->scene;
             backend->load_map("./examples/" + this->relativePaths[i].toStdString());
             this->scene = new MainScene(backend,this);
+            this->view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
+            this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
+            this->setCentralWidget(view);
             this->view->setScene(this->scene);
             this->gamestate = new GameState(this->view, backend);
         });

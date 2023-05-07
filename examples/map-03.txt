@@ -1,0 +1,16 @@
+15 15
+SXX...XX..X.K.X
+..XXXXX.......X
+...X......XX..X
+......XTX.XXXXX
+..X..X....X....
+..XXXX....X...X
+..XG...K..X....
+..XXX.....XXXXX
+...K..XX.....XX
+..XX...XX.XXXXX
+....XXXXX.....X
+..X...XXX.X..XX
+..XKG..XXXX...X
+..XXX........KX
+........K...XXX
