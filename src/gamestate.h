@@ -16,12 +16,12 @@ public:
     void add_key(Key &key);
     void set_pacman_dir(int direction);
     std::pair<int, int> end;
-    Backend *backend;
 private slots:
     void update();
 private:
     Pacman *pacman;
     QGraphicsView *view;
+    Backend *backend;
     QTimer *timer;
     std::vector<Ghost*> ghosts;
     std::vector<Key*> keys;

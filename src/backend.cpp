@@ -20,7 +20,7 @@ Map *Backend::load_map(std::string filename){
 }
 
 void Backend::pacman_move(Pacman &pacman){
-    switch(pacman.direction){
+    switch(pacman.get_direction()){
         case 0:
             if (this->map->map[pacman.position.second/50][(pacman.position.first+50)/50]->is_free()){
                 std::pair<int,int> old_position = pacman.position;

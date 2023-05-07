@@ -77,3 +77,6 @@ void Pacman::pacman_win(){
     scene->addItem(pixmapItem);
     this->view->setScene(scene);
 }
+int Pacman::get_direction(){
+    return this->direction;
+}

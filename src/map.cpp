@@ -28,7 +28,7 @@ Map::Map(std::string filename) {
         std::vector<MapObject*> row;
         MapObject *xy = new MapObject('X');
         row.push_back(xy);
-        for (int i = 0; i < line.length(); i++) {
+        for (int i = 0; i < (int)line.length(); i++) {
             
             MapObject *object = new MapObject(line[i]);
             get_objects(i+1, this->map.size()+1, line[i]);
@@ -40,14 +40,14 @@ Map::Map(std::string filename) {
 
     }
     std::vector<MapObject*>* top_row = new std::vector<MapObject*>();
-    for (int i = 0; i < map[0].size(); i++) {
+    for (int i = 0; i < (int)map[0].size(); i++) {
         MapObject* obj = new MapObject('X');
         top_row->push_back(obj);
     }
     this->map.insert(this->map.begin(), *top_row);
 
     std::vector<MapObject*>* bottom_row = new std::vector<MapObject*>();
-    for (int i = 0; i < map[0].size(); i++) {
+    for (int i = 0; i < (int)map[0].size(); i++) {
         MapObject* obj = new MapObject('X');
         bottom_row->push_back(obj);
     }
@@ -56,8 +56,8 @@ Map::Map(std::string filename) {
 
 }
 Map::~Map() {
-    for (int i = 0; i < this->map.size(); i++) {
-        for (int j = 0; j < this->map[i].size(); j++) {
+    for (int i = 0; i < (int)this->map.size(); i++) {
+        for (int j = 0; j < (int)this->map[i].size(); j++) {
             delete this->map[i][j];
         }
     }

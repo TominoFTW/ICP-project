@@ -12,13 +12,13 @@
 //hello
 GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), backend(backend), stop(false){
     this->pacman = new Pacman(backend->get_pacman_start(),backend->map, this->view);
-    for (int i = 0; i < backend->get_ghosts_start().size(); i++) {
+    for (int i = 0; i < (int)backend->get_ghosts_start().size(); i++) {
         Ghost *ghost = new Ghost(backend->get_ghosts_start()[i], this->view);
         this->add_ghost(*ghost);
     }
     this->end = backend->get_portal_pos();
     // todo ak bude cas prerobit logiku klucov podobne ako ma pacman a ghost a iba ich schovavat ak su zobrate
-    for (int i = 0; i < backend->get_keys_pos().size(); i++) {
+    for (int i = 0; i < (int)backend->get_keys_pos().size(); i++) {
         Key *key = new Key(backend->get_keys_pos()[i], backend->map);
         this->add_key(*key);
     }

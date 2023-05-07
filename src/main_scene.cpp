@@ -28,8 +28,8 @@ MainScene::MainScene(Backend *backend,QWidget *parent)
     // }
     this->backend = backend;
 
-    for (int row = 0; row < backend->map->map.size(); row++) {
-        for (int col = 0; col < backend->map->map[row].size(); col++) {
+    for (int row = 0; row < (int)backend->map->map.size(); row++) {
+        for (int col = 0; col < (int)backend->map->map[row].size(); col++) {
             backend->map->map[row][col]->setRect(col*50, row*50, 50, 50);
             if (backend->map->map[row][col]->color == Qt::black) {
                 // wall, so set texture of wall from ../textures/misc/wall.png
@@ -102,8 +102,8 @@ void MainScene::updateKeysText(int keys)
     keysText->setPlainText("Keys: " + QString::number(keys));
 }
 MainScene::~MainScene(){
-    for (int row = 0; row < backend->map->map.size(); row++) {
-        for (int col = 0; col < backend->map->map[row].size(); col++) {
+    for (int row = 0; row < (int)backend->map->map.size(); row++) {
+        for (int col = 0; col < (int)backend->map->map[row].size(); col++) {
             removeItem(backend->map->map[row][col]);
         }
     }
