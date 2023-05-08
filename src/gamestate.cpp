@@ -96,7 +96,7 @@ void GameState::replay_print() {
     std::time_t t = std::chrono::system_clock::to_time_t(now);
     std::tm tm = *std::localtime(&t);
     std::ostringstream oss;
-    oss << std::put_time(&tm, "%Y-%m-%d_%H:%M:%S");
+    oss << std::put_time(&tm, "%Y-%m-%d_%H%M%S");
     auto file_name = "./replays/replay-" + oss.str() + ".txt";
     std::ofstream replayfile(file_name);
 
