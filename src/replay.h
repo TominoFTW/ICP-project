@@ -14,10 +14,11 @@
 #include <QObject>
 #include <utility>
 #include "backend.h"
+#include "main_scene.h"
 
 class Replay: public QGraphicsScene{
 public:
-    Replay(QWidget *parent, QGraphicsScene *MainScene, std::string input_file, Backend *backend, QGraphicsView *view);
+    Replay(QWidget *parent, MainScene *scene, std::string input_file, Backend *backend, QGraphicsView *view);
     void update_forward();
     void update_backward();
     void update_end();
@@ -28,7 +29,7 @@ private:
     std::vector<Ghost*> ghosts;
     std::vector<Key*> keys;
     std::vector<Key*> picked_keys;
-    QGraphicsScene *scene;
+    MainScene *scene;
     QGraphicsView *view;
     Backend *backend;
     Map *map;

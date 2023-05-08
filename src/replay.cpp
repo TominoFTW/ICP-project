@@ -16,11 +16,11 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include "main_scene.h"
 
 // Replay::Replay(QGraphicsScene *scene){
-Replay::Replay(QWidget *parent, QGraphicsScene *scene, std::string input_file, Backend *backend, QGraphicsView *view)
-    : QGraphicsScene(parent) {
-    (void) scene;
+Replay::Replay(QWidget *parent, MainScene *scene, std::string input_file, Backend *backend, QGraphicsView *view)
+    : QGraphicsScene(parent), scene(scene), view(view) {
     std::ifstream input(input_file);
     parseInput(input);
 
@@ -39,7 +39,9 @@ Replay::Replay(QWidget *parent, QGraphicsScene *scene, std::string input_file, B
         Key *key = new Key(backend->get_keys_pos()[i], backend->map);
         this->add_key(*key);
     }
-    connect(backend, &Backend::p_move, this->pacman, &Pacman::move);
+    connect(this->backend, &Backend::p_move, this->pacman, &Pacman::move);
+    connect(this->backend, &Backend::moves_increment, this->scene, &MainScene::updateMovesText);
+    connect(this->backend, &Backend::update_keys, this->scene, &MainScene::updateKeysText);
 
     input.close();
 }
@@ -89,7 +91,10 @@ void Replay::update_forward(){
 
     this->pacman->position = this->pacman_positions[this->index];
     emit backend->p_move(this->pacman_positions[this->index-1]);
-
+    if (pacman->position != this->pacman_positions[this->index-1]){
+        pacman->moves++;
+        emit backend->moves_increment(pacman->moves);
+    }
     if (this->ghosts.size() > 0){
         for (size_t i = 0; i < this->ghosts.size(); i++){
             if ((size_t)this->index < this->ghost_positions[i].size()){
@@ -113,7 +118,7 @@ void Replay::update_forward(){
             this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50)));
         }
     }
-
+    emit backend->update_keys((int)this->keys.size());
     this->index++;
 }
 
@@ -124,10 +129,12 @@ void Replay::update_backward(){
     }
 
     this->index--;
-
+    if (pacman->position != this->pacman_positions[this->index-1]){
+        pacman->moves--;
+        emit backend->moves_increment(pacman->moves);
+    }
     this->pacman->position = this->pacman_positions[this->index-1];
     this->pacman->move(pacman_positions[index]);
-
     if (this->ghosts.size() > 0){
         for (size_t i = 0; i < this->ghosts.size(); i++){
             if ((size_t)this->index < this->ghost_positions[i].size()) {
@@ -151,6 +158,7 @@ void Replay::update_backward(){
             this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
         }
     }
+    emit backend->update_keys((int)this->keys.size());
 }
 
 void Replay::update_start() {
