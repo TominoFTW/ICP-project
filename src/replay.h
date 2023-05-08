@@ -58,7 +58,7 @@ class Replay: public QGraphicsScene{
          */
         void update_start();
         
-        std::string input_map;
+        std::string input_map; ///< The path to the input file containing the game data.
     private:
         Pacman* pacman;
         std::vector<Ghost*> ghosts;
