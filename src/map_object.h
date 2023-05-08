@@ -33,8 +33,8 @@ class MapObject:public QGraphicsRectItem{
          */
         bool is_free();
 
-        char type;
-        QColor color;
+        char type; ///< Type of object on map
+        QColor color; ///< Color of object on map for textures
 };
 
 #endif // MAP_OBJECT_H
