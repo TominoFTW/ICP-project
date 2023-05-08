@@ -27,11 +27,8 @@ Splnená funkcionalita:
     výber uložených replayov
     možnosť uložiť replay
     výber krokovania dopredu a dozadu v replay-i
-    vyber počiatočnej a koncovej pozície
+    výber počiatočnej a koncovej pozície
     pohyb pomocou WASD a šípky
 Nesplnené:
     pohyb myšou
     automatické prehratie replay-u
-
-
-
