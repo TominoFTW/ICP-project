@@ -33,7 +33,7 @@ MapObject:: MapObject(char symbol){
             this->color = Qt::green;
             break;
         default:
-            std::cout << "unknown" << std::endl;
+            throw "unknown symbol";
             break;
     }
 }

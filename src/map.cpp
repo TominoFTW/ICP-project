@@ -11,8 +11,7 @@ Map::Map(std::string filename) {
     std::ifstream input;
     input.open(filename);
     if (!input) {
-        std::cout << "Unable to open file";
-        return;
+        throw "Unable to open file";
     }
     this->filename = filename;
     std::string line;
@@ -28,6 +27,9 @@ Map::Map(std::string filename) {
         std::vector<MapObject*> row;
         MapObject *xy = new MapObject('X');
         row.push_back(xy);
+        if ((int)line.length() != this->width) {
+            throw "Invalid map";
+        }
         for (int i = 0; i < (int)line.length(); i++) {
             
             MapObject *object = new MapObject(line[i]);
@@ -52,6 +54,9 @@ Map::Map(std::string filename) {
         bottom_row->push_back(obj);
     }
     this->map.push_back(*bottom_row);
+    if ((int)this->map.size() != this->height+2) {
+        throw "Invalid map";
+    }
     input.close();
 
 }
@@ -62,9 +67,7 @@ Map::~Map() {
         }
     }
 }
-Map* Map::load_map(std::string filename) {
-    return new Map(filename);
-}
+
 void Map::get_objects(int x, int y, char type){
     switch(type){
         case 'K':

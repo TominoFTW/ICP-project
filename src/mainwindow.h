@@ -27,13 +27,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void keyPressEvent(QKeyEvent *) override;
-    void mousePressEvent(QMouseEvent *event) override;
+    //void mousePressEvent(QMouseEvent *event) override;
     QStringList relativePaths;
     QStringList relativePaths2;
 
 private:
     Ui::MainWindow *ui;
-    MainScene* scene;
+    MainScene* scene = nullptr;
     QGraphicsScene* win_scene = nullptr;
     void win();
     QGraphicsView *view = nullptr;

@@ -27,9 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("Pacmun");
     // todo skusit toto upravit
     this->backend = new Backend();
-    this->backend->load_map("./examples/map-01.txt");
-    //Map *map = new Map("./examples/map-01.txt");
-    this->scene = new MainScene(backend);
     //####################################################################################################
     QMenuBar *menuBar = new QMenuBar(this);
     
@@ -80,7 +77,17 @@ MainWindow::MainWindow(QWidget *parent)
     
     
     // Set the menu bar as the main window's menu bar
-    setMenuBar(menuBar);
+    this->setMenuBar(menuBar);
+    try{
+        this->backend->load_map("./examples/map-01.txt");
+    }
+    catch (char const* e){
+        std::cout << e << std::endl;
+        return;
+        
+    }
+    //Map *map = new Map("./examples/map-01.txt");
+    this->scene = new MainScene(backend);
     //####################################################################################################
     this->view = new QGraphicsView(this->scene, this);
     view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
@@ -126,8 +133,17 @@ void MainWindow::showMapLevelsDialog()
                 this->win_scene = nullptr;
             }
             std::cout << "debug" << std::endl;
-            backend->load_map("./examples/" + this->relativePaths[i].toStdString());
+            try {
+                backend->load_map("./examples/" + this->relativePaths[i].toStdString());
+            }
+            catch (char const* e){
+                std::cout << e << std::endl;
+                return;
+            }
             this->scene = new MainScene(backend,this);
+            if (this->view == nullptr){
+                this->view = new QGraphicsView(this->scene, this);
+            }
             this->view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
             this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
             this->setCentralWidget(view);
@@ -159,14 +175,24 @@ void MainWindow::showReplayDialog()
                 delete this->replay;
                 this->replay = nullptr;
             }
-            if (this->gamestate != nullptr) {
+            if (this->gamestate != nullptr){
                 delete this->gamestate;
                 this->gamestate = nullptr;
             }
-            delete this->scene;
+            if (this->scene != nullptr){
+                delete this->scene;
+                this->scene = nullptr;
+            }
+            if (this->win_scene != nullptr){
+                delete this->win_scene;
+                this->win_scene = nullptr;
+            }
             backend->get_replay_map("./replays/" + this->relativePaths2[i].toStdString());
             backend->load_map("./replays/tmp.txt");
             this->scene = new MainScene(backend,this);
+            if (this->view == nullptr){
+                this->view = new QGraphicsView(this->scene, this);
+            }
             this->view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
             this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
             this->setCentralWidget(view);
