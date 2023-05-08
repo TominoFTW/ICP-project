@@ -183,18 +183,19 @@ void Replay::update_start() {
             key->picked = false;
             key->update();
             this->keys.push_back(key);
-            picked_keys.erase(std::remove(picked_keys.begin(), picked_keys.end(), key), picked_keys.end());
+            this->picked_keys.pop_back();
         }
         this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
     }
+
     this->index = 1;
     this->pacman->moves = 0;
     emit backend->moves_increment(pacman->moves);
+    emit backend->update_keys((int)this->keys.size());
 }
 
 void Replay::update_end() {
     auto last = this->pacman_positions.size()-1;
-
     auto tmp = this->pacman->position;
     this->pacman->position = this->pacman_positions[pacman_positions.size()-1];
     emit backend->p_move(tmp);
@@ -209,7 +210,6 @@ void Replay::update_end() {
             }
         }
     }
-    
     if (this->keys.size() != 0){
         for (auto pos: this->pacman_positions){
             for (auto key: this->keys){
@@ -245,4 +245,14 @@ int Replay::pacman_possible_moves(){
             count++;
     }
     return count;
+}
+
+Replay::~Replay(){
+    delete this->pacman;
+    for (Ghost *ghost : this->ghosts){
+        delete ghost;
+    }
+    for (Key *key : this->keys){
+        delete key;
+    }
 }

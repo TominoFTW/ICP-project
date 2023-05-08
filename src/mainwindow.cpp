@@ -169,7 +169,6 @@ void MainWindow::showReplayDialog()
     for (int i = 0; i < this->relativePaths2.size(); i++) {
         QPushButton *replayButton = new QPushButton(tr("Replay %1").arg(i+1), replayDialog);
         connect(replayButton, &QPushButton::clicked, this, [this, i]() {
-            // TODO replay flag
             this->blockSignals(false);
             this->replay_flag = true;
             if (this->replay != nullptr) {

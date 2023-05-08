@@ -23,7 +23,8 @@ public:
     void update_backward();
     void update_end();
     void update_start();
-    std::string input_map; 
+    std::string input_map;
+    ~Replay();
 private:
     Pacman* pacman;
     std::vector<Ghost*> ghosts;
@@ -43,6 +44,7 @@ private:
     void add_key(Key &key);
     int pacman_possible_moves();
     int pacman_num_moves;
+    void key_print();
 
 };
 #endif // REPLAY_H
