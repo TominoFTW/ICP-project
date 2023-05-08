@@ -1,9 +1,12 @@
 # PacmanICP - Pseudo Pacman in C++ (QT)
+<p align="center">
+<img src="./doc/pacmun.png" width=500>
+</p>
+
 ## Team
 - Tomas Behal `xbehal02`
 - Jakub Kontrik `xkontr02`
 
-<img src="./doc/pacmun.png" width=450 aling=centre>
 
 ## Usage
 - `make build` - build project
