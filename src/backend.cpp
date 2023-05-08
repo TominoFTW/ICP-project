@@ -1,7 +1,7 @@
 /**
  * @file backend.cpp
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Implementation of backend class methods and variables.
+ * @brief Backend class implementation of methods and variables.
  * Used for computing the logic of the game.
  * @date 2023-05-08
 */

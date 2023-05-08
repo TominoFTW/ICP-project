@@ -1,7 +1,7 @@
 /**
  * @file key.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Definition of key class methods and variables.
+ * @brief Key header.
  * @date 2023-05-08
 */
 #ifndef KEY_H

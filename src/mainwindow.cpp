@@ -1,7 +1,7 @@
 /**
  * @file mainwindow.cpp
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Setting up the main window and registering user input.
+ * @brief MainWindow setup up and registering user input.
  * @date 2023-05-08
 */
 

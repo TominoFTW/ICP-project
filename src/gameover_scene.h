@@ -1,7 +1,7 @@
 /**
  * @file gameover_scene.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Declaration of gameover_scene class methods and variables.
+ * @brief GameOverRect header.
  * @date 2023-05-08
 */
 

@@ -1,7 +1,7 @@
 /**
  * @file gameover_scene.cpp
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Declaration of Gameover retangle after colision.
+ * @brief GameOverRect after colision ending screen.
  * @date 2023-05-08
  */
 #include "gameover_scene.h"

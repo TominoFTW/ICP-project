@@ -1,7 +1,7 @@
 /**
  * @file gamestate.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Declaration of gamestate class methods and variables.
+ * @brief GameState header.
  * @date 2023-05-08
 */
 #ifndef GAMESTATE_H

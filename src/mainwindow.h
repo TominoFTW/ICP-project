@@ -1,7 +1,7 @@
 /**
  * @file mainwindow.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Definition of main window class methods and variables.
+ * @brief MainWindow header.
  * @date 2023-05-08
 */
 

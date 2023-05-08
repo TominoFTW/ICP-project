@@ -1,7 +1,7 @@
 /**
  * @file map.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Declaration of map class methods and variables.
+ * @brief Map header.
  * @date 2023-05-08
  */
 #ifndef MAP_H

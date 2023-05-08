@@ -1,7 +1,7 @@
 /**
  * @file backend.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Declaration of backend class methods and variables.
+ * @brief Backend header.
  * @date 2023-05-08
  */
 #ifndef BACKEND_H

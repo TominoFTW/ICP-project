@@ -1,7 +1,7 @@
 /**
  * @file main_scene.cpp
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Setting up whole game scene.
+ * @brief MainScene setup and implementation of methods.
  * @date 2023-05-08
 */
 
@@ -73,7 +73,7 @@ MainScene::MainScene(Backend *backend,QWidget *parent)
     this->keysRect->setOpacity(0.90);
 
     this->keysText = new QGraphicsTextItem();
-    this->keysText->setPlainText("Keys: ");
+    this->keysText->setPlainText("Keys: 0");
     this->keysText->setDefaultTextColor(Qt::black);
     this->keysText->setFont(QFont("Arial", 14));
     rect = this->keysRect->rect();

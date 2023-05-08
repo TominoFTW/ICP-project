@@ -1,7 +1,7 @@
 /**
  * @file gamestate.cpp
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Holder for current state of the game.
+ * @brief GameState is holder of current state of the game.
  * Every 300ms it calls update function which moves pacman and ghosts.
  * @date 2023-05-08
  */

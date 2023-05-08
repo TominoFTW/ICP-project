@@ -1,8 +1,8 @@
 /**
- * @file    replay.h
+ * @file replay.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief   Declaration of replay class methods and variables.
- * @date    2023-05-08
+ * @brief Replay header.
+ * @date 2023-05-08
  */
 #ifndef REPLAY_H
 #define REPLAY_H

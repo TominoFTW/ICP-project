@@ -1,3 +1,10 @@
+/**
+ * @file map_object.h
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
+ * @brief MapObject header
+ * @date 2023-05-08
+ */
+
 #ifndef MAP_OBJECT_H
 #define MAP_OBJECT_H
 #include <vector>
@@ -6,6 +13,10 @@
 #include <QBrush>
 #include <utility>
 
+/**
+ * @brief Class for map objects.
+ * 
+ */
 class MapObject:public QGraphicsRectItem{
     public:
         /**

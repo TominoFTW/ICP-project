@@ -1,4 +1,9 @@
-
+/**
+ * @file map_object.cpp
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
+ * @brief MapObject class implementation.
+ * @date 2023-05-08
+ */
 #include "map_object.h"
 #include <QVector>
 #include <iostream>

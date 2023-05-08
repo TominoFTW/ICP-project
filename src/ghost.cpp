@@ -1,7 +1,7 @@
 /**
  * @file ghost.cpp
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Methods for ghost GUI object.
+ * @brief Ghost methods for GUI object.
  * @date 2023-05-08
 */
 

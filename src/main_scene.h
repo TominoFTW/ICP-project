@@ -1,7 +1,7 @@
 /**
  * @file main_scene.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Definition of main scene class methods and variables.
+ * @brief MainScene header.
  * @date 2023-05-08
 */
 #ifndef MAINSCENE_H

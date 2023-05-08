@@ -1,8 +1,8 @@
 /**
- * @file    replay.cpp
+ * @file replay.cpp
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief   Implementation of replay class methods.
- * @date    2023-05-08
+ * @brief Replay implementation.
+ * @date 2023-05-08
  */
 #include "replay.h"
 #include "map.h"
@@ -58,6 +58,10 @@ Replay::Replay(QWidget *parent, MainScene *scene, std::string input_file, Backen
 
     // Update key counter
     emit backend->update_keys((int)this->keys.size());
+
+    // If there are no keys, set portal to open
+    if (this->keys.size() == 0)
+        this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50)));
 
     input.close();
 }
@@ -263,7 +267,7 @@ void Replay::add_key(Key &key){
 
 int Replay::pacman_possible_moves(){
     int count = 0;
-    for (int i = 1; i < this->pacman_positions.size(); i++) {
+    for (size_t i = 1; i < this->pacman_positions.size(); i++) {
         if (this->pacman_positions[i-1] != this->pacman_positions[i])
             count++;
     }

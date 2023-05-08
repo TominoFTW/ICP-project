@@ -1,7 +1,7 @@
 /**
  * @file ghost.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Definition of ghost class methods and variables.
+ * @brief Ghost header.
  * @date 2023-05-08
 */
 

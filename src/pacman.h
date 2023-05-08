@@ -1,7 +1,7 @@
 /**
  * @file pacman.h
  * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
- * @brief Declaration of pacman class.
+ * @brief Pacman header.
  * @date 2023-05-08
 */
 #ifndef PACMAN_H
@@ -47,21 +47,29 @@ class Pacman: public QObject, public QGraphicsRectItem {
          */
         int get_direction();
 
-        int moves;
-        std::pair<int, int> position;
-        std::vector<std::pair<int,int>> movement;
+        int moves; ///< Number of moves that the pacman has made, used for scoring.
+        std::pair<int, int> position; ///< Coordinates of the pacman on the map.
+        std::vector<std::pair<int,int>> movement; ///< Vector of coordinates of the pacman on the map.
         
     public slots:
+        /**
+         * @brief Moves the pacman to the new position.
+         * @param old_position The coordinates of the pacman before the move.
+         */
         void move(std::pair<int, int> old_position);
     private slots:
+        /**
+         * @brief Slot for animation.
+         * @param value The value of the animation.
+         */
         void onAnimationChanged(const QVariant &value);
 
     private:
-        Map *map;
-        QGraphicsView *view;
-        int direction;
-        QVariantAnimation *mAnimation;
-        GameOverRect *game_over = nullptr;
+        Map *map; ///< Map object that contains the map layout.
+        QGraphicsView *view; ///< The QGraphicsView object that the game is displayed on.
+        int direction; ///< The direction that the pacman is moving in.
+        QVariantAnimation *mAnimation; ///< Animation object.
+        GameOverRect *game_over = nullptr; ///< Game over scene.
 
 
 };
