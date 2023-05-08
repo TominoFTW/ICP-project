@@ -16,6 +16,9 @@
 #include <QPushButton>
 #include <QDir>
 #include <QDebug>
+#include <QPushButton>
+#include <QGraphicsProxyWidget>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -167,9 +170,39 @@ void MainWindow::showReplayDialog()
             this->view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
             this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
             this->setCentralWidget(view);
+            //#################################################################################
+            std::vector<QPushButton*> buttons;
+            double buttonWidth = this->scene->width() / 4.0;
+            QHBoxLayout* layout = new QHBoxLayout();
+            layout->setContentsMargins(0, 0, 0, 0);
+            layout->setSpacing(0);
+            for (int i = 0; i < 4; i++) {
+                QPushButton* button = new QPushButton("Button " + QString::number(i));
+                button->setFixedWidth(buttonWidth);
+                button->setFixedHeight(25);
+                layout->addWidget(button);
+                buttons.push_back(button);
+            }
+            buttons[0]->setText("next [D]");
+            buttons[1]->setText("prev [A]");
+            buttons[2]->setText("start [W]");
+            buttons[3]->setText("end [S]");
+            buttons[0]->setShortcut(Qt::Key_D);
+            buttons[1]->setShortcut(Qt::Key_A);
+            buttons[2]->setShortcut(Qt::Key_W);
+            buttons[3]->setShortcut(Qt::Key_S);
+            QWidget* widget = new QWidget();
+            widget->setLayout(layout);
+            QGraphicsProxyWidget* proxyWidget = scene->addWidget(widget);
+            proxyWidget->setPos(0, scene->height()-widget->height());
+            //#################################################################################
             this->view->setScene(this->scene);
 
             this->replay = new Replay(this, this->scene, "./replays/" + this->relativePaths2[i].toStdString(), backend, this->view);
+            connect(buttons[0], &QPushButton::clicked, this->replay, &Replay::update_forward);
+            connect(buttons[1], &QPushButton::clicked, this->replay, &Replay::update_backward);
+            connect(buttons[2], &QPushButton::clicked, this->replay, &Replay::update_start);
+            connect(buttons[3], &QPushButton::clicked, this->replay, &Replay::update_end);
             remove("./replays/tmp.txt");
         });
         layout->addWidget(replayButton);
@@ -182,29 +215,7 @@ void MainWindow::showReplayDialog()
 
 // registering users input with w-s-a-d and arrow keys
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    if (replay_flag) {
-        switch (event->key()) {
-            case Qt::Key_W:
-            case Qt::Key_Up:
-                this->replay->update_start();
-                break;
-            case Qt::Key_S:
-            case Qt::Key_Down:
-                this->replay->update_end();
-                break;
-            case Qt::Key_A:
-            case Qt::Key_Left:
-                this->replay->update_backward();
-                break;
-            case Qt::Key_D:
-            case Qt::Key_Right:
-                this->replay->update_forward();
-                break;
-            default:
-                return;
-        }
-    }
-    else {
+    if (!replay_flag) {
         switch (event->key()) {
             case Qt::Key_W:
             case Qt::Key_Up:
@@ -236,15 +247,14 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         }
     }
 }
-void MainWindow::mousePressEvent(QMouseEvent *event)
-    {
-        if (event->button() == Qt::LeftButton)
-        {
-            QPoint clickPos = event->pos();
-            qDebug() << "Clicked at (" << clickPos.x() << ", " << clickPos.y() << ")";
-        }
-    }
-
+// void MainWindow::mousePressEvent(QMouseEvent *event)
+// {
+//     if (event->button() == Qt::LeftButton)
+//     {
+//         QPoint clickPos = event->pos();
+//         qDebug() << "Clicked at (" << clickPos.x() << ", " << clickPos.y() << ")";
+//     }
+// }
 void MainWindow::win(){
     win_scene = new QGraphicsScene();
     QGraphicsTextItem *win_text = new QGraphicsTextItem("Congratulations!");
