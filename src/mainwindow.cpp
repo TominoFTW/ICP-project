@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("Pacmun");
     // todo skusit toto upravit
     this->backend = new Backend();
+    connect(this->backend, &Backend::win, this, &MainWindow::win);
     //####################################################################################################
     QMenuBar *menuBar = new QMenuBar(this);
     
@@ -83,6 +84,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     catch (char const* e){
         std::cout << e << std::endl;
+        exception_flag = true;
         return;
         
     }
@@ -99,7 +101,6 @@ MainWindow::MainWindow(QWidget *parent)
     view->setFocusPolicy(Qt::NoFocus);
 
     this->gamestate = new GameState(view, backend);
-    connect(this->backend, &Backend::win, this, &MainWindow::win);
 }
 
 void MainWindow::showMapLevelsDialog()
@@ -138,6 +139,7 @@ void MainWindow::showMapLevelsDialog()
             }
             catch (char const* e){
                 std::cout << e << std::endl;
+                exception_flag = true;
                 return;
             }
             this->scene = new MainScene(backend,this);
@@ -151,6 +153,7 @@ void MainWindow::showMapLevelsDialog()
             this->gamestate = new GameState(this->view, backend);
         });
         layout->addWidget(levelButton);
+        exception_flag = false;
     }
     
     // Set the dialog size and show it
@@ -233,7 +236,7 @@ void MainWindow::showReplayDialog()
         });
         layout->addWidget(replayButton);
     }
-    
+    exception_flag = false;
     // Set the dialog size and show it
     replayDialog->setFixedSize(200, 50*3);
     replayDialog->exec();
@@ -241,7 +244,7 @@ void MainWindow::showReplayDialog()
 
 // registering users input with w-s-a-d and arrow keys
 void MainWindow::keyPressEvent(QKeyEvent *event) {
-    if (!replay_flag) {
+    if (!replay_flag and !exception_flag) {
         switch (event->key()) {
             case Qt::Key_W:
             case Qt::Key_Up:

@@ -41,6 +41,7 @@ private:
     Replay *replay = nullptr;
     Backend *backend = nullptr;
     bool replay_flag = false;
+    bool exception_flag = false;
     void showMapLevelsDialog();
     void showReplayDialog();
     void restartGame() {

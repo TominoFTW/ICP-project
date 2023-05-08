@@ -9,11 +9,11 @@
 
 Map::Map(std::string filename) {
     std::ifstream input;
+    this->filename = filename;
     input.open(filename);
     if (!input) {
         throw "Unable to open file";
     }
-    this->filename = filename;
     std::string line;
     std::getline(input, line);
     char *number = strtok((char*)line.c_str(), " ");
