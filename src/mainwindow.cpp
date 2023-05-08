@@ -104,6 +104,7 @@ void MainWindow::showMapLevelsDialog()
         QPushButton *levelButton = new QPushButton(tr("Map Level %1").arg(i+1), mapLevelsDialog);
         connect(levelButton, &QPushButton::clicked, this, [this, i]() {
             // Handle the button click by loading the selected map level
+            this->blockSignals(false);
             this->replay_flag = false;
             if (this->replay != nullptr) {
                 delete this->replay;
@@ -149,6 +150,7 @@ void MainWindow::showReplayDialog()
         QPushButton *replayButton = new QPushButton(tr("Replay %1").arg(i+1), replayDialog);
         connect(replayButton, &QPushButton::clicked, this, [this, i]() {
             // TODO replay flag
+            this->blockSignals(false);
             this->replay_flag = true;
             if (this->replay != nullptr) {
                 delete this->replay;
@@ -223,24 +225,43 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
             case Qt::Key_R:
                 this->restartGame();
                 break;
+            case Qt::Key_C:
+                if (this->gamestate->stopped()){
+                    emit save_replay();
+                    this->blockSignals(true);
+                }
+                break;
             default:
                 return;
         }
     }
 }
+void MainWindow::mousePressEvent(QMouseEvent *event)
+    {
+        if (event->button() == Qt::LeftButton)
+        {
+            QPoint clickPos = event->pos();
+            qDebug() << "Clicked at (" << clickPos.x() << ", " << clickPos.y() << ")";
+        }
+    }
+
 void MainWindow::win(){
     win_scene = new QGraphicsScene();
     QGraphicsTextItem *win_text = new QGraphicsTextItem("Congratulations!");
     QGraphicsTextItem *win_text2 = new QGraphicsTextItem("You have won!");
+    QGraphicsTextItem *win_text3 = new QGraphicsTextItem("Press \"C\" to save the replay.");
     win_text->setFont(QFont("Arial", 45));
     win_text2->setFont(QFont("Arial", 25));
+    win_text3->setFont(QFont("Arial", 13));
     QRectF textRect = win_text->boundingRect();
     QPointF center(this->view->width() / 2.0 - textRect.width() / 2.0, this->view->height() / 2.0 - textRect.height() / 2.0);
     win_text->setPos(center + QPointF(5, 0));
     textRect = win_text2->boundingRect();
     QPointF center2(this->view->width() / 2.0 - textRect.width() / 2.0, this->view->height() / 2.0 - textRect.height() / 2.0);
     win_text2->setPos(center2 + QPointF(5, 55));
-
+    textRect = win_text3->boundingRect();
+    QPointF center3(this->view->width() / 2.0 - textRect.width() / 2.0, this->view->height() / 2.0 - textRect.height() / 2.0+200);
+    win_text3->setPos(center3 + QPointF(5, 55));
     // Add the image
     QPixmap image("./textures/misc/winner.png");
     QGraphicsPixmapItem *win_image = new QGraphicsPixmapItem(image);
@@ -249,6 +270,7 @@ void MainWindow::win(){
     win_scene->addItem(win_text);
     win_scene->addItem(win_text2);
     win_scene->addItem(win_image);
+    win_scene->addItem(win_text3);
     this->view->setScene(win_scene);
 }
 MainWindow::~MainWindow()

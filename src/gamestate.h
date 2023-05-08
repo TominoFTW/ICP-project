@@ -17,6 +17,7 @@ public:
     void set_pacman_dir(int direction);
     std::pair<int, int> end;
     void replay_print();
+    bool stopped();
 private slots:
     void update();
 private:

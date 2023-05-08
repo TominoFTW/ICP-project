@@ -12,7 +12,7 @@
 #include <chrono>
 #include <ctime>
 #include <iomanip>
-
+#include "mainwindow.h"
 //hello
 GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), backend(backend), stop(false){
     this->pacman = new Pacman(backend->get_pacman_start(),backend->map, this->view);
@@ -65,7 +65,7 @@ void GameState::update(){
         catch (int e){
             pacman->pacman_end();
             this->stop = true;
-            replay_print();
+            connect(qobject_cast<MainWindow*>(this->view->parent()), &MainWindow::save_replay, this, &GameState::replay_print);
             return;
         }
     }
@@ -81,7 +81,7 @@ void GameState::update(){
     }
     catch (int e){
         this->stop = true;
-        replay_print();
+        connect(qobject_cast<MainWindow*>(this->view->parent()), &MainWindow::save_replay, this, &GameState::replay_print);
         return;
     }
 
@@ -125,4 +125,7 @@ void GameState::replay_print() {
         ghost->movement.clear();
     }
     replayfile.close();
+}
+bool GameState::stopped(){
+    return this->stop;
 }

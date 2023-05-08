@@ -27,6 +27,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void keyPressEvent(QKeyEvent *) override;
+    void mousePressEvent(QMouseEvent *event) override;
     QStringList relativePaths;
     QStringList relativePaths2;
 
@@ -43,6 +44,7 @@ private:
     void showMapLevelsDialog();
     void showReplayDialog();
     void restartGame() {
+        this->blockSignals(false);
         if (this->gamestate != nullptr){
             delete this->gamestate;
             this->gamestate = nullptr;
@@ -60,6 +62,8 @@ private:
         this->view->setScene(this->scene);
         this->gamestate = new GameState(this->view, backend);
 }
+signals:
+    void save_replay();
 
 
 };
