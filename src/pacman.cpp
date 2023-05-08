@@ -25,7 +25,7 @@
 #include <QGraphicsView>
 #include <utility>
 
-Pacman::Pacman(std::pair<int, int> map_index, Map *map, QGraphicsView *view) : QObject(), map(map),view(view), direction(9), moves(0){
+Pacman::Pacman(std::pair<int, int> map_index, Map *map, QGraphicsView *view) : QObject(), moves(0), map(map), view(view), direction(9) {
     // Set pacman position and texture
     this->position = std::make_pair(map_index.first*50, map_index.second*50);
     this->setBrush(QBrush(QImage("./textures/pacman/pacman0.png")));

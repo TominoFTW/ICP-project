@@ -21,7 +21,7 @@ class Key: public QGraphicsRectItem{
     public:
         /**
          * @brief The constructor of the Key class.
-         * @param map_position The map position of the key.
+         * @param position The map position of the key.
          * @param map A pointer to the Map object that the key belongs to.
         */
         Key(std::pair<int, int> position, Map *map);

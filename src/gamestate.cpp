@@ -115,8 +115,8 @@ void GameState::replay_print() {
 
     // Map print
     replayfile << this->backend->map->map.size()-2 << " " << this->backend->map->map[0].size()-2 << std::endl;
-    for (int i = 1; i < this->backend->map->map.size()-1; i++){
-        for (int j = 1; j < this->backend->map->map[i].size()-1; j++){
+    for (int i = 1; i < (int)this->backend->map->map.size()-1; i++){
+        for (int j = 1; j < (int)this->backend->map->map[i].size()-1; j++){
             replayfile << this->backend->map->map[i][j]->type;
         }
         replayfile << std::endl;
