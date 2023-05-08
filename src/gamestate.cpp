@@ -13,6 +13,7 @@
 #include <ctime>
 #include <iomanip>
 #include "mainwindow.h"
+#include <QDir>
 //hello
 GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), backend(backend), stop(false){
     this->pacman = new Pacman(backend->get_pacman_start(),backend->map, this->view);
@@ -125,6 +126,21 @@ void GameState::replay_print() {
         ghost->movement.clear();
     }
     replayfile.close();
+    QDir directory("./replays");
+    QStringList nameFilters;
+    nameFilters << "*.txt"; // Example: load only txt and pdf files
+
+    // Get a list of file names in the directory matching the filters
+    QStringList files = directory.entryList(nameFilters, QDir::Files);
+
+    // Loop over the list of files and store their relative paths
+    QStringList relativePaths;
+    foreach(QString file, files) {
+        QString relativePath = directory.relativeFilePath(file);
+        relativePaths << relativePath;
+    }
+    MainWindow *main_window = qobject_cast<MainWindow*>(this->view->parent());
+    main_window->relativePaths2 = relativePaths;
 }
 bool GameState::stopped(){
     return this->stop;
