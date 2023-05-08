@@ -241,8 +241,6 @@ void Replay::add_key(Key &key){
 int Replay::pacman_possible_moves(){
     int count = 0;
     for (int i = 1; i < this->pacman_positions.size(); i++) {
-        std::cout << this->pacman_positions[i-1].first << " " << this->pacman_positions[i-1].second << std::endl;
-        std::cout << this->pacman_positions[i].first << " " << this->pacman_positions[i].second << std::endl;
         if (this->pacman_positions[i-1] != this->pacman_positions[i])
             count++;
     }
