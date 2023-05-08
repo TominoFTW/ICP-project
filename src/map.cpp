@@ -1,3 +1,9 @@
+/**
+ * @file map.cpp
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @brief Map parsing and object creation.
+ * @date 2023-05-08
+ */
 #include <iostream>
 #include <string>
 #include <vector>
@@ -19,9 +25,9 @@ Map::Map(std::string filename) {
     std::string line;
     std::getline(input, line);
     char *number = strtok((char*)line.c_str(), " ");
-    this->width = atoi(number);
-    number = strtok(NULL, " ");
     this->height = atoi(number);
+    number = strtok(NULL, " ");
+    this->width = atoi(number);
     
     // Read map
     while (std::getline(input, line)) {
