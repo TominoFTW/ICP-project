@@ -51,7 +51,7 @@ void Pacman::onAnimationChanged(const QVariant &value){
 }
 
 void Pacman::pacman_end(){
-    GameOverRect *game_over = new GameOverRect(map->map.size(),map->map[0].size(),200,100, this->view);
+    GameOverRect *game_over = new GameOverRect(map->map.size(),map->map[0].size(),250,100, this->view);
 }
 
 
