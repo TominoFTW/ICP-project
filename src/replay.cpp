@@ -29,6 +29,7 @@ Replay::Replay(QWidget *parent, MainScene *scene, std::string input_file, Backen
     this->index = 1;
 
     this->pacman = new Pacman(backend->get_pacman_start(),backend->map, view);
+    this->pacman_num_moves = pacman_possible_moves();
 
     for (size_t i = 0; i < backend->get_ghosts_start().size(); i++) {
         Ghost *ghost = new Ghost(backend->get_ghosts_start()[i], view);
@@ -42,6 +43,9 @@ Replay::Replay(QWidget *parent, MainScene *scene, std::string input_file, Backen
     connect(this->backend, &Backend::p_move, this->pacman, &Pacman::move);
     connect(this->backend, &Backend::moves_increment, this->scene, &MainScene::updateMovesText);
     connect(this->backend, &Backend::update_keys, this->scene, &MainScene::updateKeysText);
+
+    emit backend->update_keys((int)this->keys.size());
+
 
     input.close();
 }
@@ -184,6 +188,8 @@ void Replay::update_start() {
         this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targer.png").scaled(50,50)));
     }
     this->index = 1;
+    this->pacman->moves = 0;
+    emit backend->moves_increment(pacman->moves);
 }
 
 void Replay::update_end() {
@@ -205,15 +211,22 @@ void Replay::update_end() {
     }
     
     if (this->keys.size() != 0){
-        for (auto key: this->keys){
-            key->picked = true;
-            key->update();
-            this->picked_keys.push_back(key);
-            keys.erase(std::remove(keys.begin(), keys.end(), key), keys.end());
+        for (auto pos: this->pacman_positions){
+            for (auto key: this->keys){
+                if (pos == key->position){
+                    key->picked = true;
+                    key->update();
+                    this->picked_keys.push_back(key);
+                    keys.erase(std::remove(keys.begin(), keys.end(), key), keys.end());
+                }
             }
-        this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50)));
         }
-
+    }
+    if (this->keys.size() == 0)
+        this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50)));
+    this->pacman->moves = pacman_num_moves;
+    emit backend->moves_increment(this->pacman->moves);
+    emit backend->update_keys((int)this->keys.size());
     this->index = last+1;
 }
 
@@ -223,4 +236,15 @@ void Replay::add_ghost(Ghost &ghost){
 }
 void Replay::add_key(Key &key){
     this->keys.push_back(&key);
+}
+
+int Replay::pacman_possible_moves(){
+    int count = 0;
+    for (int i = 1; i < this->pacman_positions.size(); i++) {
+        std::cout << this->pacman_positions[i-1].first << " " << this->pacman_positions[i-1].second << std::endl;
+        std::cout << this->pacman_positions[i].first << " " << this->pacman_positions[i].second << std::endl;
+        if (this->pacman_positions[i-1] != this->pacman_positions[i])
+            count++;
+    }
+    return count;
 }

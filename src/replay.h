@@ -41,6 +41,8 @@ private:
     void parseInput(std::ifstream &input);
     void add_ghost(Ghost &ghost);
     void add_key(Key &key);
+    int pacman_possible_moves();
+    int pacman_num_moves;
 
 };
 #endif // REPLAY_H
