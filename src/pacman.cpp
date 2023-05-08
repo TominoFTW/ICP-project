@@ -69,7 +69,7 @@ void Pacman::onAnimationChanged(const QVariant &value){
 }
 
 void Pacman::pacman_end(){
-    this->game_over = new GameOverRect(map->map.size(),map->map[0].size(),250,100, this->view);
+    this->game_over = new GameOverRect(map->map[0].size(),map->map.size(),250,100, this->view);
 }
 
 int Pacman::get_direction(){
