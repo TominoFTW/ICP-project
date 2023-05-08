@@ -1,6 +1,6 @@
 /**
  * @file ghost.h
- * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
  * @brief Definition of ghost class methods and variables.
  * @date 2023-05-08
 */

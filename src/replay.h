@@ -1,6 +1,6 @@
 /**
  * @file    replay.h
- * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
  * @brief   Declaration of replay class methods and variables.
  * @date    2023-05-08
  */

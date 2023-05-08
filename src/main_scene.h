@@ -1,6 +1,6 @@
 /**
  * @file main_scene.h
- * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
  * @brief Definition of main scene class methods and variables.
  * @date 2023-05-08
 */
@@ -24,7 +24,7 @@ public:
     */
     MainScene(Backend *backend, QWidget *parent = nullptr);
     ~MainScene();
-    
+
     QGraphicsTextItem *movesText; ///< The QGraphicsTextItem object that displays the number of moves.
     QGraphicsRectItem *movesRect; ///< The QGraphicsRectItem object that displays the number of moves.
     QGraphicsTextItem *keysText; ///< The QGraphicsTextItem object that displays the number of keys.

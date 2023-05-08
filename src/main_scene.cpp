@@ -1,9 +1,10 @@
 /**
  * @file main_scene.cpp
- * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
  * @brief Setting up whole game scene.
  * @date 2023-05-08
 */
+
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsRectItem>

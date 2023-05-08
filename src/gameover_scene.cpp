@@ -1,6 +1,6 @@
 /**
  * @file gameover_scene.cpp
- * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontr02
  * @brief Declaration of Gameover retangle after colision.
  * @date 2023-05-08
  */
