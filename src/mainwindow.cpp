@@ -162,7 +162,6 @@ void MainWindow::showReplayDialog()
     QVBoxLayout *layout = new QVBoxLayout(replayDialog);
     
     // Add a button for each map level
-    std::cout << this->relativePaths2.size() << std::endl;
     for (int i = 0; i < this->relativePaths2.size(); i++) {
         QPushButton *replayButton = new QPushButton(tr("Replay %1").arg(i+1), replayDialog);
         connect(replayButton, &QPushButton::clicked, this, [this, i]() {
@@ -303,6 +302,8 @@ void MainWindow::win(){
 MainWindow::~MainWindow()
 {
     delete ui;
+    if (this->replay != nullptr)
+        delete this->replay;
     if (this->gamestate != nullptr)
         delete this->gamestate;
     if (this->scene != nullptr)
