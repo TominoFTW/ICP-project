@@ -6,10 +6,10 @@ build:
 run: build
 	./PacmanICP
 doxygen:
-	cd docs && doxygen Doxyfile
-pack:
-	zip -r xbehal02-xkontr02.zip src/ replays/ examples/ textures/ Makefile README.txt
+	doxygen Doxyfile
+pack: clean
+	zip -r xbehal02-xkontr02.zip src/ replays/ examples/ textures/ Makefile README.txt doc/
 clean:
-	rm -rf docs/html
+	rm -rf doc/html
 	rm -rf build
 	rm -f PacmanICP

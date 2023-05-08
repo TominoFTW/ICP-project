@@ -57,16 +57,16 @@ class Map {
          */
         std::pair<int, int> get_portal_index();
         
-        std::string filename;
-        std::vector<std::vector<MapObject*>> map;
-        int width;
-        int height;
+        std::string filename; ///< The path to the file containing the map layout.
+        std::vector<std::vector<MapObject*>> map; ///< The map layout.
+        int width; ///< The width of the map.
+        int height; ///< The height of the map.
 
     private:
-        std::vector<std::pair<int, int>> keys;
-        std::vector<std::pair<int, int>> ghosts;
-        std::pair<int, int> pacman;
-        std::pair<int, int> end;
+        std::vector<std::pair<int, int>> keys; ///< The keys on the map.
+        std::vector<std::pair<int, int>> ghosts; ///< The ghosts on the map.
+        std::pair<int, int> pacman; ///< The pacman on the map.
+        std::pair<int, int> end; ///< The end on the map.
 
 };
 
