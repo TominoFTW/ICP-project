@@ -1,5 +1,10 @@
-#include <tuple>
-#include "map_object.h"
+/**
+ * @file ghost.cpp
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @brief Methods for ghost GUI object.
+ * @date 2023-05-08
+*/
+
 #include <QGraphicsItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsScene>
@@ -8,15 +13,17 @@
 #include <QColor>
 #include <QPen>
 #include <QGraphicsItem>
-#include "ghost.h"
-#include "map.h"
 #include <iostream>
 #include <random>
 #include <utility>
-#include "pacman.h"
 #include <QObject>
 #include <QGraphicsView>
 #include <utility>
+
+#include "map_object.h"
+#include "pacman.h"
+#include "ghost.h"
+#include "map.h"
 
 Ghost::Ghost(std::pair<int,int> map_index, QGraphicsView *view) : QObject(), view(view){
     this->direction = 0;
@@ -34,6 +41,7 @@ Ghost::Ghost(std::pair<int,int> map_index, QGraphicsView *view) : QObject(), vie
     connect(mAnimation, &QVariantAnimation::valueChanged, this, &Ghost::onAnimationChanged);
     
 }
+
 Ghost::~Ghost(){
     delete mAnimation;
 }
@@ -43,6 +51,7 @@ void Ghost::move(){
     mAnimation->setEndValue(QRectF(this->position.first, this->position.second, 50, 50));
     mAnimation->start();
 }
+
 void Ghost::onAnimationChanged(const QVariant &value){
     this->setPos(value.toRectF().topLeft());
     update();

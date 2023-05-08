@@ -1,38 +1,30 @@
-#include "main_scene.h"
+/**
+ * @file main_scene.cpp
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @brief Setting up whole game scene.
+ * @date 2023-05-08
+*/
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsRectItem>
 #include <QVBoxLayout>
 #include <QGraphicsItem>
 #include <iostream>
-#include <tuple>
 #include <utility>
-#include "map.h"
 #include <string>
+
+#include "main_scene.h"
+#include "map.h"
 
 MainScene::MainScene(Backend *backend,QWidget *parent)
     : QGraphicsScene(parent)
 {
-    // QPixmap wall(":/textures/misc/wall.png");
-    // QPixmap dot(":/textures/misc/dot.png");
-    // QPixmap target(":/textures/misc/target.png");
-    // QPixmap key(":/textures/misc/key.png");
-    // QPixmap pacman(":/textures/pacman/pacman1.png");
-    // QPixmap ghost(":/textures/ghost/ghost1.png");
-
-    // if (true){
-    //     this->map= new Map("./examples/tmp.txt");
-    // }
-    // else{
-    //     this->map= new Map("./examples/map-01.txt");
-    // }
     this->backend = backend;
-
+    // looping through map and setting up all items
     for (int row = 0; row < (int)backend->map->map.size(); row++) {
         for (int col = 0; col < (int)backend->map->map[row].size(); col++) {
             backend->map->map[row][col]->setRect(col*50, row*50, 50, 50);
             if (backend->map->map[row][col]->color == Qt::black) {
-                // wall, so set texture of wall from ../textures/misc/wall.png
                 backend->map->map[row][col]->setBrush(QBrush(QImage("./textures/misc/wall.png").scaled(50,50)));
             }
             else if(backend->map->map[row][col]->color == Qt::blue) {
@@ -55,6 +47,7 @@ MainScene::MainScene(Backend *backend,QWidget *parent)
 
         }
     }
+    // create rectangles for moves and keys
     this->movesRect = new QGraphicsRectItem();
     this->movesRect->setRect(this->backend->map->width*50-30,0,120,30);
     this->movesRect->setBrush(Qt::gray);
@@ -93,15 +86,17 @@ MainScene::MainScene(Backend *backend,QWidget *parent)
     connect(this->backend, &Backend::moves_increment, this, &MainScene::updateMovesText);
     connect(this->backend, &Backend::update_keys, this, &MainScene::updateKeysText);
 }
-void MainScene::updateMovesText(int moves)
-{
+
+void MainScene::updateMovesText(int moves){
     movesText->setPlainText("Moves: " + QString::number(moves));
 }
-void MainScene::updateKeysText(int keys)
-{
+
+void MainScene::updateKeysText(int keys){
     keysText->setPlainText("Keys: " + QString::number(keys));
 }
+
 MainScene::~MainScene(){
+    // remove all items from scene so they can be reused after restart
     for (int row = 0; row < (int)backend->map->map.size(); row++) {
         for (int col = 0; col < (int)backend->map->map[row].size(); col++) {
             removeItem(backend->map->map[row][col]);
@@ -110,4 +105,3 @@ MainScene::~MainScene(){
     delete movesText;
     delete movesRect;
 }
-

@@ -1,14 +1,12 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "map.h"
-#include "map_object.h"
+/**
+ * @file mainwindow.cpp
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @brief Setting up the main window and registering user input.
+ * @date 2023-05-08
+*/
+
 #include <QLayout>
-#include "pacman.h"
-#include "ghost.h"
 #include <utility>
-#include "gamestate.h"
-#include "main_scene.h"
-#include "replay.h"
 #include <QMenuBar>
 #include <QMenu>
 #include <QAction>
@@ -19,16 +17,22 @@
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
 
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include "gamestate.h"
+#include "main_scene.h"
+#include "replay.h"
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     this->setWindowTitle("Pacmun");
-    // todo skusit toto upravit
+    // setting up unique backend
     this->backend = new Backend();
     connect(this->backend, &Backend::win, this, &MainWindow::win);
-    //####################################################################################################
+    // setting up menu bar
     QMenuBar *menuBar = new QMenuBar(this);
     
     // Add a menu to the menu bar
@@ -38,14 +42,11 @@ MainWindow::MainWindow(QWidget *parent)
     QAction *mapLevelsAction = new QAction(tr("Maps"), this);
     fileMenu->addAction(mapLevelsAction);
     connect(mapLevelsAction, &QAction::triggered, this, &MainWindow::showMapLevelsDialog);
-    QDir directory("./examples");
-
-    QStringList nameFilters;
-    nameFilters << "*.txt"; // Example: load only txt and pdf files
-
     // Get a list of file names in the directory matching the filters
+    QDir directory("./examples");
+    QStringList nameFilters;
+    nameFilters << "*.txt";
     QStringList files = directory.entryList(nameFilters, QDir::Files);
-
     // Loop over the list of files and store their relative paths
     QStringList relativePaths;
     foreach(QString file, files) {
@@ -53,21 +54,15 @@ MainWindow::MainWindow(QWidget *parent)
         relativePaths << relativePath;
     }
     this->relativePaths = relativePaths;
-    // Add a separator and an exit action to the menu
     fileMenu->addSeparator();
-
-
     // Add an action to show the replay dialog
     QAction *replayAction = new QAction(tr("Replay"), this);
     fileMenu->addAction(replayAction);
     connect(replayAction, &QAction::triggered, this, &MainWindow::showReplayDialog);
     QDir directory2("./replays");
-
     QStringList nameFilters2;
     nameFilters2 << "*.txt";
-
     QStringList files2 = directory2.entryList(nameFilters2, QDir::Files);
-
     QStringList relativePaths2;
     foreach(QString file, files2) {
         QString relativePath = directory2.relativeFilePath(file);
@@ -76,9 +71,9 @@ MainWindow::MainWindow(QWidget *parent)
     this->relativePaths2 = relativePaths2;
     fileMenu->addSeparator();
     
-    
     // Set the menu bar as the main window's menu bar
     this->setMenuBar(menuBar);
+    // try to load map
     try{
         this->backend->load_map("./examples/map-01.txt");
     }
@@ -88,18 +83,17 @@ MainWindow::MainWindow(QWidget *parent)
         return;
         
     }
-    //Map *map = new Map("./examples/map-01.txt");
+    // setting up scene
     this->scene = new MainScene(backend);
-    //####################################################################################################
     this->view = new QGraphicsView(this->scene, this);
-    view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
+    view->setFixedSize((int)this->backend->map->map[0].size()*50+10,(int)this->backend->map->map.size()*50+10);
     this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
     this->setCentralWidget(view);
 
     view->setFocusPolicy(Qt::StrongFocus);
     this->setFocusPolicy(Qt::StrongFocus);
     view->setFocusPolicy(Qt::NoFocus);
-
+    // creating gamestate
     this->gamestate = new GameState(view, backend);
 }
 
@@ -114,7 +108,7 @@ void MainWindow::showMapLevelsDialog()
     for (int i = 0; i < this->relativePaths.size(); i++) {
         QPushButton *levelButton = new QPushButton(tr("Map Level %1").arg(i+1), mapLevelsDialog);
         connect(levelButton, &QPushButton::clicked, this, [this, i]() {
-            // Handle the button click by loading the selected map level
+            // after click on button, load map and set up scene
             this->blockSignals(false);
             this->replay_flag = false;
             if (this->replay != nullptr) {
@@ -133,7 +127,7 @@ void MainWindow::showMapLevelsDialog()
                 delete this->win_scene;
                 this->win_scene = nullptr;
             }
-            std::cout << "debug" << std::endl;
+            // try to load map
             try {
                 backend->load_map("./examples/" + this->relativePaths[i].toStdString());
             }
@@ -146,7 +140,7 @@ void MainWindow::showMapLevelsDialog()
             if (this->view == nullptr){
                 this->view = new QGraphicsView(this->scene, this);
             }
-            this->view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
+            this->view->setFixedSize((int)this->backend->map->map[0].size()*50+10,(int)this->backend->map->map.size()*50+10);
             this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
             this->setCentralWidget(view);
             this->view->setScene(this->scene);
@@ -157,7 +151,7 @@ void MainWindow::showMapLevelsDialog()
     }
     
     // Set the dialog size and show it
-    mapLevelsDialog->setFixedSize(200, 50*3);
+    mapLevelsDialog->setFixedSize(300, 200);
     mapLevelsDialog->exec();
 }
 void MainWindow::showReplayDialog()
@@ -196,10 +190,10 @@ void MainWindow::showReplayDialog()
             if (this->view == nullptr){
                 this->view = new QGraphicsView(this->scene, this);
             }
-            this->view->setFixedSize((int)this->backend->map->map.size()*50+10, (int)this->backend->map->map[0].size()*50+10);
+            this->view->setFixedSize((int)this->backend->map->map[0].size()*50+10,(int)this->backend->map->map.size()*50+10);
             this->setFixedSize((this->backend->map->width+2)*50+10, (this->backend->map->height+2)*50+35);
             this->setCentralWidget(view);
-            //#################################################################################
+            // buttons for replay screen
             std::vector<QPushButton*> buttons;
             double buttonWidth = this->scene->width() / 4.0;
             QHBoxLayout* layout = new QHBoxLayout();
@@ -223,8 +217,8 @@ void MainWindow::showReplayDialog()
             QWidget* widget = new QWidget();
             widget->setLayout(layout);
             QGraphicsProxyWidget* proxyWidget = scene->addWidget(widget);
+            // add buttons to bootom of the screen
             proxyWidget->setPos(0, scene->height()-widget->height());
-            //#################################################################################
             this->view->setScene(this->scene);
 
             this->replay = new Replay(this, this->scene, "./replays/" + this->relativePaths2[i].toStdString(), backend, this->view);
@@ -238,7 +232,7 @@ void MainWindow::showReplayDialog()
     }
     exception_flag = false;
     // Set the dialog size and show it
-    replayDialog->setFixedSize(200, 50*3);
+    replayDialog->setFixedSize(300, 200);
     replayDialog->exec();
 }
 
@@ -276,14 +270,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event) {
         }
     }
 }
-// void MainWindow::mousePressEvent(QMouseEvent *event)
-// {
-//     if (event->button() == Qt::LeftButton)
-//     {
-//         QPoint clickPos = event->pos();
-//         qDebug() << "Clicked at (" << clickPos.x() << ", " << clickPos.y() << ")";
-//     }
-// }
+
 void MainWindow::win(){
     win_scene = new QGraphicsScene();
     QGraphicsTextItem *win_text = new QGraphicsTextItem("Congratulations!");
@@ -312,6 +299,7 @@ void MainWindow::win(){
     win_scene->addItem(win_text3);
     this->view->setScene(win_scene);
 }
+
 MainWindow::~MainWindow()
 {
     delete ui;

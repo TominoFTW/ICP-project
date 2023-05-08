@@ -1,8 +1,12 @@
+/**
+ * @file main.cpp
+ * @authors Created with qtcreator
+ * @brief Main file of the game, that setups mainwindow.
+ * @date 2023-05-08
+*/
 #include "mainwindow.h"
 
 #include <QApplication>
-#include "map.h"
-#include "map_object.h"
 
 
 

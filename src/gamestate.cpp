@@ -1,20 +1,29 @@
-#include "gamestate.h"
+/**
+ * @file gamestate.cpp
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @brief Holder for current state of the game.
+ * Every 300ms it calls update function which moves pacman and ghosts.
+ * @date 2023-05-08
+ */
+
 #include <QTimer>
 #include <QObject>
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <iostream>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
+#include <QDir>
+
+#include "gamestate.h"
+#include "mainwindow.h"
 #include "ghost.h"
 #include "pacman.h"
 #include "key.h"
 #include "map.h"
 #include "backend.h"
-#include <chrono>
-#include <ctime>
-#include <iomanip>
-#include "mainwindow.h"
-#include <QDir>
-//hello
+
 GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), backend(backend), stop(false){
     this->pacman = new Pacman(backend->get_pacman_start(),backend->map, this->view);
     for (int i = 0; i < (int)backend->get_ghosts_start().size(); i++) {
@@ -23,14 +32,12 @@ GameState::GameState(QGraphicsView *view, Backend *backend) : view(view), backen
         this->add_ghost(*ghost);
     }
     this->end = backend->get_portal_pos();
-    // todo ak bude cas prerobit logiku klucov podobne ako ma pacman a ghost a iba ich schovavat ak su zobrate
     for (int i = 0; i < (int)backend->get_keys_pos().size(); i++) {
         Key *key = new Key(backend->get_keys_pos()[i], backend->map);
         this->add_key(*key);
     }
     timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, this, &GameState::update);
-    // ???????????????????????????????????????????????????????????????
     connect(this->backend, &Backend::p_move, this->pacman, &Pacman::move);
     timer->start(300);
 }
@@ -48,12 +55,15 @@ GameState::~GameState(){
 void GameState::add_ghost(Ghost &ghost){
     this->ghosts.push_back(&ghost);
 }
+
 void GameState::add_key(Key &key){
     this->keys.push_back(&key);
 }
+
 void GameState::set_pacman_dir(int direction){
     this->pacman->set_direction(direction);
 }
+
 void GameState::update(){
     if (stop) return;
     auto old_position = this->pacman->position;
@@ -63,9 +73,11 @@ void GameState::update(){
         try{
             backend->ghost_move(*ghost, *this->pacman);
         }
+        // colision with pacman
         catch (int e){
             pacman->pacman_end();
             this->stop = true;
+            // connect "C" button to save replay
             connect(qobject_cast<MainWindow*>(this->view->parent()), &MainWindow::save_replay, this, &GameState::replay_print);
             return;
         }
@@ -74,6 +86,7 @@ void GameState::update(){
         backend->pick_key(*key, *this->pacman, this->keys);
         key->update();
     }
+    // if there is no key left, open portal
     if (this->keys.size() == 0){
         this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50));
     }
@@ -142,6 +155,7 @@ void GameState::replay_print() {
     MainWindow *main_window = qobject_cast<MainWindow*>(this->view->parent());
     main_window->relativePaths2 = relativePaths;
 }
+
 bool GameState::stopped(){
     return this->stop;
 }
