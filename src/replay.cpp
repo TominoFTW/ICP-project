@@ -1,3 +1,9 @@
+/**
+ * @file    replay.cpp
+ * @authors Behal Tomas xbehal02, Kontrik Jakub xkontri02
+ * @brief   Implementation of replay class methods.
+ * @date    2023-05-08
+ */
 #include "replay.h"
 #include "map.h"
 #include "map_object.h"
@@ -18,34 +24,40 @@
 #include <sstream>
 #include "main_scene.h"
 
-// Replay::Replay(QGraphicsScene *scene){
 Replay::Replay(QWidget *parent, MainScene *scene, std::string input_file, Backend *backend, QGraphicsView *view)
     : QGraphicsScene(parent), scene(scene), view(view) {
+    // Load input file and parse it
     std::ifstream input(input_file);
     parseInput(input);
 
+    // Initialize backend
     this->backend = backend;
     this->end = backend->get_portal_pos();
     this->index = 1;
 
+    // Initialize pacman
     this->pacman = new Pacman(backend->get_pacman_start(),backend->map, view);
     this->pacman_num_moves = pacman_possible_moves();
 
-    for (size_t i = 0; i < backend->get_ghosts_start().size(); i++) {
+    // Initialize ghosts
+    for (size_t i = 0; i < backend->get_ghosts_start().size(); i++){
         Ghost *ghost = new Ghost(backend->get_ghosts_start()[i], view);
         this->add_ghost(*ghost);
     }
 
-    for (size_t i = 0; i < backend->get_keys_pos().size(); i++) {
+    // Initialize keys
+    for (size_t i = 0; i < backend->get_keys_pos().size(); i++){
         Key *key = new Key(backend->get_keys_pos()[i], backend->map);
         this->add_key(*key);
     }
+
+    // Connect signals and slots for replay
     connect(this->backend, &Backend::p_move, this->pacman, &Pacman::move);
     connect(this->backend, &Backend::moves_increment, this->scene, &MainScene::updateMovesText);
     connect(this->backend, &Backend::update_keys, this->scene, &MainScene::updateKeysText);
 
+    // Update key counter
     emit backend->update_keys((int)this->keys.size());
-
 
     input.close();
 }
@@ -55,6 +67,7 @@ void Replay::parseInput(std::ifstream &input){
         std::cout << "Unable to open file";
         return;
     }
+    // Skip lines until pacman coordinates
     std::string line;
     while (std::getline(input, line)) {
         if (line == "pacman")
@@ -89,16 +102,22 @@ void Replay::parseInput(std::ifstream &input){
 }
 
 void Replay::update_forward(){
+    // Pacman reached the end => no more moves
     if ((size_t)this->index == this->pacman_positions.size()){
         return;
     }
 
+    // Update pacman
     this->pacman->position = this->pacman_positions[this->index];
     emit backend->p_move(this->pacman_positions[this->index-1]);
+
+    // If pacman moved, increment moves counter
     if (pacman->position != this->pacman_positions[this->index-1]){
         pacman->moves++;
         emit backend->moves_increment(pacman->moves);
     }
+
+    // Update ghosts
     if (this->ghosts.size() > 0){
         for (size_t i = 0; i < this->ghosts.size(); i++){
             if ((size_t)this->index < this->ghost_positions[i].size()){
@@ -109,7 +128,8 @@ void Replay::update_forward(){
         }
     }
 
-    if (this->keys.size() != 0) {
+    // Update keys
+    if (this->keys.size() != 0){
         for (auto key: this->keys){
             if (key->position == this->pacman->position){
                 key->picked = true;
@@ -118,10 +138,12 @@ void Replay::update_forward(){
                 keys.erase(std::remove(keys.begin(), keys.end(), key), keys.end());
             }
         }
+        // Update portal
         if (this->keys.size() == 0){
             this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50)));
         }
     }
+    // Update key counter and index
     emit backend->update_keys((int)this->keys.size());
     this->index++;
 }
@@ -149,7 +171,7 @@ void Replay::update_backward(){
         }
     }
 
-    if (this->picked_keys.size() != 0) {
+    if (this->picked_keys.size() != 0){
         for (auto key: this->picked_keys){
             if (key->position == this->pacman_positions[this->index]){
                 key->picked = false;
@@ -165,7 +187,7 @@ void Replay::update_backward(){
     emit backend->update_keys((int)this->keys.size());
 }
 
-void Replay::update_start() {
+void Replay::update_start(){
     auto tmp = this->pacman->position;
     this->pacman->position = this->pacman_positions[0];
     emit backend->p_move(tmp);
@@ -194,7 +216,7 @@ void Replay::update_start() {
     emit backend->update_keys((int)this->keys.size());
 }
 
-void Replay::update_end() {
+void Replay::update_end(){
     auto last = this->pacman_positions.size()-1;
     auto tmp = this->pacman->position;
     this->pacman->position = this->pacman_positions[pacman_positions.size()-1];
@@ -222,8 +244,9 @@ void Replay::update_end() {
             }
         }
     }
-    if (this->keys.size() == 0)
+    if (this->keys.size() == 0){
         this->backend->map->map[this->end.second/50][this->end.first/50]->setBrush(QBrush(QImage("./textures/misc/targerOpen.png").scaled(50,50)));
+    }
     this->pacman->moves = pacman_num_moves;
     emit backend->moves_increment(this->pacman->moves);
     emit backend->update_keys((int)this->keys.size());

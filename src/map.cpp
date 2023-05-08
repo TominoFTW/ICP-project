@@ -8,30 +8,33 @@
 
 
 Map::Map(std::string filename) {
+    // Open file
     std::ifstream input;
     this->filename = filename;
     input.open(filename);
     if (!input) {
         throw "Unable to open file";
     }
+    // Read width and height
     std::string line;
     std::getline(input, line);
     char *number = strtok((char*)line.c_str(), " ");
     this->width = atoi(number);
     number = strtok(NULL, " ");
     this->height = atoi(number);
-    // TODO: skraslit 
-    // std::cout << width << ' ' << height << std::endl;
+    
+    // Read map
     while (std::getline(input, line)) {
-        // std::cout << line << std::endl;
+        // Parse lines
         std::vector<MapObject*> row;
         MapObject *xy = new MapObject('X');
         row.push_back(xy);
+
+        // Check if line is valid
         if ((int)line.length() != this->width) {
             throw "Invalid map";
         }
         for (int i = 0; i < (int)line.length(); i++) {
-            
             MapObject *object = new MapObject(line[i]);
             get_objects(i+1, this->map.size()+1, line[i]);
             row.push_back(object);
@@ -41,6 +44,8 @@ Map::Map(std::string filename) {
         this->map.push_back(row);
 
     }
+    
+    // Add top and bottom rows
     std::vector<MapObject*>* top_row = new std::vector<MapObject*>();
     for (int i = 0; i < (int)map[0].size(); i++) {
         MapObject* obj = new MapObject('X');
@@ -54,12 +59,15 @@ Map::Map(std::string filename) {
         bottom_row->push_back(obj);
     }
     this->map.push_back(*bottom_row);
+
+    // Check if map is valid once more
     if ((int)this->map.size() != this->height+2) {
         throw "Invalid map";
     }
-    input.close();
 
+    input.close();
 }
+
 Map::~Map() {
     for (int i = 0; i < (int)this->map.size(); i++) {
         for (int j = 0; j < (int)this->map[i].size(); j++) {
@@ -86,6 +94,7 @@ void Map::get_objects(int x, int y, char type){
             break;
     }
 }
+
 std::pair<int, int> Map::get_pacman_index(){
     return this->pacman;
 }
@@ -97,6 +106,7 @@ std::pair<int, int> Map::get_portal_index(){
 std::vector<std::pair<int, int>> Map::get_ghosts_indexes(){
     return this->ghosts;
 }
+
 std::vector<std::pair<int, int>> Map::get_keys_indexes(){
     return this->keys;
 }

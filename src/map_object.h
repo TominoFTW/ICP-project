@@ -8,10 +8,22 @@
 
 class MapObject:public QGraphicsRectItem{
     public:
+        /**
+         * @brief Construct a new Map Object object
+         * 
+         * @param symbol type of object on map
+         */
         MapObject(char symbol);
+
+        /**
+         * @brief If object is not wall.
+         * 
+         * @return bool Is it wall
+         */
+        bool is_free();
+
         char type;
         QColor color;
-        bool is_free();
 };
 
 #endif // MAP_OBJECT_H
