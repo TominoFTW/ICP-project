@@ -8,7 +8,7 @@ run: build
 doxygen:
 	cd docs && doxygen Doxyfile
 pack:
-	zip -r xbehal02-xkontr02.zip src/ replays/ examples/ textures/ Makefile -x src/*.pro.user
+	zip -r xbehal02-xkontr02.zip src/ replays/ examples/ textures/ Makefile README.txt
 clean:
 	rm -rf docs/html
 	rm -rf build
